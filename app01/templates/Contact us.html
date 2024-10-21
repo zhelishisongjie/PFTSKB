@@ -1,0 +1,50 @@
+{% extends 'Layout.html' %}
+{% load static %}
+
+
+{% block title %}
+    <title>Contact Us</title>
+{% endblock %}
+{% block special_css %}
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="mt-5 mb-5">
+        <div class="container-fluid text-center" style="background-color: #4F81BD">
+            <div style="height: 60px;color: white;font-size: 35px"> Contact Us</div>
+        </div>
+    </div>
+</div>
+
+    <div class="container mt-4">
+        <p style="text-indent:2em;line-height: 30px;font-size: 18px">If you have any problems or suggestions, please
+            contact us using the information provided below. We will respond to your inquiry as soon as possible.</p>
+        <div class="mb-3"><b style="font-size: 20px">Contact Information</b></div>
+        <div style="font-size: 18px">
+            <p><b>Principal Investigator:</b> Prof. Bairong Shen<br>
+            <b>Email:</b> bairong.shen@scu.edu.cn<br>
+            <b>Adderess:</b> 10F, Building D5-A, Frontiers Science Center for Disease-related Molecular Network,
+            No.2222, Xinchuan Road, Gaoxin District, Chengdu<br>
+            <b>Postcode:</b> 610212<br>
+            <b>Tel:</b> 028-61528681/028-61528682
+        </p>
+        </div>
+
+    </div>
+
+
+
+
+
+    <script>
+        // your custom ajax request here
+        function ajaxRequest(params) {
+            var url = 'https://examples.wenzhixin.net.cn/examples/bootstrap_table/data'
+            $.get(url + '?' + $.param(params.data)).then(function (res) {
+                params.success(res)
+            })
+        }
+    </script>
+
+{% endblock %}

@@ -1,0 +1,106 @@
+{% extends 'Layout.html' %}
+{% load static %}
+
+
+{% block title %}
+    <title>Help</title>
+{% endblock %}
+{% block special_css %}
+    <style>
+        #title1 {
+            color: #4F81BD;
+        }
+
+        #title2 {
+            color: black;
+        }
+        .imge{
+            text-align: center;
+        }
+    </style>
+
+
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="mt-5 mb-5">
+            <div class="container-fluid text-center" style="background-color: #4F81BD">
+                <div style="height: 60px;color: white;font-size: 35px"> PFTDP-KB Tutorial</div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div>
+            <p style="text-indent:2em;">
+                The web framework of the PFTDP-KB has six components, including ‘Home’ page, ‘Browse ’ page, ‘Search’
+                page,‘visual analysis’ page, ‘contact us’ page and 'Help' page. Functions of PFTDP-KB and usage of each
+                function is as follows:
+            </p>
+        </div>
+        <div>
+            <div id="title1"><h4>1.Home</h4></div>
+            <p style="text-indent:2em;">
+                The ‘Home’ page for providing brief introduction of PFTDP-KB.
+            </p>
+        </div>
+        <div>
+            <div id="title1"><h4>2.Browse</h4></div>
+            <p style="text-indent:2em;">
+                We provide two different browse options for users to browse the data: classification browse and Key Word
+                browse to search the data collected in PFTDP-KB.
+            </p>
+            <div class="imge">
+                <img src="{% static 'img/help_img/help1.jpg' %}" >
+            </div>
+            <div id="title2"><b>(1) Classification Browse</b></div>
+            <p style="text-indent:2em;">
+                To browse the data in PFTDP-KB, first, choose the parameters classification/parameters
+                application/application for surgery type/application for period you are interested in (Figure 1a);
+                second, the interface will skip to the information page (Figure 1b) once you click one of the results in
+                the result list (Figure 1c).
+            </p>
+            <div class="imge">
+                <img src="{% static 'img/help_img/help2.jpg' %}" >
+            </div>
+            <div id="title2"><b>(2) Keyword Browse</b></div>
+            <p style="text-indent:2em;">
+                The database can be searchable using the parameter name, PID,Group
+                Name,Classification,Application,Surgery Type Period of Application and PMID.
+            </p>
+            <div class="imge">
+         <img src="{% static 'img/help_img/help3.jpg' %}" >
+            </div>
+        </div>
+        <div>
+            <div id="title1"><h4>3.Search</h4></div>
+            <p style="text-indent:2em;">
+                PFTDP-KB also provides a search tool for fluid therapy. First and foremost, You need to choose parameter
+                infomation( parameter application /classification of parameter/population /BMI)which you want to. And
+                then, choose the surgery information(surgical type/surgical approach/period of fluid therapy/ASA
+                physical status) which you want to. Click”submit”button, then you'll get the results. Finally,
+                Click”toggle tables/ charts” to get a diagram according to the results.
+            </p>
+            <div class="imge">
+                <img src="{% static 'img/help_img/help4.jpg' %}" >
+            </div>
+        </div>
+        <div>
+            <div id="title1"><h4>4.Visual Analysis</h4></div>
+            <p style="text-indent:2em;">
+                Visual analysis tools assist users to analyze PFTDP-KB data in five types: publication years, country
+                distribution, sample size and year distribution, decision parameter pie, and decision parameter for
+                surgery type. Take the publication years analysis as an example, firstly, users are required to select
+                data to analyze. Then click the ‘submit’ button to generate and visualize the results.
+            </p>
+            <div class="imge">
+                <img src="{% static 'img/help_img/help5.jpg' %}" >
+            </div>
+        </div>
+
+
+    </div>
+
+
+
+{% endblock %}

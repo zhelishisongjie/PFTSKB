@@ -1,0 +1,1804 @@
+{% extends 'Layout.html' %}
+{% load static %}
+
+
+
+
+
+{% block title %}
+    <title xmlns="http://www.w3.org/1999/html">recommend</title>
+
+    <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}">
+    {#    <link rel="stylesheet" href="{% static 'css/bootstrap-icons.min.css' %}">#}
+    <link rel="stylesheet" href="{% static 'plugins/bootstrap-table/css/bootstrap-table.min.css' %}">
+    <link rel="stylesheet" href="{% static 'plugins/bootstrap-select/css/bootstrap-select.min.css' %}">
+    <style type="text/css">
+        .step-key {
+        {#font-weight: bold;#} font-size: 1.2em;
+            width: 250px;
+            padding: 5px
+        }
+        #inputfont{
+            font-size: 16px;
+        }
+
+        #table {
+            font-size: 15px; /* 设置表格的字体大小 */
+
+        }
+
+        #table thead th {
+            font-size: 16px; /* 设置表头单元格的字体大小 */
+        }
+
+        #table_allay {
+            width: auto;
+            {#margin-left: 100px;#}
+            {#margin-right: 100px;#}
+        }
+
+        /* 覆盖边框和文本颜色 */
+        .btn-outline-primary {
+            color: #333; /* 更改文本颜色 */
+            border-color: #4F81BD; /* 更改边框颜色 */
+        }
+
+        /* 当鼠标悬停在按钮上时 */
+
+        /* 当按钮获得焦点或被激活时 */
+        .btn-outline-primary:focus,
+        .btn-outline-primary.focus,
+        .btn-outline-primary:active,
+        .btn-outline-primary.active {
+            color: #fff; /* 焦点或激活时文本颜色 */
+            background-color: #4F81BD; /* 焦点或激活时背景颜色 */
+            border-color: #4F81BD; /* 焦点或激活时边框颜色 */
+        }
+
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="">
+    <div class="mt-5 mb-5">
+        <div class="text-center" style="background-color: #4F81BD;border: #4F81BD">
+            <div style="height: 60px;color: white;font-size: 35px"> PFTD Recommendation System</div>
+        </div>
+    </div>
+    </div>
+
+    {#   pipeline#}
+    <div class="container px-4 py-2">
+        <div class="text-center">
+            <button type="button" class="btn btn-lg" data-toggle="collapse"
+                    data-target="#collapseExample"
+                    aria-expanded="false"
+                    aria-controls="collapseExample"
+                    style="background-color: #4F81BD;color: white;outline-color: #4F81BD"> Start Recommend
+            </button>
+        </div>
+    </div>
+    {#        start btn#}
+    {#    <div class="container px-4 py-5">#}
+    {#        <div class="text-center">#}
+    {#            <button type="button" class="btn btn-outline-info btn-lg" data-bs-toggle="collapse"#}
+    {#                    data-bs-target="#collapseExample"#}
+    {#                    aria-expanded="false"#}
+    {#                    aria-controls="collapseExample"> Start developing personalized Liquid Therapy#}
+    {#            </button>#}
+    {#        </div>#}
+    {#    </div>#}
+    <div class="collapse" id="collapseExample">
+        <form method="post" id="form1" novalidate>
+            {% csrf_token %}
+            <div class="container px-4 py-2 " id="inputfont">
+                <div id="step1">
+                    <div class="mb-3">
+                        <div id="title" class="mb-3">
+                            <img src="{% static 'img/img.png' %}" alt="" width="30" height="35">
+                            <button type="button" class="btn btn-outline-primary " disabled style="font-size: 28px">
+                                Patients information
+                            </button>
+                        </div>
+
+
+                        <div class="col-md-9 col-lg-9">
+                            <div class="row g-3">
+
+                                <div class="col-6 mb-2">
+                                    <div><label style="font-size: 20px"><b>1.{{ form.gender.label }}</b></label></div>
+                                    <div>
+                                        {% for radio in form.gender %}
+                                            {{ radio.tag }}
+                                            <label class="form-check-label" style="font-size: 18px">{{ radio.choice_label }}</label>
+                                        {% endfor %}
+                                    </div>
+                                    <span style="color: red">{{ form.gender.errors.0 }}</span>
+
+                                </div>
+
+                                <div class="col-9 mb-2">
+                                    <label class="form-label" style="font-size: 20px"><b>2.{{ form.age.label }}</b></label>
+                                    {#                                <div>{{ form.age }}</div>#}
+                                    <div>
+                                        {% for radio in form.age %}
+                                            {{ radio.tag }}
+                                            <label class="form-check-label "style="font-size: 18px">{{ radio.choice_label }}</label>
+                                        {% endfor %}
+                                    </div>
+                                    <span style="color: red">{{ form.age.errors.0 }}</span>
+                                </div>
+
+                                <div class="col-7 mb-2">
+                                    <label class="form-label" style="font-size: 20px"><b>3.{{ form.bmi.label }}</b></label>
+
+                                    {% for radio in form.bmi %}
+                                        <div>
+                                            {{ radio.tag }}
+                                            <label class="form-check-label "style="font-size: 18px">{{ radio.choice_label }}</label>
+                                        </div>
+                                    {% endfor %}
+
+                                    <span style="color: red">{{ form.bmi.errors.0 }}</span>
+                                </div>
+
+
+                                <div class="col-8">
+                                    <label class="form-label" style="font-size: 20px"><b>4.Are there any of the following
+                                        comorbidities</b></label>
+                                    <div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" id="AKI"
+                                                   name="AKI" value="AKI" data-toggle="modal"
+                                                   data-target="#exampleModal">
+                                            <label class="form-check-label" for="AKI" style="font-size:18px">AKI</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" id="heart failure"
+                                                   name="heart failure" value="heart failure" data-toggle="modal"
+                                                   data-target="#exampleModal">
+                                            <label class="form-check-label" for="heart failure" style="font-size: 18px">heart failure</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" id="respiratory failure"
+                                                   name="respiratory failure" value="respiratory failure"
+                                                   data-toggle="modal" data-target="#exampleModal">
+                                            <label class="form-check-label" for="respiratory failure" style="font-size: 18px">respiratory
+                                                failure</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" id="sepsis shock"
+                                                   name="sepsis shock"
+                                                   value="sepsis shock" data-toggle="modal"
+                                                   data-target="#exampleModal">
+                                            <label class="form-check-label" for="sepsis shock" style="font-size: 18px">sepsis shock</label>
+                                        </div>
+
+                                    </div>
+
+
+                                </div>
+
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                         aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="exampleModalLabel" style="color: red">Warning
+                                        Prompt</h1>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    If you have the following comorbidities, liquid treatment should be undertaken
+                                    cautiously after diagnosis and advice from a doctor.
+                                </div>
+                                <div class="modal-footer">
+                                    {# <button id="btn_reset" type="reset" class="btn btn-default btn-space ml-2">#}
+                                    {#                            <span class="fa fa-eraser btn-icon-space" aria-hidden="true"></span>#}
+                                    {#                            Reset#}
+                                    {#                        </button>#}
+                                    <button id="btn_reset" type="reset" class="btn btn-danger" data-dismiss="modal">
+                                        Close
+                                    </button>
+                                    {#        <button type="button" class="btn btn-primary">Save changes</button>#}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <div id="step2" class="mt-4">
+                    <div class="mb-3">
+                        <div class="mb-3">
+                            <img src="{% static 'img/tag1.png' %}" alt="" width="30" height="35">
+                            <button type="button" class="btn btn-outline-primary" disabled style="font-size: 28px">Surgery information
+                            </button>
+                        </div>
+                        <div class="col-md-9 col-lg-9">
+                            <div class="row g-3">
+                                <div class="col-7 mb-2">
+                                    <div><label style="font-size: 20px"><b>1.{{ form.surgery_app.label }}</b></label></div>
+                                    <div>
+                                        {% for radio in form.surgery_app %}
+                                            {{ radio.tag }}
+                                            <label class="form-check-label" style="font-size: 18px">{{ radio.choice_label }}</label>
+                                        {% endfor %}
+                                    </div>
+                                    <span style="color: red">{{ form.surgery_app.errors.0 }}</span>
+                                </div>
+
+
+                        {# sugery type #}
+                                <div class="col-7">
+                                    <label class="form-label" style="font-size: 20px"><b>2.{{ form.surgery_type.label }}</b></label>
+                                    <div style="font-size: 18px">{{ form.surgery_type }}</div>
+                                    <span style="color: red">{{ form.surgery_type.errors.0 }}</span>
+                                </div>
+
+
+                        {# sugery site #}
+                                {# <div class="col-7"> #}
+                                {#    <label class="form-label" style="font-size: 20px"><b>3.Surgery site</b></label> #}
+                                {#    <select name="surgery_site" id="user" class="form-control" #}
+                                {#            aria-label="Default select example"> #}
+                                {#    </select> #}
+                                    {#                                <label class="form-label"><b>{{ form.surgery_site.label }}</b></label>#}
+                                    {#                                <div>{{ form.surgery_site }}</div>#}
+                                    {#                                <span style="color: red">{{ form.surgery_site.errors.0 }}</span>#}
+                                {# </div> #}
+
+                        {# ASA #}
+                                <div class="col-7 mb-2">
+                                    <div><label style="font-size: 20px"><b>4.{{ form.asa.label }}</b></label></div>
+                                    <div>
+                                        {% for radio in form.asa %}
+                                            {{ radio.tag }}
+                                            <label class="form-check-label" style="font-size: 18px">{{ radio.choice_label }}</label>
+                                        {% endfor %}
+                                    </div>
+                                    <span style="color: red">{{ form.asa.errors.0 }}</span>
+                                </div>
+
+                        {# period_of_FT #}
+                                <div class="col-7 mb-2">
+                                    <div><label style="font-size: 20px"><b>5.{{ form.period_of_FT.label }}</b></label></div>
+                                    <div>
+                                        {% for radio in form.period_of_FT %}
+                                            {{ radio.tag }}
+                                            <label class="form-check-label" style="font-size: 18px">{{ radio.choice_label }}</label>
+                                        {% endfor %}
+                                    </div>
+                                    <span style="color: red">{{ form.period_of_FT.errors.0 }}</span>
+                                </div>
+
+
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+                <div id="step3" class="mt-4">
+                    <div class="mb-3">
+                        <div class="mb-3">
+                            <img src="{% static 'img/tag5.png' %}" alt="" width="30" height="35">
+                            <button type="button" class="btn btn-outline-primary" disabled style="font-size: 28px">Parameters
+                            </button>
+                        </div>
+
+
+                    {# Add Parameters button #}
+                    <div class="col-12 mt-3">
+                        <button type="button" class="btn btn-outline-primary" id="add-parameters-btn">Add Parameters</button>
+                        <p id="message"></p>
+                    </div>
+                        {# Container to dynamically add parameters #}
+                        <div class="col-12 mt-3" id="parameters-container"></div>
+
+
+
+
+
+
+                    </div>
+                </div>
+
+                {#            <div id="step3" class="mt-4">#}
+                {#                <div class="mb-3">#}
+                {#                    <div class="mb-3">#}
+                {#                        <img src="{% static 'img/img_1.png' %}" alt="" width="30" height="35">#}
+                {#                        <button type="button" class="btn btn-info btn-outline-info  " disabled>Perioperative Fluid#}
+                {#                            Therapy Decision parameters#}
+                {#                        </button>#}
+                {#                    </div>#}
+                {#                    <div>#}
+                {#                    <div><label><b>Parameter1:</b></label></div>#}
+                {#                        <select class="selectpicker" data-live-search="true" data-size="5"#}
+                {#                                title="Choose one of the following..." onchange="selectOnchange(this)">#}
+                {#                            <optgroup label="Classification" style="font-size: larger">#}
+                {#                                {% for class in class %}#}
+                {#                                    <option value="{{ class.class }};1">{{ class.class }}</option>#}
+                {#                                {% endfor %}#}
+                {##}
+                {#                            </optgroup>#}
+                {##}
+                {##}
+                {#                        </select>#}
+                {#                        <select class="selectpicker" data-live-search="true" data-size="5"#}
+                {#                                title="Choose one of the following..." onchange="selectOnchange(this)">#}
+                {#                            <optgroup label="Application">#}
+                {#                                {% for app in app %}#}
+                {#                                    <option value="{{ app }};2">{{ app }}</option>#}
+                {#                                {% endfor %}#}
+                {##}
+                {#                            </optgroup>#}
+                {#                        </select>#}
+                {##}
+                {#                        <select class="selectpicker" data-live-search="true" data-size="5"#}
+                {#                                title="Choose one of the following..." onchange="selectOnchange(this)">#}
+                {#                            <optgroup label="Surgery Type">#}
+                {#                                {% for st in st %}#}
+                {#                                    <option value="{{ st.surgery_type }};3">{{ st.surgery_type }}</option>#}
+                {#                                {% endfor %}#}
+                {##}
+                {#                            </optgroup>#}
+                {#                        </select>#}
+                {##}
+                {#                    </div>#}
+                {##}
+                {#                        {% include "caslator_for_recommend.html" %}#}
+                {##}
+                {##}
+                {##}
+                {##}
+                {#                </div>#}
+                {#            </div>#}
+
+
+                <div class="row">
+                    <div class="col-sm-3" style="margin-left: 500px">
+                        <div class="btn-group">
+                            <button id="btn_submit" type="submit" class="btn btn-info btn-space"
+                                    style="background-color: #4F81BD;color: white;border: #4F81BD">
+                                <span class="fa fa-search btn-icon-space" aria-hidden="true"></span>
+                                Submit
+                            </button>
+                            <span></span>
+                            <button id="btn_reset" type="reset" class="btn btn-default btn-space ml-2">
+                                <span class="fa fa-eraser btn-icon-space" aria-hidden="true"></span>
+                                Reset
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </form>
+
+    </div>
+
+
+
+
+
+    {#    <p>#}
+    {#  <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample1" role="button" aria-expanded="true" aria-controls="collapseExample1">#}
+    {#    Link with href#}
+    {#  </a>#}
+    {#  <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample1" aria-expanded="true" aria-controls="collapseExample1">#}
+    {#    Button with data-target#}
+    {#  </button>#}
+    {#</p>#}
+    {#<div class="collapse show" id="collapseExample1">#}
+    {#  <div class="card card-body">#}
+    {#    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.#}
+    {#  </div>#}
+    {#</div>#}
+
+
+
+
+    <div id="toolbar" class="bar1">
+        {% include "caslator_for_recommend.html" %}
+    </div>
+    <div id="table_allay">
+
+
+        <table
+                id="table"
+                data-toolbar="#toolbar"
+                {#                data-toggle="table"#}
+        >
+        </table>
+
+    </div>
+
+
+    {#    <form method="post">#}
+    {#    {% csrf_token %}#}
+    {#        <div class="container px-4 py-2 collapse" id="collapseExample">#}
+    {#            <div id="step1">#}
+    {#                <div class="mb-3">#}
+    {#                    <img src="{% static 'img/img_1.png' %}" alt="" width="30" height="35">#}
+    {#                    <button type="button" class="btn btn-info btn-outline-info  " disabled>#}
+    {#                        Patients information#}
+    {#                    </button>#}
+    {##}
+    {#                </div>#}
+    {#                <div>#}
+    {##}
+    {#                    <table>#}
+    {#                        <tbody>#}
+    {#                        <tr height="50">#}
+    {#                            <td class="step-key">Age (years):</td>#}
+    {#                            <td><input class="underline_input" type="number" min="0" step="1" name="age" id="age"#}
+    {#                                       size="12">#}
+    {#                            </td>#}
+    {#                        </tr>#}
+    {#                        <tr height="50">#}
+    {#                            <td class="step-key">Gender:</td>#}
+    {#                            <td>#}
+    {#                                <div class="form-check form-check-inline">#}
+    {#                                    <input class="form-check-input" type="radio" name="Male" id="Male" value="M">#}
+    {#                                    <label class="form-check-label" for="Male">Male</label>#}
+    {#                                </div>#}
+    {#                                <div class="form-check form-check-inline">#}
+    {#                                    <input class="form-check-input" type="radio" name="Female" id="Female" value="F">#}
+    {#                                    <label class="form-check-label" for="Female">Female</label>#}
+    {#                                </div>#}
+    {##}
+    {#                            </td>#}
+    {#                        </tr>#}
+    {#                        <tr height="50">#}
+    {#                            <td class="step-key">BMI:</td>#}
+    {#                            <td><input class="underline_input" type="number" min="0" step="1" name="bmi" id="bmi"#}
+    {#                                       size="12"></td>#}
+    {#                        </tr>#}
+    {##}
+    {#                        </tbody>#}
+    {#                    </table>#}
+    {##}
+    {##}
+    {#                </div>#}
+
+    {##}
+    {##}
+    {##}
+    {##}
+    {##}
+
+    {#                <table>#}
+    {#                    <tbody>#}
+    {#                    <tr height="50">#}
+    {#                        <td class="step-key">Surgical approach:</td>#}
+    {#                        <td>#}
+    {#                            <div class="form-check form-check-inline">#}
+    {#                                <input class="form-check-input" type="radio" name="Open surgery" id="Open surgery" value="Open surgery">#}
+    {#                                <label class="form-check-label" for="Open surgery">Open surgery</label>#}
+    {#                            </div>#}
+    {#                            <div class="form-check form-check-inline">#}
+    {#                                <input class="form-check-input" type="radio" name="Laparoscopic surgery" id="Laparoscopic surgery" value="Laparoscopic surgery">#}
+    {#                                <label class="form-check-label" for="Laparoscopic surgery">Laparoscopic surgery</label>#}
+    {#                            </div>#}
+    {#                        </td>#}
+    {#                    </tr>#}
+    {#                    <tr height="50">#}
+    {#                        <td class="step-key">Surgery type:</td>#}
+    {#                        <td>#}
+    {#                            <select class="form-select" aria-label="Default select example" onchange="selectOnchange(this)">#}
+    {#                                <option value="Thoracic surgery">Thoracic surgery</option>#}
+    {#                                <option value="Abdominal Surgery">Abdominal Surgery</option>#}
+    {#                                <option value="Cardiac surgery">Cardiac surgery</option>#}
+    {#                                <option value="Gynaecology and obstetrics">Gynaecology and obstetrics</option>#}
+    {#                                <option value="Neurosurgery">Neurosurgery</option>#}
+    {#                                <option value="Bone surgery">Bone surgery</option>#}
+    {#                                <option value="Vascular Surgery">Vascular Surgery</option>#}
+    {#                                <option value="Otolaryngology">Otolaryngology</option>#}
+    {#                                <option value="Orthopaedic surgery">Orthopaedic surgery</option>#}
+    {#                                <option value="Craniotomy">Craniotomy</option>#}
+    {#                                <option value="Urology Surgery">Urology Surgery</option>#}
+    {#                                <option value="Pediatric surgery">Pediatric surgery</option>#}
+    {#                                <option value="Others">Others</option>#}
+    {#                            </select>#}
+    {#                        </td>#}
+    {#                    </tr>#}
+    {##}
+    {#                    <tr height="50">#}
+    {#                        <td class="step-key">Surgical Site:</td>#}
+    {#                        <td>#}
+    {#                        <select id="user" class="form-select" aria-label="Default select example">#}
+    {#                        </select>#}
+    {#                        </td>#}
+    {#                    </tr>#}
+    {##}
+    {#                    <tr height="50">#}
+    {#                        <td class="step-key">ASA physical status:</td>#}
+    {#                        <td>#}
+    {#                            <div class="form-check form-check-inline">#}
+    {#                                <input class="form-check-input" type="radio" name="stage" id="Ⅰ" value="Ⅰ">#}
+    {#                                <label class="form-check-label" for="Ⅰ">Ⅰ</label>#}
+    {#                            </div>#}
+    {#                            <div class="form-check form-check-inline">#}
+    {#                                <input class="form-check-input" type="radio" name="stage" id="Ⅱ" value="Ⅱ">#}
+    {#                                <label class="form-check-label" for="Ⅱ">Ⅱ</label>#}
+    {#                            </div>#}
+    {#                            <div class="form-check form-check-inline">#}
+    {#                                <input class="form-check-input" type="radio" name="stage" id="Ⅲ" value="Ⅲ">#}
+    {#                                <label class="form-check-label" for="Ⅲ">Ⅲ</label>#}
+    {#                            </div>#}
+    {#                            <div class="form-check form-check-inline">#}
+    {#                                <input class="form-check-input" type="radio" name="stage" id="Ⅳ" value="Ⅳ">#}
+    {#                                <label class="form-check-label" for="Ⅳ">Ⅳ</label>#}
+    {#                            </div>#}
+    {##}
+    {#                        </td>#}
+    {#                    </tr>#}
+    {#                    <tr height="50">#}
+    {#                        <td class="step-key">Period of FT:</td>#}
+    {#                        <td>#}
+    {#                            <div class="form-check form-check-inline">#}
+    {#                                <input class="form-check-input" type="radio" name="postoperative" id="postoperative" value="postoperative">#}
+    {#                                <label class="form-check-label" for="postoperative">postoperative</label>#}
+    {#                            </div>#}
+    {#                                        <div class="form-check form-check-inline">#}
+    {#                                <input class="form-check-input" type="radio" name="intraoperative" id="intraoperative" value="intraoperative">#}
+    {#                                <label class="form-check-label" for="intraoperative">intraoperative</label>#}
+    {#                            </div>#}
+    {#                            <div class="form-check form-check-inline">#}
+    {#                                <input class="form-check-input" type="radio" name="postoperative" id="postoperative" value="postoperative">#}
+    {#                                <label class="form-check-label" for="postoperative">postoperative</label>#}
+    {#                            </div>#}
+    {#                        </td>#}
+    {#                    </tr>#}
+    {#                    </tbody>#}
+    {#                </table>#}
+    {##}
+    {##}
+    {##}
+    {#            </div>#}
+    {#            <div id="step3" class="mt-4">#}
+    {#                <div class="mb-3">#}
+    {#                    <img src="{% static 'img/img_1.png' %}" alt="" width="30" height="35">#}
+    {#                    <button type="button" class="btn btn-info btn-outline-info  " disabled>Perioperative Fluid Therapy Decision parameters#}
+    {#                    </button>#}
+    {##}
+    {#                </div>#}
+    {##}
+    {#                <table class="mt-3 mb-3">#}
+    {#                    <tbody>#}
+    {#                    <tr height="50">#}
+    {#                        <td class="step-key"><h6><b> Basic search</b></h6></td>#}
+    {#                    </tr>#}
+    {#                    <tr>#}
+    {#                        <td >Parameter 1:</td>#}
+    {#                        <td><input class="underline_input" type="text" name="Parameter1" id="Parameter1"></td>#}
+    {#                        <td >Value:</td>#}
+    {#                        <td><input class="underline_input" type="text" name="Value1" id="Value1"></td>#}
+    {#                    </tr>#}
+    {#                    <tr>#}
+    {#                        <td class="step-key"></td>#}
+    {#                        <td>#}
+    {#                            <div class="form-check form-check-inline">#}
+    {#                                <input class="form-check-input" type="checkbox" id="Unreasonable breath lessness"#}
+    {#                                       name="symptoms" value="Unreasonable breath lessness">#}
+    {#                                <label class="form-check-label" for="Unreasonable breath lessness">Unreasonable breath#}
+    {#                                    lessness</label>#}
+    {#                            </div>#}
+    {#                        </td>#}
+    {#                    </tr>#}
+    {#                    <tr>#}
+    {#                        <td class="step-key"></td>#}
+    {#                        <td>#}
+    {#                            <div class="form-check form-check-inline">#}
+    {#                                <input class="form-check-input" type="checkbox" id="Dizziness, fainting, blackouts"#}
+    {#                                       name="symptoms" value="Dizziness, fainting, blackouts">#}
+    {#                                <label class="form-check-label" for="Dizziness, fainting, blackouts">Dizziness,#}
+    {#                                    fainting, blackouts</label>#}
+    {#                            </div>#}
+    {#                        </td>#}
+    {#                    </tr>#}
+    {#                    <tr>#}
+    {#                        <td class="step-key"></td>#}
+    {#                        <td>#}
+    {#                            <div class="form-check form-check-inline">#}
+    {#                                <input class="form-check-input" type="checkbox" id="Ankle swelling" name="symptoms"#}
+    {#                                       value="Ankle swelling">#}
+    {#                                <label class="form-check-label" for="Ankle swelling">Ankle swelling</label>#}
+    {#                            </div>#}
+    {#                        </td>#}
+    {#                    </tr>#}
+    {#                    <tr>#}
+    {#                        <td class="step-key"></td>#}
+    {#                        <td>#}
+    {#                            <div class="form-check form-check-inline">#}
+    {#                                <input class="form-check-input" type="checkbox"#}
+    {#                                       id="Unpleasant awareness of a forceful, rapid or irregular heart rate"#}
+    {#                                       value="Unpleasant awareness of a forceful, rapid or irregular heart rate">#}
+    {#                                <label class="form-check-label"#}
+    {#                                       for="Unpleasant awareness of a forceful, rapid or irregular heart rate">Unpleasant#}
+    {#                                    awareness of a forceful, rapid or irregular heart rate</label>#}
+    {#                            </div>#}
+    {#                        </td>#}
+    {#                    </tr>#}
+    {##}
+    {##}
+    {#                    </tbody>#}
+    {#                </table>#}
+    {##}
+    {#            </div>#}
+    {##}
+    {##}
+
+    {##}
+    {##}
+    {#        </div>#}
+    {#    </form>#}
+
+
+
+{% endblock %}
+
+{% block special_js %}
+
+    <script src="{% static 'plugins/bootstrap-select/js/bootstrap-select.min.js' %}"></script>
+    <script src="https://unpkg.com/tableexport.jquery.plugin/tableExport.min.js"></script>
+    {#        <script src="https://cdn.jsdelivr.net/npm/tableexport.jquery.plugin@1.10.21/tableExport.min.js"></script>#}
+    <script src="{% static 'plugins/bootstrap-table/js/bootstrap-table.min.js' %}"></script>
+    <script src="https://unpkg.com/bootstrap-table@1.21.4/dist/extensions/filter-control/bootstrap-table-filter-control.min.js"></script>
+    <script src="{% static 'plugins/bootstrap-table/js/bootstrap-table-export.min.js' %}"></script>
+
+
+
+
+    <script>
+
+    let clickCount = 0;
+
+    // Function to add new parameter dropdowns
+        function addParameterDropdowns() {
+            clickCount++;
+        if (clickCount >= 3)
+            {
+            document.getElementById('message').textContent = "A maximum of three parameters can be added";
+            document.getElementById('add-parameters-btn').disabled = true;
+            }
+        const container = document.getElementById('parameters-container');
+
+        // Create a new div for the parameter dropdowns
+        const parameterDiv = document.createElement('div');
+        parameterDiv.className = 'row g-3 mt-2';
+
+        // Create first dropdown
+        const dropdown1 = document.createElement('div');
+        dropdown1.className = 'col-6';
+        dropdown1.innerHTML = `
+            <label class="form-label" style="font-size: 20px"><b>Classifications</b></label>
+            <select class="form-select" name="classification_${clickCount}" onchange="onDropdown1Change(this)">
+                <option value=""></option>
+                <option value="Clinical signs">Clinical signs</option>
+                <option value="Complications">Complications</option>
+                <option value="Hemodynamic parameters">Hemodynamic parameters</option>
+                <option value="Insensible losses">Insensible losses</option>
+                <option value="Intake factors">Intake factors</option>
+                <option value="Laboratory tests">Laboratory tests</option>
+                <option value="Other factors">Other factors</option>
+                <option value="Physical examinations">Physical examinations</option>
+                <option value="Physiological factors">Physiological factors</option>
+                <option value="Treatment information">Treatment information</option>
+                <option value="Vital signs">Vital signs</option>
+                <option value="Volume loss factors">Volume loss factors</option>
+
+                <!-- Add more options as needed -->
+            </select>
+        `;
+        parameterDiv.appendChild(dropdown1);
+        container.appendChild(parameterDiv);
+
+    }
+    document.getElementById('add-parameters-btn').addEventListener('click', addParameterDropdowns);
+
+    // Function to handle the change in the first dropdown
+    function onDropdown1Change(dropdown) {
+      const selectedValue = dropdown.value;
+      const parentDiv = dropdown.parentNode.parentNode;
+      {#const container = document.getElementById('parameters-container');#}
+
+      // Remove any existing second dropdown
+      const existingDropdown2 = parentDiv.querySelector('.col-6:nth-child(2)');
+      if (existingDropdown2) {
+          parentDiv.removeChild(existingDropdown2);
+      }
+
+      // Create and add the second dropdown based on the selected value
+      if (selectedValue === 'Clinical signs') {
+          const dropdown2 = document.createElement('div');
+          dropdown2.className = 'col-6';
+          dropdown2.innerHTML = `
+              <label class="form-label" style="font-size: 20px"><b>Clinical signs</b></label>
+              <select class="form-select" name="${dropdown.name}_dropdown">
+                  <option value=""></option>
+                  <option value="normovolaemia">normovolaemia</option>
+                    <option value="reported no pain at 8 hours">reported no pain at 8 hours</option>
+                    <option value="signs of ischaemia">signs of ischaemia</option>
+                    <option value="tachycardia">tachycardia</option>
+                    <option value="oliguria">oliguria</option>
+                    <option value="hypovolemia">hypovolemia</option>
+                    <option value="Clinical indication">Clinical indication</option>
+                    <option value="skin turgor">skin turgor</option>
+                    <option value="clinical signs of inadequate cardiac output">clinical signs of inadequate cardiac output</option>
+                    <option value="hypotensive">hypotensive</option>
+                    <option value="hemodynamic instability">hemodynamic instability</option>
+                    <option value="signs of platelet dysfunction">signs of platelet dysfunction</option>
+                    <option value="severe cyanosis">severe cyanosis</option>
+              </select>`;
+          parentDiv.appendChild(dropdown2);
+          {#container.appendChild(parentDiv);#}
+      }
+
+      if (selectedValue === 'Complications') {
+          const dropdown2 = document.createElement('div');
+          dropdown2.className = 'col-6';
+          dropdown2.innerHTML = `
+              <label class="form-label" style="font-size: 20px"><b>Complications</b></label>
+              <select class="form-select" name="${dropdown.name}_dropdown">
+                  <option value=""></option>
+                  <option value="Postoperative complications">Postoperative complications</option>
+                    <option value="systolic left ventricular failure">systolic left ventricular failure</option>
+                    <option value="Sangrado postoperatorio">Sangrado postoperatorio</option>
+                    <option value="Complications">Complications</option>
+                    <option value="bleeding">bleeding</option>
+                    <option value="thrombocytopenia">thrombocytopenia</option>
+                    <option value="hyperkalemia">hyperkalemia</option>
+              </select>`;
+          parentDiv.appendChild(dropdown2);
+          {#container.appendChild(parentDiv);#}
+      }
+
+      if (selectedValue === 'Hemodynamic parameters') {
+          const dropdown2 = document.createElement('div');
+          dropdown2.className = 'col-6';
+          dropdown2.innerHTML = `
+              <label class="form-label" style="font-size: 20px"><b>Hemodynamic parameters</b></label>
+              <select class="form-select" name="${dropdown.name}_dropdown">
+                  <option value=""></option>
+                  <option value="SVV">SVV</option>
+                    <option value="CI">CI</option>
+                    <option value="MAP">MAP</option>
+                    <option value="SV">SV</option>
+                    <option value="PPV">PPV</option>
+                    <option value="CVP">CVP</option>
+                    <option value="blood flow time">blood flow time</option>
+                    <option value="SAP">SAP</option>
+                    <option value="SVI">SVI</option>
+                    <option value="standard haemodynamic parameters">standard haemodynamic parameters</option>
+                    <option value="FTc">FTc</option>
+                    <option value="PCWP">PCWP</option>
+                    <option value="respiratory variation in systole">respiratory variation in systole</option>
+                    <option value="nonpulsatile blood flow">nonpulsatile blood flow</option>
+                    <option value="SVRI">SVRI</option>
+                    <option value="PVI">PVI</option>
+                    <option value="LVETI">LVETI</option>
+                    <option value="ACC">ACC</option>
+                    <option value="TSVRi">TSVRi</option>
+                    <option value="GEDI">GEDI</option>
+                    <option value="ejection fraction">ejection fraction</option>
+                    <option value="△SV">△SV</option>
+                    <option value="perfusion pressure">perfusion pressure</option>
+                    <option value="CO">CO</option>
+                    <option value="central venous diastolic pressures">central venous diastolic pressures</option>
+                    <option value="pulmonary artery diastolic pressures">pulmonary artery diastolic pressures </option>
+                    <option value="SVRI">SVRI</option>
+                    <option value="INVOS value">INVOS value</option>
+                    <option value="BIS">BIS</option>
+                    <option value="mean systemic arterial BP">mean systemic arterial BP</option>
+                    <option value="left ventricular filling pressure">left ventricular filling pressure</option>
+                    <option value="△PV">△PV</option>
+                    <option value="rSO2">rSO2</option>
+                    <option value="IVC respiratory variation">IVC respiratory variation</option>
+                    <option value="PAOP">PAOP</option>
+                    <option value="ΔPP">ΔPP</option>
+                    <option value="PAM">PAM</option>
+                    <option value="VFDVⅡ">VFDVⅡ</option>
+                    <option value="DO2">DO2</option>
+                    <option value="Afterload">Afterload</option>
+                    <option value="HPI">HPI</option>
+                    <option value="dP/dTmax">dP/dTmax</option>
+                    <option value="left ventricular ejection fraction">left ventricular ejection fraction</option>
+
+              </select>`;
+          parentDiv.appendChild(dropdown2);
+          {#container.appendChild(parentDiv);#}
+      }
+
+      if (selectedValue === 'Insensible losses') {
+          const dropdown2 = document.createElement('div');
+          dropdown2.className = 'col-6';
+          dropdown2.innerHTML = `
+              <label class="form-label" style="font-size: 20px"><b>Insensible losses</b></label>
+              <select class="form-select" name="${dropdown.name}_dropdown">
+                  <option value=""></option>
+                  <option value="ongoing insensible losses">ongoing insensible losses</option>
+                    <option value="sweating losses">sweating losses</option>
+                    <option value="perspiratio insensibilis">perspiratio insensibilis</option>
+                    <option value="evaporative loss arising from visceral exposure">evaporative loss arising from visceral exposure</option>
+              </select>`;
+          parentDiv.appendChild(dropdown2);
+          {#container.appendChild(parentDiv);#}
+      }
+
+      if (selectedValue === 'Intake factors') {
+          const dropdown2 = document.createElement('div');
+          dropdown2.className = 'col-6';
+          dropdown2.innerHTML = `
+              <label class="form-label" style="font-size: 20px"><b>Intake factors</b></label>
+              <select class="form-select" name="${dropdown.name}_dropdown">
+                  <option value=""></option>
+                  <option value="clinical signs of inadequate cardiac output">clinical signs of inadequate cardiac output</option>
+                  <option value="tachycardia">tachycardia</option>
+                  <option value="Clinical indication">Clinical indication</option>
+              </select>`;
+          parentDiv.appendChild(dropdown2);
+          {#container.appendChild(parentDiv);#}
+      }
+
+      if (selectedValue === 'Laboratory tests') {
+          const dropdown2 = document.createElement('div');
+          dropdown2.className = 'col-6';
+          dropdown2.innerHTML = `
+              <label class="form-label" style="font-size: 20px"><b>Laboratory tests</b></label>
+              <select class="form-select" name="${dropdown.name}_dropdown">
+                  <option value=""></option>
+                  <option value="Hb">Hb</option>
+                    <option value="O2ER">O2ER</option>
+                    <option value="EBV">EBV</option>
+                    <option value="hematocrit">hematocrit</option>
+                    <option value="Plasma sodium level">Plasma sodium level</option>
+                    <option value="Albumin concentration">Albumin concentration</option>
+                    <option value="DO2I">DO2I</option>
+                    <option value="arterial blood gas values">arterial blood gas values</option>
+                    <option value="Scvo2">Scvo2</option>
+                    <option value="Dco2">Dco2</option>
+                    <option value="SaO2">SaO2</option>
+                    <option value="CI">CI</option>
+                    <option value="packed red blood cell">packed red blood cell</option>
+                    <option value="base excess">base excess</option>
+                    <option value="INR">INR</option>
+                    <option value="APTT">APTT</option>
+                    <option value="platelet count">platelet count</option>
+                    <option value="fibrinogen">fibrinogen</option>
+                    <option value="hematocrit">hematocrit</option>
+                    <option value="acPDD">acPDD</option>
+                    <option value="acPED">acPED</option>
+                    <option value="serum amylase">serum amylase</option>
+                    <option value="lipase">lipase</option>
+                    <option value="serum lactate">serum lactate</option>
+                    <option value="SvO2">SvO2</option>
+                    <option value="ACT">ACT</option>
+                    <option value="PT">PT</option>
+                    <option value="APTT">APTT</option>
+                    <option value="antithrombin Ⅲ">antithrombin Ⅲ</option>
+                    <option value="antithrombin Ⅲ">antithrombin Ⅲ</option>
+                    <option value="HB">HB</option>
+                    <option value="pH">pH</option>
+                    <option value="RBCV">RBCV</option>
+                    <option value="creatinine">creatinine</option>
+                    <option value="FLEV">FLEV</option>
+                    <option value="TSP">TSP</option>
+              </select>`;
+          parentDiv.appendChild(dropdown2);
+          {#container.appendChild(parentDiv);#}
+      }
+
+      if (selectedValue === 'Other factors') {
+          const dropdown2 = document.createElement('div');
+          dropdown2.className = 'col-6';
+          dropdown2.innerHTML = `
+              <label class="form-label" style="font-size: 20px"><b>Other factors</b></label>
+              <select class="form-select" name="${dropdown.name}_dropdown">
+                  <option value=""></option>
+                  <option value="the total crystalloid administration">the total crystalloid administration</option>
+                    <option value="thromboelastography">thromboelastography </option>
+                    <option value="the maximum dose of HES 130/0.4">the maximum dose of HES 130/0.4</option>
+                    <option value="positive fluid balance">positive fluid balance</option>
+                    <option value="dose of crystalloid">dose of crystalloid</option>
+                    <option value="HL">HL</option>
+                    <option value="Killip class">Killip class</option>
+                    <option value="COP">COP</option>
+                    <option value="vasopressor requirement">vasopressor requirement</option>
+                    <option value="CVP minus PEEP">CVP minus PEEP</option>
+                    <option value="vasopressor requirement">vasopressor requirement</option>
+                    <option value="the maximum amount of the study fluid">the maximum amount of the study fluid</option>
+                    <option value="Total Protocol Fluid">Total Protocol Fluid</option>
+                    <option value="VTI">VTI</option>
+                    <option value="IV fluid dose">IV fluid dose</option>
+                    <option value="PaO2/FiO2">PaO2/FiO2</option>
+                    <option value="pharmacological agents">pharmacological agents</option>
+                    <option value="anesthesia expansion volume">anesthesia expansion volume</option>
+                    <option value="Eadyn">Eadyn</option>
+              </select>`;
+          parentDiv.appendChild(dropdown2);
+          {#container.appendChild(parentDiv);#}
+      }
+
+      if (selectedValue === 'Physical examinations') {
+          const dropdown2 = document.createElement('div');
+          dropdown2.className = 'col-6';
+          dropdown2.innerHTML = `
+              <label class="form-label" style="font-size: 20px"><b>Physical examinations</b></label>
+              <select class="form-select" name="${dropdown.name}_dropdown">
+                  <option value=""></option>
+                  <option value="capillary refill time">capillary refill time</option>
+                    <option value="ECG">ECG</option>
+                    <option value="OCT">OCT</option>
+              </select>`;
+          parentDiv.appendChild(dropdown2);
+          {#container.appendChild(parentDiv);#}
+      }
+
+      if (selectedValue === 'Physiological factors') {
+          const dropdown2 = document.createElement('div');
+          dropdown2.className = 'col-6';
+          dropdown2.innerHTML = `
+              <label class="form-label" style="font-size: 20px"><b>Physiological factors</b></label>
+              <select class="form-select" name="${dropdown.name}_dropdown">
+                  <option value=""></option>
+                  <option value="Weight">Weight</option>
+                    <option value="gender">gender</option>
+                    <option value="weight">weight</option>
+                    <option value="ideal body weight">ideal body weight</option>
+                    <option value="PCWP">PCWP</option>
+                    <option value="BV">BV</option>
+                    <option value="physiological requirement">physiological requirement</option>
+              </select>`;
+          parentDiv.appendChild(dropdown2);
+          {#container.appendChild(parentDiv);#}
+      }
+
+      if (selectedValue === 'Treatment information') {
+          const dropdown2 = document.createElement('div');
+          dropdown2.className = 'col-6';
+          dropdown2.innerHTML = `
+              <label class="form-label" style="font-size: 20px"><b>Treatment information</b></label>
+              <select class="form-select" name="${dropdown.name}_dropdown">
+                  <option value=""></option>
+                  <option value="complex surgery">complex surgery</option>
+              </select>`;
+          parentDiv.appendChild(dropdown2);
+          {#container.appendChild(parentDiv);#}
+      }
+
+      if (selectedValue === 'Vital signs') {
+          const dropdown2 = document.createElement('div');
+          dropdown2.className = 'col-6';
+          dropdown2.innerHTML = `
+              <label class="form-label" style="font-size: 20px"><b>Vital signs</b></label>
+              <select class="form-select" name="${dropdown.name}_dropdown">
+                  <option value=""></option>
+                  <option value="SBP">SBP</option>
+                    <option value="HR">HR</option>
+                    <option value="BP">BP</option>
+                    <option value="arterial BP">arterial BP</option>
+                    <option value="PPV">PPV</option>
+                    <option value="MHR">MHR</option>
+                    <option value="MBP">MBP</option>
+                    <option value="PR">PR</option>
+                    <option value="DBP">DBP</option>
+                    <option value="body temperature">body temperature</option>
+              </select>`;
+          parentDiv.appendChild(dropdown2);
+          {#container.appendChild(parentDiv);#}
+      }
+
+      if (selectedValue === 'Volume loss factors') {
+          const dropdown2 = document.createElement('div');
+          dropdown2.className = 'col-6';
+          dropdown2.innerHTML = `
+              <label class="form-label" style="font-size: 20px"><b>Volume loss factors</b></label>
+              <select class="form-select" name="${dropdown.name}_dropdown">
+                  <option value=""></option>
+                  <option value="blood loss">blood loss</option>
+                    <option value="urine output">urine output</option>
+                    <option value="fluid losses">fluid losses</option>
+                    <option value="Blood loss">Blood loss</option>
+                    <option value="drainage losses">drainage losses</option>
+                    <option value="gastric tube drainage">gastric tube drainage</option>
+              </select>`;
+          parentDiv.appendChild(dropdown2);
+          {#container.appendChild(parentDiv);#}
+      }
+    }
+
+
+    </script>
+
+
+
+
+
+    <script>
+        $('#exampleModal').on('hide.bs.modal', function (event) {
+            document.querySelector('#form1').reset();
+        })
+    </script>
+
+
+    <script>
+
+        function operateFormatter(value, row, index) {
+
+
+            return [
+                '<button id="bind" type="button" class="btn-outline-info"style="background-color: #4F81BD;color: white;border: #4F81BD">detail</button>',
+
+            ].join('')
+
+        }
+
+        window.operateEvents = {
+            'click #bind': function (e, value, row, index) {
+                window.open("/search/getdetail/" + row.id, '_blank')
+                {#alert('You click like action, row: ' + JSON.stringify(row))#}
+            }
+        }
+        var dataList =
+        {{ data|default:"1"|safe }}
+        console.log("dataList:", dataList);
+
+
+
+        if (dataList === 1) {
+            $('.bar1').hide();
+        } else {
+            $articlesTable = $('#table').bootstrapTable('destroy').bootstrapTable({
+                {#load:"",#}
+                {#url: '/recommend/',#}
+                {#method: 'POST',#}
+                data: dataList,
+                dataType: "json",
+                uniqueId: 'id',
+                striped: false,
+                cache: false,
+                sortable: true,
+                sortOrder: 'asc',
+                undefinedText: '--',
+                singleSelect: true,
+                showFullscreen: true,
+                showColumns: true,
+                showColumnsToggleAll: true,
+                {#toolbar: '#soft-toolbar',#}
+                search: true,
+                showExport: true,
+                exportTypes: ['csv'],
+                {#strictSearch: true,#}
+                {#clickToSelect: true,#}
+                filterControl: true,
+                pagination: true,
+                sidePagination: "client",
+                pageNumber: 1,
+                pageSize: 10,
+                pageList: [10, 20, 50, 100],
+                {#paginationPreText: "上一页",#}
+                {#paginationNextText: "下一页",#}
+                queryParamsType: "",
+                queryParams: function (params) {
+                    var temp = {
+                        'pageSize': params.pageSize,
+                        'pageNumber': params.pageNumber,
+                        'searchText': params.searchText,
+                        'sortName': params.sortName,
+                        'sortOrder': params.sortOrder
+                    };
+                    return temp;
+                },
+                columns: [
+                    {
+                        field: 'id',
+                        title: 'ID',
+                        align: 'center',
+                    }, {
+                        field: 'Period_of_fluid',
+                        title: 'Period_of_fluid',
+                        align: 'center',
+                    }, {
+                        field: 'Liquid_treatment',
+                        title: 'Liquid_treatment',
+                        align: 'center',
+                    }, {
+                        field: 'Fluid_name',
+                        title: 'Fluid_name',
+                        align: 'center',
+                    }, {
+                        field: 'Fluid_type',
+                        title: 'Fluid_type',
+                        align: 'center',
+                    }, {
+                        field: 'dose',
+                        title: 'dose',
+                        align: 'center',
+                    }, {
+                        field: 'rate',
+                        title: 'rate',
+                        align: 'center',
+                    }, {
+                        field: 'duration',
+                        title: 'duration',
+                        align: 'center',
+                    }, {
+                        field: 'monitoring',
+                        title: 'monitoring',
+                        align: 'center',
+                    }, {
+                        field: 'monitoring_parameters',
+                        title: 'monitoring_parameters',
+                        align: 'center',
+                    }, {
+                        field: 'monitoring_frequency',
+                        title: 'monitoring_frequency',
+                        align: 'center',
+                    }, {
+                        field: 'use_of_vasopressors',
+                        title: 'use_of_vasopressors',
+                        align: 'center',
+                    }, {
+                        field: 'blood_transfusion',
+                        title: 'blood_transfusion',
+                        align: 'center',
+                    }, {
+                        field: 'additional_information',
+                        title: 'additional_information',
+                        align: 'center',
+                    }, {
+                        field: "parameter1",
+                        title: "parameter1",
+                        align: 'center',
+                    }, {
+                        field: "classification1",
+                        title: "classification1",
+                        align: 'center',
+                    }, {
+                        field: "parameter2",
+                        title: "parameter2",
+                        align: 'center',
+                    }, {
+                        field: "classification2",
+                        title: "classification2",
+                        align: 'center',
+                    }, {
+                        field: "parameter3",
+                        title: "parameter3",
+                        align: 'center',
+                    }, {
+                        field: "classification3",
+                        title: "classification3",
+                        align: 'center',
+                    }, {
+                        field: "parameter4",
+                        title: "parameter4",
+                        align: 'center',
+                    }, {
+                        field: "classification4",
+                        title: "classification4",
+                        align: 'center',
+                    }, {
+                        field: "parameter5",
+                        title: "parameter5",
+                        align: 'center',
+                    }, {
+                        field: "classification5",
+                        title: "classification5",
+                        align: 'center',
+                    }, {
+                        title: 'Details',
+                        align: 'center',
+                        formatter: operateFormatter,
+                        events: window.operateEvents,
+                    }
+
+                ],
+                onLoadError: function () {
+
+                },
+
+            });
+            $('.bar1').show();
+            var datatable = $('#table').bootstrapTable('getData', false);
+            var firstColumnData = datatable.map(function (row) {
+                return row.id; // 替换 "id" 为你的列名
+            });
+            sessionStorage.setItem('firstColumnData', JSON.stringify(firstColumnData));
+            {#var test = JSON.parse(sessionStorage.getItem('firstColumnData'));#}
+            {#console.log(test)#}
+
+
+        }
+
+    </script>
+    <script>
+        function selectOnchange(obj) {
+            var value = obj.options[obj.selectedIndex].value
+            {#alert(value)#}
+            $.ajax({
+                type: "GET",
+                url: "getSurgerySite/",    //后台处理函数的url
+                data: {type: value},
+                success: function (result) {  //获取后台处理后传过来的result
+                    {#alert(result)#}
+                    $("#user").html(result)
+                    {#$("#user").selectpicker('refresh')#}
+                }
+            });
+        }
+
+        function initclass(obj) {
+            var value = obj.options[obj.selectedIndex].value
+            var name = obj.name;
+
+            var firstColumnData = JSON.parse(sessionStorage.getItem('firstColumnData'));
+
+
+            $.ajax({
+                type: "GET",
+                url: "initClass/",    //后台处理函数的url
+                data: {type: value, name: name},
+                success: function (result) {  //获取后台处理后传过来的result
+                    var regex = /name="([^"]+)"/;
+                    var match = regex.exec(result);
+                    var nameValue = match[1];
+                    console.log(nameValue)
+                    $("#" + nameValue).html(result)
+                    $("#" + nameValue).selectpicker('refresh')
+                }
+            });
+
+            $.ajax({
+                type: "POST",
+                url: "initClass/",    //后台处理函数的url
+                data: {type: value, columndata: JSON.stringify(firstColumnData)},
+                success: function (result) {  //获取后台处理后传过来的result
+
+                    {#var filter_dataList = {{ filter_data|default:"1"|safe }}#}
+                    $articlesTable = $('#table').bootstrapTable('destroy').bootstrapTable({
+                        {#load:"",#}
+                        {#url: '/recommend/',#}
+                        {#method: 'POST',#}
+                        data: result,
+                        dataType: "json",
+                        uniqueId: 'id',
+                        striped: false,
+                        cache: false,
+                        sortable: true,
+                        sortOrder: 'asc',
+                        undefinedText: '--',
+                        singleSelect: true,
+                        showFullscreen: true,
+                        showColumns: true,
+                        showColumnsToggleAll: true,
+                        {#toolbar: '#soft-toolbar',#}
+                        search: true,
+                        showExport: true,
+                        exportTypes: ['csv'],
+                        {#strictSearch: true,#}
+                        {#clickToSelect: true,#}
+                        filterControl: true,
+                        pagination: true,
+                        sidePagination: "client",
+                        pageNumber: 1,
+                        pageSize: 10,
+                        pageList: [10, 20, 50, 100],
+                        {#paginationPreText: "上一页",#}
+                        {#paginationNextText: "下一页",#}
+                        queryParamsType: "",
+                        queryParams: function (params) {
+                            var temp = {
+                                'pageSize': params.pageSize,
+                                'pageNumber': params.pageNumber,
+                                'searchText': params.searchText,
+                                'sortName': params.sortName,
+                                'sortOrder': params.sortOrder
+                            };
+                            return temp;
+                        },
+                        columns: [
+                            {
+                                field: 'id',
+                                title: 'ID',
+                                align: 'center',
+                            }, {
+                                field: 'Period_of_fluid',
+                                title: 'Period_of_fluid',
+                                align: 'center',
+                            }, {
+                                field: 'Liquid_treatment',
+                                title: 'Liquid_treatment',
+                                align: 'center',
+                            }, {
+                                field: 'Fluid_name',
+                                title: 'Fluid_name',
+                                align: 'center',
+                            }, {
+                                field: 'Fluid_type',
+                                title: 'Fluid_type',
+                                align: 'center',
+                            }, {
+                                field: 'dose',
+                                title: 'dose',
+                                align: 'center',
+                            }, {
+                                field: 'rate',
+                                title: 'rate',
+                                align: 'center',
+                            }, {
+                                field: 'duration',
+                                title: 'duration',
+                                align: 'center',
+                            }, {
+                                field: 'monitoring',
+                                title: 'monitoring',
+                                align: 'center',
+                            }, {
+                                field: 'monitoring_parameters',
+                                title: 'monitoring_parameters',
+                                align: 'center',
+                            }, {
+                                field: 'monitoring_frequency',
+                                title: 'monitoring_frequency',
+                                align: 'center',
+                            }, {
+                                field: 'use_of_vasopressors',
+                                title: 'use_of_vasopressors',
+                                align: 'center',
+                            }, {
+                                field: 'blood_transfusion',
+                                title: 'blood_transfusion',
+                                align: 'center',
+                            }, {
+                                field: 'additional_information',
+                                title: 'additional_information',
+                                align: 'center',
+                             }, {
+                                field: "parameter1",
+                                title: "parameter1",
+                                align: 'center',
+                            }, {
+                                field: "classification1",
+                                title: "classification1",
+                                align: 'center',
+                            }, {
+                                field: "parameter2",
+                                title: "parameter2",
+                                align: 'center',
+                            }, {
+                                field: "classification2",
+                                title: "classification2",
+                                align: 'center',
+                            }, {
+                                field: "parameter3",
+                                title: "parameter3",
+                                align: 'center',
+                            }, {
+                                field: "classification3",
+                                title: "classification3",
+                                align: 'center',
+                            }, {
+                                field: "parameter4",
+                                title: "parameter4",
+                                align: 'center',
+                            }, {
+                                field: "classification4",
+                                title: "classification4",
+                                align: 'center',
+                            }, {
+                                field: "parameter5",
+                                title: "parameter5",
+                                align: 'center',
+                            }, {
+                                field: "classification5",
+                                title: "classification5",
+                                align: 'center',
+                                    }, {
+                                title: 'Details',
+                                align: 'center',
+                                formatter: operateFormatter,
+                                events: window.operateEvents,
+                            }
+
+                        ],
+                        onLoadError: function () {
+
+                        },
+
+                    });
+
+                    var datatable = $('#table').bootstrapTable('getData', false);
+                    var secondColumnData = datatable.map(function (row) {
+                        return row.id; // 替换 "id" 为你的列名
+                    });
+                    sessionStorage.setItem('secondColumnData', JSON.stringify(secondColumnData));
+
+                }
+            });
+
+
+        }
+
+        function initpara(obj) {
+            var value = obj.options[obj.selectedIndex].value
+            var id = obj.id
+
+            var secondColumnData = JSON.parse(sessionStorage.getItem('secondColumnData'));
+            {#alert(value)#}
+            $.ajax({
+                type: "GET",
+                url: "initPara/",    //后台处理函数的url
+                data: {type: value, id: id},
+                success: function (result) {  //获取后台处理后传过来的result
+                    {#alert(result)#}
+                    var regex = /name="([^"]+)"/;
+                    var match = regex.exec(result);
+                    var nameValue = match[1];
+
+                    $("#" + nameValue).html(result)
+                    $("#" + nameValue).selectpicker('refresh')
+                }
+            });
+
+            $.ajax({
+                type: "POST",
+                url: "initPara/",    //后台处理函数的url
+                data: {type: value, columndata: JSON.stringify(secondColumnData)},
+                success: function (result) {  //获取后台处理后传过来的result
+
+                    {#var filter_dataList = {{ filter_data|default:"1"|safe }}#}
+                    $articlesTable = $('#table').bootstrapTable('destroy').bootstrapTable({
+                        {#load:"",#}
+                        {#url: '/recommend/',#}
+                        {#method: 'POST',#}
+                        data: result,
+                        dataType: "json",
+                        uniqueId: 'id',
+                        striped: false,
+                        cache: false,
+                        sortable: true,
+                        sortOrder: 'asc',
+                        undefinedText: '--',
+                        singleSelect: true,
+                        showFullscreen: true,
+                        showColumns: true,
+                        showColumnsToggleAll: true,
+                        {#toolbar: '#soft-toolbar',#}
+                        search: true,
+                        showExport: true,
+                        exportTypes: ['csv'],
+                        {#strictSearch: true,#}
+                        {#clickToSelect: true,#}
+                        filterControl: true,
+                        pagination: true,
+                        sidePagination: "client",
+                        pageNumber: 1,
+                        pageSize: 10,
+                        pageList: [10, 20, 50, 100],
+                        {#paginationPreText: "上一页",#}
+                        {#paginationNextText: "下一页",#}
+                        queryParamsType: "",
+                        queryParams: function (params) {
+                            var temp = {
+                                'pageSize': params.pageSize,
+                                'pageNumber': params.pageNumber,
+                                'searchText': params.searchText,
+                                'sortName': params.sortName,
+                                'sortOrder': params.sortOrder
+                            };
+                            return temp;
+                        },
+                        columns: [
+                            {
+                                field: 'id',
+                                title: 'ID',
+                                align: 'center',
+                            }, {
+                                field: 'Period_of_fluid',
+                                title: 'Period_of_fluid',
+                                align: 'center',
+                            }, {
+                                field: 'Liquid_treatment',
+                                title: 'Liquid_treatment',
+                                align: 'center',
+                            }, {
+                                field: 'Fluid_name',
+                                title: 'Fluid_name',
+                                align: 'center',
+                            }, {
+                                field: 'Fluid_type',
+                                title: 'Fluid_type',
+                                align: 'center',
+                            }, {
+                                field: 'dose',
+                                title: 'dose',
+                                align: 'center',
+                            }, {
+                                field: 'rate',
+                                title: 'rate',
+                                align: 'center',
+                            }, {
+                                field: 'duration',
+                                title: 'duration',
+                                align: 'center',
+                            }, {
+                                field: 'monitoring',
+                                title: 'monitoring',
+                                align: 'center',
+                            }, {
+                                field: 'monitoring_parameters',
+                                title: 'monitoring_parameters',
+                                align: 'center',
+                            }, {
+                                field: 'monitoring_frequency',
+                                title: 'monitoring_frequency',
+                                align: 'center',
+                            }, {
+                                field: 'use_of_vasopressors',
+                                title: 'use_of_vasopressors',
+                                align: 'center',
+                            }, {
+                                field: 'blood_transfusion',
+                                title: 'blood_transfusion',
+                                align: 'center',
+                            }, {
+                                field: 'additional_information',
+                                title: 'additional_information',
+                                align: 'center',
+                            }, {
+                                field: "parameter1",
+                                title: "parameter1",
+                                align: 'center',
+                            }, {
+                                field: "classification1",
+                                title: "classification1",
+                                align: 'center',
+                            }, {
+                                field: "parameter2",
+                                title: "parameter2",
+                                align: 'center',
+                            }, {
+                                field: "classification2",
+                                title: "classification2",
+                                align: 'center',
+                            }, {
+                                field: "parameter3",
+                                title: "parameter3",
+                                align: 'center',
+                            }, {
+                                field: "classification3",
+                                title: "classification3",
+                                align: 'center',
+                            }, {
+                                field: "parameter4",
+                                title: "parameter4",
+                                align: 'center',
+                            }, {
+                                field: "classification4",
+                                title: "classification4",
+                                align: 'center',
+                            }, {
+                                field: "parameter5",
+                                title: "parameter5",
+                                align: 'center',
+                            }, {
+                                field: "classification5",
+                                title: "classification5",
+                                align: 'center',
+                            }, {
+                                title: 'Details',
+                                align: 'center',
+                                formatter: operateFormatter,
+                                events: window.operateEvents,
+                            }
+
+                        ],
+                        onLoadError: function () {
+
+                        },
+
+                    });
+
+                    var datatable = $('#table').bootstrapTable('getData', false);
+                    var thirdColumnData = datatable.map(function (row) {
+                        return row.id; // 替换 "id" 为你的列名
+                    });
+                    sessionStorage.setItem('thirdColumnData', JSON.stringify(thirdColumnData));
+
+                }
+            });
+        }
+
+        function last_screening(obj) {
+            var value = obj.options[obj.selectedIndex].value
+            var id = obj.id
+
+            var thirdColumnData = JSON.parse(sessionStorage.getItem('thirdColumnData'));
+            console.log(thirdColumnData)
+            {#alert(value)#}
+
+            $.ajax({
+                type: "POST",
+                url: "lastscreeing/",    //后台处理函数的url
+                data: {type: value, columndata: JSON.stringify(thirdColumnData)},
+                success: function (result) {  //获取后台处理后传过来的result
+
+                    {#var filter_dataList = {{ filter_data|default:"1"|safe }}#}
+                    $articlesTable = $('#table').bootstrapTable('destroy').bootstrapTable({
+                        {#load:"",#}
+                        {#url: '/recommend/',#}
+                        {#method: 'POST',#}
+                        data: result,
+                        dataType: "json",
+                        uniqueId: 'id',
+                        striped: false,
+                        cache: false,
+                        sortable: true,
+                        sortOrder: 'asc',
+                        undefinedText: '--',
+                        singleSelect: true,
+                        showFullscreen: true,
+                        showColumns: true,
+                        showColumnsToggleAll: true,
+                        {#toolbar: '#soft-toolbar',#}
+                        search: true,
+                        showExport: true,
+                        exportTypes: ['csv'],
+                        {#strictSearch: true,#}
+                        {#clickToSelect: true,#}
+                        filterControl: true,
+                        pagination: true,
+                        sidePagination: "client",
+                        pageNumber: 1,
+                        pageSize: 10,
+                        pageList: [10, 20, 50, 100],
+                        {#paginationPreText: "上一页",#}
+                        {#paginationNextText: "下一页",#}
+                        queryParamsType: "",
+                        queryParams: function (params) {
+                            var temp = {
+                                'pageSize': params.pageSize,
+                                'pageNumber': params.pageNumber,
+                                'searchText': params.searchText,
+                                'sortName': params.sortName,
+                                'sortOrder': params.sortOrder
+                            };
+                            return temp;
+                        },
+                        columns: [
+                            {
+                                field: 'id',
+                                title: 'ID',
+                                align: 'center',
+                            }, {
+                                field: 'Period_of_fluid',
+                                title: 'Period_of_fluid',
+                                align: 'center',
+                            }, {
+                                field: 'Liquid_treatment',
+                                title: 'Liquid_treatment',
+                                align: 'center',
+                            }, {
+                                field: 'Fluid_name',
+                                title: 'Fluid_name',
+                                align: 'center',
+                            }, {
+                                field: 'Fluid_type',
+                                title: 'Fluid_type',
+                                align: 'center',
+                            }, {
+                                field: 'dose',
+                                title: 'dose',
+                                align: 'center',
+                            }, {
+                                field: 'rate',
+                                title: 'rate',
+                                align: 'center',
+                            }, {
+                                field: 'duration',
+                                title: 'duration',
+                                align: 'center',
+                            }, {
+                                field: 'monitoring',
+                                title: 'monitoring',
+                                align: 'center',
+                            }, {
+                                field: 'monitoring_parameters',
+                                title: 'monitoring_parameters',
+                                align: 'center',
+                            }, {
+                                field: 'monitoring_frequency',
+                                title: 'monitoring_frequency',
+                                align: 'center',
+                            }, {
+                                field: 'use_of_vasopressors',
+                                title: 'use_of_vasopressors',
+                                align: 'center',
+                            }, {
+                                field: 'blood_transfusion',
+                                title: 'blood_transfusion',
+                                align: 'center',
+                            }, {
+                                field: 'additional_information',
+                                title: 'additional_information',
+                                align: 'center',
+                            }, {
+                                field: "parameter1",
+                                title: "parameter1",
+                                align: 'center',
+                            }, {
+                                field: "classification1",
+                                title: "classification1",
+                                align: 'center',
+                            }, {
+                                field: "parameter2",
+                                title: "parameter2",
+                                align: 'center',
+                            }, {
+                                field: "classification2",
+                                title: "classification2",
+                                align: 'center',
+                            }, {
+                                field: "parameter3",
+                                title: "parameter3",
+                                align: 'center',
+                            }, {
+                                field: "classification3",
+                                title: "classification3",
+                                align: 'center',
+                            }, {
+                                field: "parameter4",
+                                title: "parameter4",
+                                align: 'center',
+                            }, {
+                                field: "classification4",
+                                title: "classification4",
+                                align: 'center',
+                            }, {
+                                field: "parameter5",
+                                title: "parameter5",
+                                align: 'center',
+                            }, {
+                                field: "classification5",
+                                title: "classification5",
+                                align: 'center',
+                            }, {
+                                title: 'Details',
+                                align: 'center',
+                                formatter: operateFormatter,
+                                events: window.operateEvents,
+                            }
+
+                        ],
+                        onLoadError: function () {
+
+                        },
+
+                    });
+
+
+                }
+            });
+
+        }
+
+
+    </script>
+
+{% endblock %}

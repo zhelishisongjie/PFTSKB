@@ -1,0 +1,199 @@
+{% extends 'Layout.html' %}
+{% load static %}
+
+
+{% block title %}
+    <title>Analyze</title>
+{% endblock %}
+{% block special_css %}
+    <style>
+        #charts {
+            height: 500px;
+            width: 500px;
+        }
+
+        .center {
+        {#margin: auto;#} width: 70%;
+        {#border: 3px solid green;#} padding: 10px;
+        }
+    </style>
+
+{% endblock %}
+
+{% block content %}
+    <div class="">
+     <div class="mt-5 mb-5">
+        <div class="text-center" style="background-color: #4F81BD">
+            <div style="height: 60px;color: white;font-size: 35px"> PFTD Information Analysis Tools for Sample Size with Year Distribution</div>
+        </div>
+    </div>
+    </div>
+    <div class="container">
+
+        <form method="post" novalidate class="center mt-3 mb-3">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-3">
+                    <div>{{ form.category_cd }}</div>
+                    <span style="color: red">{{ form.category_cd.errors.0 }}</span>
+
+                </div>
+                {#                <div class="col-3">#}
+                {#                    <select name="name" id="user" class="form-select" aria-label="Default select example">#}
+                {#                    </select>#}
+                {##}
+                {##}
+                {#                </div>#}
+                <div class="col-3">
+                    <div class="btn-group">
+                        <button id="btn_submit" type="submit" class="btn btn-info btn-space" style="
+    border: none;
+    border-radius: 5px;
+    background-color: #4F81BD;
+">
+                            <span class="fa fa-search btn-icon-space" aria-hidden="true"></span>
+                            Submit
+                        </button>
+                        <span></span>
+                        <a id="btn_reset" type="button" href="/analysis/line/"
+                           class="btn btn-default btn-space">
+                            <span class="fa fa-eraser btn-icon-space" aria-hidden="true"></span>
+                            Reset
+                        </a>
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
+        </form>
+        <div id="charts" class="mt-4" style="height: 900px; width: 100%"></div>
+
+    </div>
+
+
+
+{% endblock %}
+
+{% block special_js %}
+    <script src="{% static 'js/echarts.min.js' %}"></script>
+    <script>
+        var mychart = echarts.init(document.getElementById('charts'));
+
+
+
+
+        var option = {
+            title: {
+                text: 'Sample Size with Year Distribution',
+                subtext: "【{{ title }}】",
+                subtextStyle: {
+                    fontWeight: 'bold'
+                },
+                textAlign: 'auto'
+
+            },
+            tooltip: {
+                trigger: 'axis',
+                position: function (point, params, dom, rect, size) {
+                    // 鼠标坐标和提示框位置的参考坐标系是：以echarts 容器的左上角那一点为原点，x轴向右，y轴向下
+                    // 提示框位置
+                    var x = 0; // x坐标位置
+                    var y = 0; // y坐标位置
+
+                    // 当前鼠标位置
+                    var pointX = point[0];
+                    var pointY = point[1];
+
+                    // echarts 容器大小
+                    // var viewWidth = size.viewSize[0];
+                    // var viewHeight = size.viewSize[1];
+
+                    // 提示框大小
+                    var boxWidth = size.contentSize[0];
+                    var boxHeight = size.contentSize[1];
+
+                    // boxWidth > pointX 说明鼠标左边放不下提示框
+                    if (boxWidth > pointX) {
+                        x = pointX + 5;   // 此处需要判断 (pointX+5+boxWidth) < size.viewSize[0]
+                    } else { // 左边放的下
+                        x = pointX - boxWidth;
+                    }
+
+                    // boxHeight > pointY 说明鼠标上边放不下提示框
+                    if (boxHeight > pointY) {
+                        y = 5;
+                    } else { // 上边放得下
+                        y = pointY - boxHeight;
+                    }
+
+                    return [x, y];
+                }
+            },
+            legend: {
+                selector: ['all', 'inverse'],
+                type: 'scroll',
+                orient: 'vertical',
+                top: 'center',
+                right: 20,
+                data: {{ type|safe }},
+                {#width: '60%',#}
+                {#left: '40%'#}
+                formatter: function (name) {
+          return name.length > 17 ? name.substr(0, 17) + '...' : name
+         }
+
+            },
+            grid: {
+                top: '15%',
+                left: '3%',
+                right: '20%',
+                bottom: '3%',
+                containLabel: true
+            },
+            toolbox: {
+                feature: {
+                    saveAsImage: {}
+                },
+
+            },
+            xAxis: {
+                type: 'category',
+                boundaryGap: false,
+                data: {{ x|safe }},
+            },
+            yAxis: {
+                type: 'value'
+            },
+            series: {{ res|safe }}
+        };
+        mychart.clear();
+        mychart.setOption(option);
+
+    </script>
+    <script>
+        function selectOnchange(obj) {
+            var value = obj.options[obj.selectedIndex].value
+            {#alert(value)#}
+            $.ajax({
+                type: "GET",
+                url: "category_search/",    //后台处理函数的url
+                data: {type: value},
+                success: function (result) {  //获取后台处理后传过来的result
+                    {#alert(result)#}
+                    $("#user").html(result)
+                }
+            });
+        }
+
+        function reset_bar(obj) {
+            $.ajax({
+                type: "GET",
+                url: "localhost:8000/analysis/publication_year/",    //后台处理函数的url
+            });
+        }
+    </script>
+
+{% endblock %}

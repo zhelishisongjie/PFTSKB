@@ -1,0 +1,194 @@
+{% extends 'Layout.html' %}
+{% load static %}
+
+{% block title %}
+    <title>details parameter</title>
+    <style>
+     .th{
+
+     }
+    </style>
+    <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}">
+    {#    <link rel="stylesheet" href="{% static 'css/bootstrap-icons.min.css' %}">#}
+    <link rel="stylesheet" href="{% static 'plugins/bootstrap-table/css/bootstrap-table.min.css' %}">
+    <link rel="stylesheet" href="{% static 'plugins/bootstrap-select/css/bootstrap-select.min.css' %}">
+{% endblock %}
+
+
+{% block content %}
+    <div class="container">
+        <div class="mt-2 mb-3" style="display: flex; justify-content: center;" >
+                <h1>Detail Information of IFTP subgroup</h1>
+            </div>
+        <div class="row mb-3">
+            <div class="col">
+                <span class="badge badge-primary mb-3" style="font-size: larger;background-color: #4F81BD ">Parameter</span>
+                <table>
+                    <tbody>
+                    <tr>
+                        <th>PID:</th>
+                        <td class="align-middle">{{ queryset.pid }}</td>
+                    </tr>
+                    <tr>
+                        <th>Parameter_name:</th>
+                        <td class="align-middle">{{ queryset.parameters }}</td>
+                    </tr>
+                    <tr>
+                        <th>Defination:</th>
+                        <td>{{ queryset.defination }}</td>
+                    </tr>
+                    <tr>
+                        <th>Classification of the FT parameter:</th>
+                        <td>{{ queryset.classification_of_fluid_therapy_parameters }}</td>
+                    </tr>
+
+                    </tbody>
+                </table>
+
+            </div>
+
+
+        </div>
+        <hr/>
+        <div class="row mb-3">
+            <div class="col">
+                <span class="badge badge-primary mb-3" style="font-size: larger;background-color: #4F81BD ">Related Studies</span>
+ <div id="table_allay">
+
+
+                <table
+                        id="table"
+                        data-toolbar="#toolbar"
+                >
+                </table>
+
+
+            </div>
+            </div>
+
+        </div>
+
+
+
+    </div>
+
+    {#        <p>{{ queryset.id }}</p>#}
+    {#        <p>{{ queryset.year }}</p>#}
+    {#<p>{{ queryset.pmid }}</p>#}
+
+{% endblock %}
+
+{% block special_js %}
+     <script src="{% static 'plugins/bootstrap-select/js/bootstrap-select.min.js' %}"></script>
+    <script src="https://unpkg.com/tableexport.jquery.plugin/tableExport.min.js"></script>
+    {#        <script src="https://cdn.jsdelivr.net/npm/tableexport.jquery.plugin@1.10.21/tableExport.min.js"></script>#}
+    <script src="{% static 'plugins/bootstrap-table/js/bootstrap-table.min.js' %}"></script>
+    <script src="https://unpkg.com/bootstrap-table@1.21.4/dist/extensions/filter-control/bootstrap-table-filter-control.min.js"></script>
+    <script src="{% static 'plugins/bootstrap-table/js/bootstrap-table-export.min.js' %}"></script>
+    <script>
+    var dataList = {{ data|default:"1"|safe }}
+
+        if (dataList === 1) {
+            $('.bar1').hide();
+        } else {
+            var table = document.getElementById('table_allay');
+
+            table.style.display = 'block';
+
+            $articlesTable = $('#table').bootstrapTable('destroy').bootstrapTable({
+                {#load:"",#}
+                {#url: '/recommend/',#}
+                {#method: 'POST',#}
+                data: dataList,
+                dataType: "json",
+                uniqueId: 'id',
+                striped: false,
+                cache: false,
+                sortable: true,
+                sortOrder: 'asc',
+                undefinedText: '--',
+                singleSelect: true,
+                showFullscreen: true,
+                showColumns: true,
+                showColumnsToggleAll: true,
+                {#toolbar: '#soft-toolbar',#}
+                search: true,
+                {#showExport: true,#}
+                {#exportTypes: ['csv'],#}
+                {#strictSearch: true,#}
+                {#clickToSelect: true,#}
+                filterControl: true,
+                pagination: true,
+                sidePagination: "client",
+                pageNumber: 1,
+                pageSize: 10,
+                pageList: [10, 20, 50, 100],
+                {#paginationPreText: "上一页",#}
+                {#paginationNextText: "下一页",#}
+                queryParamsType: "",
+                queryParams: function (params) {
+                    var temp = {
+                        'pageSize': params.pageSize,
+                        'pageNumber': params.pageNumber,
+                        'searchText': params.searchText,
+                        'sortName': params.sortName,
+                        'sortOrder': params.sortOrder
+                    };
+                    return temp;
+                },
+                columns: [
+                    {
+                        field: 'IFTP',
+                        title: 'IFTP',
+                        align: 'center',
+                    },
+                    {
+                        field: 'IFTP_subgroup',
+                        title: 'IFTP_subgroup',
+                        align: 'center',
+                    },
+                    {
+                        field: 'id',
+                        title: 'ID',
+                        align: 'center',
+                    }, {
+                        field: 'application',
+                        title: 'Parameters Application',
+                        align: 'center',
+                        {#filterControl:"select"#}
+                    }, {
+                        field: 'surgery_type',
+                        title: 'Application for Surgery Type',
+                        align: 'center',
+                        {#filterControl:"select"#}
+                    }, {
+                        field: 'period_of_fluid_therapy',
+                        title: 'Application for Period',
+                        align: 'center',
+                    },
+
+
+                    {
+                        field: 'pmid',
+                        title: 'PMID',
+                        align: 'center',
+                    },
+                    {
+                       field: 'reference',
+                        title: 'Reference',
+                        align: 'center',
+                    }
+                ],
+                onLoadError: function () {
+
+                },
+
+            });
+            $('.bar1').show();
+
+
+
+        }
+    </script>
+
+{% endblock %}

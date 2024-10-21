@@ -1,0 +1,187 @@
+{% extends 'Layout.html' %}
+{% load static %}
+
+
+    {% block title %}
+        <title>Analyze</title>
+    {% endblock %}
+    {% block special_css %}
+        <link rel="stylesheet" href="{% static 'plugins/bootstrap-select/css/bootstrap-select.min.css' %}">
+        <style>
+            #charts{
+                    height: 500px;
+    width: 500px;
+            }
+                    .center {
+    {#margin: auto;#}
+    width: 70%;
+    {#border: 3px solid green;#}
+    padding: 10px;
+}
+        </style>
+
+    {% endblock %}
+
+    {% block content %}
+<div class="">
+    <div class="mt-5 mb-5">
+        <div class="text-center" style="background-color: #4F81BD">
+            <div style="height: 60px;color: white;font-size: 35px"> PFTD Information Analysis Tools for Country Distribution</div>
+        </div>
+    </div>
+</div>
+        <div class="container">
+{#        <h1 style="margin: auto;padding: 10px;text-align: center">液体治疗决策信息分析工具</h1>#}
+        <form method="post" novalidate class="center mt-3 mb-3"  >
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-3">
+                    <div>{{ form.category_cd }}</div>
+                    <span style="color: red">{{ form.category_cd.errors.0 }}</span>
+
+                </div>
+                <div class="col-3 ml-5 mr-5">
+                    <select name="name"  id="user" class="selectpicker" data-live-search="true" data-actions-box="true" data-size="5" multiple title="Choose">
+                    </select>
+
+
+                </div>
+                <div class="col-3">
+                    <div class="btn-group">
+                        <button id="btn_submit" type="submit" class="btn btn-info btn-space" style="
+    border: none;
+    border-radius: 5px;
+    background-color: #4F81BD;
+">
+                            <span class="fa fa-search btn-icon-space" aria-hidden="true"></span>
+                            Submit
+                        </button>
+                        <span></span>
+                        <a id="btn_reset" type="button" href="/analysis/country_dis/" class="btn btn-default btn-space" >
+                            <span class="fa fa-eraser btn-icon-space" aria-hidden="true"></span>
+                            Reset
+                        </a>
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
+        </form>
+        <div id="charts" class="mt-4" style="height: 900px; width: 100%"></div>
+
+</div>
+
+
+    {% endblock %}
+
+{% block special_js %}
+    <script src="{% static 'js/echarts.min.js' %}"></script>
+    <script src="{% static 'plugins/bootstrap-select/js/bootstrap-select.min.js' %}"></script>
+    <script>
+    var mychart = echarts.init(document.getElementById('charts'));
+            $('#user').val('').selectpicker('refresh');
+            // 如果category选择框也是用bootstrap-select插件渲染的
+        $("#user2").val('').selectpicker('refresh');
+    var xdata = [];
+    {#var temp = {}#}
+
+    {% for item in data %}
+        var temp = {}
+        var temp_name = "{{ item.name|safe }}"
+        {#console.log(temp_name)#}
+        if ( temp_name=== "Taiwan，China"){
+            temp["name"] = "China"
+        temp["value"] = {{ item.count }}
+        }
+        else{
+            temp["name"] = "{{ item.name }}"
+        temp["value"] = {{ item.count }}
+        }
+
+
+        xdata.push(temp)
+    {% endfor %}
+    {#console.log(xdata)#}
+    {#window.alert(xdata);#}
+    $.get('get_geodata/',
+        function (geoJson){
+        echarts.registerMap('World', geoJson);
+            var option = {
+            title: {
+                text: 'Country Distribution{{ option }}',
+                left: "center"
+                {#subtext: 'Data from FPGKB',#}
+                },
+                toolbox: {
+                show: true,
+                orient: 'vertical',
+                left: 'right',
+                top: 'center',
+                feature: {
+                  dataView: { readOnly: false },
+                  restore: {},
+                  saveAsImage: {}
+                }
+                },
+                visualMap: {
+                min: 1,
+                max: 100,
+                text: ['High', 'Low'],
+                realtime: false,
+                calculable: true,
+                inRange: {
+                  color: ['lightskyblue', 'yellow', 'orangered']
+                }
+
+                },
+                series: [{
+
+                  name: 'Sample Distribution',
+                  type: 'map',
+                  map: 'World',
+                  label: {
+                    show: false
+                  },
+                  data:xdata
+
+                }]
+    };
+
+    mychart.setOption(option);
+        }
+    );
+    {#$.ajax({#}
+    {#        type: "GET",#}
+    {#        url: "get_geodata/",    //后台处理函数的url#}
+            {#data: {type:value},#}
+    {#        success: function (result) {  //获取后台处理后传过来的result#}
+    {#            #}
+    {#            echarts.registerMap('World', result);#}
+    {#        }#}
+    {#    });#}
+
+
+
+    </script>
+    <script>
+        function selectOnchange(obj) {
+            var value = obj.options[obj.selectedIndex].value
+            {#alert(value)#}
+            $.ajax({
+                type: "GET",
+                url: "category_search/",    //后台处理函数的url
+                data: {type: value},
+                success: function (result) {  //获取后台处理后传过来的result
+                    {#alert(result)#}
+                    $("#user").html(result)
+                    $("#user").selectpicker('refresh')
+                }
+            });
+        }
+
+    </script>
+
+{% endblock %}

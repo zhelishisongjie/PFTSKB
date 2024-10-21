@@ -1,0 +1,177 @@
+{% extends 'Layout.html' %}
+{% load static %}
+
+
+    {% block title %}
+        <title>Analyze</title>
+    {% endblock %}
+    {% block special_css %}
+        <style>
+            #charts{
+                    height: 500px;
+    width: 500px;
+            }
+                    .center {
+    {#margin: auto;#}
+    width: 70%;
+    {#border: 3px solid green;#}
+    padding: 10px;
+}
+        </style>
+
+    {% endblock %}
+
+    {% block content %}
+
+<div class="">
+            <div class="mt-5 mb-5">
+        <div class="text-center" style="background-color: #4F81BD">
+            <div style="height: 60px;color: white;font-size: 35px"> PFTD Information Analysis Tools for Decision Parameter</div>
+        </div>
+    </div>
+
+
+
+</div>
+        <div class="container-fluid">
+        <div id="charts" class="mt-4" style="height: 1700px;width: auto"></div>
+        </div>
+
+
+    {% endblock %}
+
+{% block special_js %}
+    <script src="{% static 'js/echarts.min.js' %}"></script>
+    <script>
+    var mychart = echarts.init(document.getElementById('charts'));
+    xdata = {{ test | safe }};
+    let option = {
+            tooltip: {},
+  // tooltip: {
+  //   trigger: 'item',
+  //   formatter: function (params) {
+  //     // console.log(params)
+  //     var res = '<div> Name: '+params.data.name+'</div>'
+  //     res+= '<div><span style="display:inline-block;border-radius:8px;margin-right:5px;width: 8px;height:8px;background-color: '+params.color+'"></span> Gene_id: '+params.data.gene_id+'</div>'
+  //     res+= '<div><span style="display:inline-block;border-radius:8px;margin-right:5px;width: 8px;height:8px;background-color: '+params.color+'"></span> Gene_loci: '+params.data.gene_loci+'</div>'
+  //     return res
+
+  //   }
+  // },
+  title: {
+    text: 'Decision Indicator Pie',
+    subtext: 'Data from PFTD',
+    textStyle: {
+      fontSize: 18,
+      align: 'center'
+    },
+    subtextStyle: {
+      align: 'center'
+    },
+    // sublink: 'https://worldcoffeeresearch.org/work/sensory-lexicon/'
+  },
+  toolbox: {
+                show: true,
+                orient: 'vertical',
+                left: 'right',
+                top: 'center',
+                feature: {
+                  dataView: { readOnly: false },
+                  restore: {},
+                  saveAsImage: {}
+                }
+                },
+
+  series: {
+    type: 'sunburst',
+    data: xdata,
+    radius: [0, '95%'],
+    sort: undefined,
+
+    tooltip: {
+    trigger: 'item',
+  },
+
+
+    levels: [
+      {},
+       {
+         r0: '10%',
+         r: '30%',
+         itemStyle: {
+           borderWidth: 2,
+
+         },
+         label: {
+           rotate: 'tangential',
+             fontSize: 10,
+             minAngle:30
+         }
+       },
+      {
+        r0: '30%',
+        r: '75%',
+        label: {
+          align: 'right',
+            fontSize: 12,
+
+
+        },
+
+      },
+      {
+        r0: '75%',
+        r: '80%',
+        label: {
+          position: 'outside',
+          padding: 3,
+          silent: false,
+          fontSize: 14
+        },
+        itemStyle: {
+
+          borderWidth: 4
+        },
+        downplay: {
+            label: {
+              opacity: 0.5
+            }
+          },
+          emphasis: {
+      focus: 'ancestor',
+      label: {
+          show: true,
+          fontSize: '18',
+          fontWeight: 'bold'
+        }
+    },
+
+      }
+    ]
+  }
+}
+    mychart.clear()
+    mychart.setOption(option)
+
+
+
+
+    </script>
+    <script>
+        function selectOnchange(obj) {
+            var value = obj.options[obj.selectedIndex].value
+            {#alert(value)#}
+            $.ajax({
+                type: "GET",
+                url: "category_search/",    //后台处理函数的url
+                data: {type: value},
+                success: function (result) {  //获取后台处理后传过来的result
+                    {#alert(result)#}
+                    $("#user").html(result)
+                }
+            });
+        }
+
+    </script>
+
+{% endblock %}

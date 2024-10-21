@@ -1,0 +1,112 @@
+{% extends 'Layout.html' %}
+{% load static %}
+
+
+    {% block title %}
+        <title>Analyze</title>
+    {% endblock %}
+    {% block special_css %}
+        <style>
+            #charts{
+                    height: 1665px;
+    width: 2250px;
+            }
+                    .center {
+    {#margin: auto;#}
+    width: 70%;
+    {#border: 3px solid green;#}
+    padding: 10px;
+}
+        </style>
+
+    {% endblock %}
+
+    {% block content %}
+        <div class="">
+        <div class="mt-5 mb-5">
+        <div class="text-center" style="background-color: #4F81BD">
+            <div style="height: 60px;color: white;font-size: 35px"> PFTD Information Analysis Tools Decision Parameters for Surgery Type</div>
+        </div>
+    </div>
+        </div>
+<div class="container-fluid">
+
+
+        <div id="charts" class="mt-4" style="height: 1700px; width: 100%"></div>
+
+</div>
+
+
+    {% endblock %}
+
+{% block special_js %}
+    <script src="{% static 'js/echarts.min.js' %}"></script>
+    <script>
+    var mychart = echarts.init(document.getElementById('charts'));
+    {#xdata = {{ test | safe }};#}
+    let option = {
+            tooltip: {},
+  // tooltip: {
+  //   trigger: 'item',
+  //   formatter: function (params) {
+  //     // console.log(params)
+  //     var res = '<div> Name: '+params.data.name+'</div>'
+  //     res+= '<div><span style="display:inline-block;border-radius:8px;margin-right:5px;width: 8px;height:8px;background-color: '+params.color+'"></span> Gene_id: '+params.data.gene_id+'</div>'
+  //     res+= '<div><span style="display:inline-block;border-radius:8px;margin-right:5px;width: 8px;height:8px;background-color: '+params.color+'"></span> Gene_loci: '+params.data.gene_loci+'</div>'
+  //     return res
+
+  //   }
+  // },
+  title: {
+    text: 'Decision Parameters for Surgery Type',
+    subtext: 'Data from PFTD',
+    textStyle: {
+      fontSize: 14,
+      align: 'center'
+    },
+    subtextStyle: {
+      align: 'center'
+    },
+    // sublink: 'https://worldcoffeeresearch.org/work/sensory-lexicon/'
+  },
+  angleAxis: {
+    type: 'category',
+    data: {{ x|safe }}
+  },
+        legend: {
+           type: 'scroll', // 启用滚动
+    show: true,
+            selector: ['all', 'inverse'],
+    top:"3%",
+    data: {{ type|safe }}
+  },
+  radiusAxis: {},
+  polar: {},
+  series: {{ res|safe }},
+
+}
+    mychart.clear()
+    mychart.setOption(option)
+
+
+
+
+    </script>
+    <script>
+        function selectOnchange(obj) {
+            var value = obj.options[obj.selectedIndex].value
+            {#alert(value)#}
+            $.ajax({
+                type: "GET",
+                url: "category_search/",    //后台处理函数的url
+                data: {type: value},
+                success: function (result) {  //获取后台处理后传过来的result
+                    {#alert(result)#}
+                    $("#user").html(result)
+                }
+            });
+        }
+
+    </script>
+
+{% endblock %}

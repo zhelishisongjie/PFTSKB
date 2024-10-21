@@ -1,0 +1,413 @@
+{% extends 'Layout.html' %}
+{% load static %}
+
+
+{% block title %}
+    <title>Home</title>
+    <style>
+        .card-title {
+            color: black;
+            text-align: center;
+            font-size: 1rem; /* 或者更大，根据需要调整 */
+        }
+
+        /* 确保所有卡片的高度一致 */
+        .card-cover {
+            height: 100%; /* 使用百分比或具体的像素值 */
+        }
+
+        .tags-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 15px; /* 调整标签与图片之间的间距 */
+        }
+
+        .tag-link {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 10px; /* 调整标签之间的间距 */
+            text-decoration: none; /* 移除链接下划线 */
+            color: #000; /* 设置文字颜色，根据需要调整 */
+        }
+
+        .tag-image {
+            width: 80px; /* 统一图片宽度 */
+            height: 80px; /* 统一图片高度 */
+            object-fit: contain; /* 确保图片按比例缩放以适应容器 */
+            margin-bottom: 8px; /* 增加图片与文字之间的间距 */
+        }
+
+        .image-container {
+            /* 如果需要，这里可以添加样式 */
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    {#    <div class="container px-4 py-5">#}
+    {#        <div class="text-center">#}
+    {#            <h3>Perioperative Fluid Therapy Decision Parameter information knowledge base</h3>#}
+    {#            <h3>（PFTDP-KB）</h3>#}
+    {#        </div>#}
+    {#    </div>#}
+    <div class="container px-4 py-5">
+        <div class="text-center mb-3">
+            <h4>Welcome to</h4>
+            <h4>Perioperative Fluid Therapy Decision Parameter information knowledge base (PFTDP-KB)</h4>
+        </div>
+        <div class="mt-4">
+            <p style="text-indent:2em;line-height: 30px;font-size: 18px">PFTDP-KB(Perioperative Fluid Therapy Decision
+                Parameter information knowledge base) is a decision-making information sharing platform for
+                perioperative intravenous fluid therapy based on data extraction and analysis from the Pubmed literature
+                database. This knowledge data platform collected preoperative, intraoperative, and postoperative factors
+                which are article-supported to be associated with the perioperative fluid therapy decision. The PFTDP-KB
+                including 2182 records of intravenous fluid management decision parameters information for surgical
+                patients, which can auxiliary support the fluid type estimation, fluid rate assessment, transfusion
+                assessment and the use of vasoactive agents assessment. This knowledge data platform can provide
+                evidence support and knowledge decision-making sharing for clinical intravenous fluid therapy.
+                Furtherly, it can improve the efficiency of perioperative fluid therapy.</p>
+        </div>
+
+    </div>
+
+    {#<div class="container d-flex align-items-center">#}
+    {##}
+    {#    <div class="image-container" style="flex: 4;text-align: center;">#}
+    {#        <img src="{% static 'img/img_5.png' %}" style="max-width: 100%; height: auto;">#}
+    {#    </div>#}
+    {##}
+    {#    <div class="tags-container text-center" style="flex: 1; display: flex; flex-direction: column;justify-content: right;">#}
+    {#        <!-- 标签链接 -->#}
+    {#        <a href="/home/getselect/1" class="tag-link" target="_blank">#}
+    {#            <img src="{% static 'img/tag1.png' %}" class="tag-image">#}
+    {#            Fluid volume estimation#}
+    {#        </a>#}
+    {#                <a href="/home/getselect/2" class="tag-link" target="_blank">#}
+    {#            <img src="{% static 'img/tag2.png' %}" class="tag-image">#}
+    {#            Fluid type estimation#}
+    {#        </a>#}
+    {#                <a href="/home/getselect/3" class="tag-link" target="_blank">#}
+    {#            <img src="{% static 'img/tag3.png' %}" class="tag-image">#}
+    {#            Fluid therapy rate assessment#}
+    {#        </a>#}
+    {#                <a href="/home/getselect/4" class="tag-link" target="_blank">#}
+    {#            <img src="{% static 'img/tag4.png' %}" class="tag-image">#}
+    {#         Transfusion assessment#}
+    {#        </a>#}
+    {#        <!-- 其他标签链接类似，省略... -->#}
+    {#        <a href="/home/getselect/5" class="tag-link" target="_blank">#}
+    {#            <img src="{% static 'img/tag5.png' %}" class="tag-image">#}
+    {#            Use of vasoactive agents assessment#}
+    {#        </a>#}
+    {#    </div>#}
+    {##}
+    {#</div>#}
+    <div class="container">
+
+        <div class="image-container text-center">
+            <img src="{% static 'img/process.jpg' %}" style="max-width: 100%; height: auto;">
+        </div>
+        </div>
+        <div class="container mt-2">
+        <div class="text-left">
+            <h5>Applications</h5>
+        </div>
+    </div>
+         <div class="container mt-3">
+        <div class="tags-container text-center">
+            <!-- 标签链接 -->
+            <a href="/home/getselect/1" class="tag-link" target="_blank">
+                <img src="{% static 'img/tag1.png' %}" class="tag-image">
+                Fluid volume estimation
+            </a>
+            <a href="/home/getselect/2" class="tag-link" target="_blank">
+                <img src="{% static 'img/tag2.png' %}" class="tag-image">
+                Fluid type estimation
+            </a>
+            <a href="/home/getselect/3" class="tag-link" target="_blank">
+                <img src="{% static 'img/tag3.png' %}" class="tag-image">
+                Fluid therapy rate assessment
+            </a>
+            <a href="/home/getselect/4" class="tag-link" target="_blank">
+                <img src="{% static 'img/tag4.png' %}" class="tag-image">
+                Transfusion assessment
+            </a>
+            <!-- 其他标签链接类似，省略... -->
+            <a href="/home/getselect/5" class="tag-link" target="_blank">
+                <img src="{% static 'img/tag5.png' %}" class="tag-image">
+                Use of vasoactive agents assessment
+            </a>
+        </div>
+
+    </div>
+     <div class="container mt-3">
+        <div class="text-left">
+            <h5>News</h5>
+        </div>
+    </div>
+    <div class="container mt-3">
+        <div class="text-center">
+            <p>March 12, 2024---The PFTDP-KB was corrected 2182 records collected from 402 articles in Pubmed.The
+                perioperative fluid therapy decision parameters are classified into the following eleven categories
+                based on their characteristics: </p>
+            {#            <h4>PFTDKB-RD  Implementation Summary</h4>#}
+            <div id="charts_bar" class="mt-4" style="height: 600px; width: 100%"></div>
+        </div>
+
+    </div>
+
+
+    {#learn more#}
+    <div class="container mt-2">
+        <div class="text-left">
+            <h5>Related Links</h5>
+        </div>
+    </div>
+    <div class="container" id="custom-cards">
+        <div class="row row-cols-1 row-cols-lg-4 align-items-stretch g-4 py-4"> <!-- 注意这里的修改 -->
+            <div class="col">
+                <div class="d-flex flex-column p-4 pb-2 text-white text-shadow-1" style="height: 100%;">
+                    <div class="mt-auto w-100 text-center">
+                        <a href="https://www.fluidacademy.org/" target="_blank">
+                            <img src="{% static 'img/1.jpg' %}" class="card-img">
+                            <h5 class="mt-auto card-title">The International Fluid Academy</h5>
+                        </a>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="d-flex flex-column p-4 pb-2 text-white text-shadow-1" style="height: 100%;">
+
+                    <div class="mt-auto w-100 text-center">
+                        <a href="https://www.nice.org.uk/search?q=Intravenous+fluid+therapy+Intravenous+fluid+therapy+in+adults+in+hospital"
+                           target="_blank">
+                            <img src="{% static 'img/2.jpg' %}" class="card-img">
+                            <h5 class="mt-1 card-title">Intravenous fluid therapy in adults in hospital</h5>
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+            <div class="col">
+                <div class="d-flex flex-column p-4 pb-2 text-white text-shadow-1" style="height: 100%;">
+
+                    <div class="mt-auto w-100 text-center">
+                        <a href="https://www.ncbi.nlm.nih.gov/books/NBK563449/?report=reader" target="_blank">
+                            <img src="{% static 'img/3.jpg' %}" class="card-img">
+                            <h5 class="mt-1 card-title">Intravenous fluid therapy in children and young people</h5>
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+            <div class="col">
+                <div class="d-flex flex-column p-4 pb-2 text-white text-shadow-1" style="height: 100%;">
+
+                    <div class="mt-auto w-100 text-center">
+                        <a href="https://pubmed.ncbi.nlm.nih.gov/" target="_blank">
+                            <img src="{% static 'img/4.jpg' %}" class="card-img">
+                            <h3 class="mt-1 card-title">PubMed</h3>
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+{% endblock %}
+
+{% block special_js %}
+    <script src="{% static 'js/echarts.min.js' %}"></script>
+    <script src="{% static 'plugins/bootstrap-select/js/bootstrap-select.min.js' %}"></script>
+    <script>
+        {#var mychart = echarts.init(document.getElementById('charts_pie'));#}
+        var mychart1 = echarts.init(document.getElementById('charts_bar'));
+        {#const themeJson =#}
+        {#{{ pie|safe }}#}
+        {##}
+        {#var option = {#}
+        {#    tooltip: {},#}
+        {##}
+        {#    series: [{#}
+        {#        type: 'pie',#}
+        {#        radius: '60%',#}
+        {#        label: {#}
+        {#            show: true,#}
+        {#            position: 'outside', // 标签的位置，'outside' 表示标签在扇区外部#}
+        {#            formatter: '{b}: {c}' // 格式化标签文本#}
+        {#        },#}
+        {#center: ['75%', '75%'],#}
+        {#        data: Object.keys(themeJson).map(function (key) {#}
+        {#            return {#}
+        {#                name: key.replace('.js', ''),#}
+        {#                value: themeJson[key]#}
+        {#            };#}
+        {#        })#}
+        {#    }],#}
+        {##}
+
+        var option1 = {
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    // Use axis to trigger tooltip
+                    type: 'shadow' // 'shadow' as default; can also be 'line' or 'shadow'
+                }
+            },
+            legend: {
+                data: ['preoperative', 'intraoperative', 'postoperative']
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            },
+            xAxis: {
+                type: 'value'
+            },
+            yAxis: {
+                type: 'category',
+                data: ['Treatment information', 'Physical examinations', 'Intake factors', 'Insensible losses', 'Complications', 'clinical signs', 'Other factors', 'Vital signs', 'volume loss factors', 'Laboratory tests', 'Physiological factors', 'Hemodynamic parameters']
+                {#data: ['Treatment information','Physical examinations','Intake factors','Insensible losses','Complications','clinical signs','Other factors','Vital signs','volume loss factors','Laboratory tests','Physiological factors','Hemodynamic parameters']#}
+            },
+            series: {{ res|safe }}
+        };
+        {#mychart.clear();#}
+        mychart1.clear();
+        mychart1.setOption(option1);
+        {#mychart.setOption(option);#}
+
+    </script>
+    {#    <script>#}
+    {#        var mychart1 = echarts.init(document.getElementById('charts_bar'));#}
+    {#        const themeJson ={{ pie|safe }}#}
+    {##}
+    {#        var option1 = {#}
+    {#            tooltip: {#}
+    {#    trigger: 'axis',#}
+    {#    axisPointer: {#}
+    {#      // Use axis to trigger tooltip#}
+    {#      type: 'shadow' // 'shadow' as default; can also be 'line' or 'shadow'#}
+    {#    }#}
+    {#  },#}
+    {#  legend: {},#}
+    {#  grid: {#}
+    {#    left: '3%',#}
+    {#    right: '4%',#}
+    {#    bottom: '3%',#}
+    {#    containLabel: true#}
+    {#  },#}
+    {#  xAxis: {#}
+    {#    type: 'value'#}
+    {#  },#}
+    {#  yAxis: {#}
+    {#    type: 'category',#}
+    {#    data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']#}
+    {#  },#}
+    {#  series: [#}
+    {#    {#}
+    {#      name: 'Direct',#}
+    {#      type: 'bar',#}
+    {#      stack: 'total',#}
+    {#      label: {#}
+    {#        show: true#}
+    {#      },#}
+    {#      emphasis: {#}
+    {#        focus: 'series'#}
+    {#      },#}
+    {#      data: [320, 302, 301, 334, 390, 330, 320]#}
+    {#    },#}
+    {#    {#}
+    {#      name: 'Mail Ad',#}
+    {#      type: 'bar',#}
+    {#      stack: 'total',#}
+    {#      label: {#}
+    {#        show: true#}
+    {#      },#}
+    {#      emphasis: {#}
+    {#        focus: 'series'#}
+    {#      },#}
+    {#      data: [120, 132, 101, 134, 90, 230, 210]#}
+    {#    },#}
+    {#    {#}
+    {#      name: 'Affiliate Ad',#}
+    {#      type: 'bar',#}
+    {#      stack: 'total',#}
+    {#      label: {#}
+    {#        show: true#}
+    {#      },#}
+    {#      emphasis: {#}
+    {#        focus: 'series'#}
+    {#      },#}
+    {#      data: [220, 182, 191, 234, 290, 330, 310]#}
+    {#    },#}
+    {#    {#}
+    {#      name: 'Video Ad',#}
+    {#      type: 'bar',#}
+    {#      stack: 'total',#}
+    {#      label: {#}
+    {#        show: true#}
+    {#      },#}
+    {#      emphasis: {#}
+    {#        focus: 'series'#}
+    {#      },#}
+    {#      data: [150, 212, 201, 154, 190, 330, 410]#}
+    {#    },#}
+    {#    {#}
+    {#      name: 'Search Engine',#}
+    {#      type: 'bar',#}
+    {#      stack: 'total',#}
+    {#      label: {#}
+    {#        show: true#}
+    {#      },#}
+    {#      emphasis: {#}
+    {#        focus: 'series'#}
+    {#      },#}
+    {#      data: [820, 832, 901, 934, 1290, 1330, 1320]#}
+    {#    }#}
+    {#  ]#}
+    {#        };#}
+    {#        mychart1.clear();#}
+    {#        mychart1.setOption(option1);#}
+    {##}
+    {#    </script>#}
+    {#    <script>#}
+    {#    function restSelecter(divId){#}
+    {#	 // 清空下拉框#}
+    {#		$(divId).find("option").remove();#}
+    {#		$(divId).selectpicker('refresh');#}
+    {##}
+    {#        function selectOnchange(obj) {#}
+    {#            var value = obj.options[obj.selectedIndex].value#}
+    {#alert(value)#}
+    {#            $.ajax({#}
+    {#                type: "GET",#}
+    {#                url: "category_search/",    //后台处理函数的url#}
+    {#                data: {type: value},#}
+    {#                success: function (result) {  //获取后台处理后传过来的result#}
+    {#alert(result)#}
+    {#var selectObj = $("#input_val");#}
+    {#alert(result)#}
+    {#                    $("#user").html(result)#}
+    {#                    $("#user").selectpicker('refresh')#}
+    {##}
+    {#                }#}
+    {#            });#}
+    {#        }#}
+    {#        function reset_bar(obj){#}
+    {#        $.ajax({#}
+    {#            type: "GET",#}
+    {#            url: "localhost:8000/analysis/publication_year/",    //后台处理函数的url#}
+    {#        });#}
+    {#    }#}
+    {#    </script>#}
+
+{% endblock %}
+

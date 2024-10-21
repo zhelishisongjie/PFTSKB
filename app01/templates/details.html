@@ -1,0 +1,249 @@
+{% extends 'Layout.html' %}
+{% load static %}
+
+{% block title %}
+    <title>details</title>
+    <style>
+     .th{
+
+     }
+    </style>
+{% endblock %}
+
+
+{% block content %}
+    <div class="container">
+        <div class="row mb-5" style="text-align: center">
+            <h1>Personalized PFTD recommendation</h1>
+        </div>
+        <div class="row mb-3">
+            <div class="col">
+                <span class="badge badge-primary mb-3" style="font-size: larger">Base Information</span>
+                <table>
+                    <tbody>
+                    <tr>
+                        <th>IFTP:</th>
+
+                        <td class="align-middle"><a href="/search/getIFTPdetails/{{ queryset.IFTP }}" target="_blank">{{ queryset.IFTP }}</a></td>
+                    </tr>
+                    <tr>
+                        <th>IFTP_subgroup:</th>
+
+                        <td class="align-middle"><a href="/search/getIFTPsubdetails/{{ queryset.IFTP_subgroup }}" target="_blank">{{ queryset.IFTP_subgroup }}</a></td>
+                    </tr>
+                    <tr>
+                        <th>Age:</th>
+                        <td class="align-middle">{{ queryset.Age }}</td>
+                    </tr>
+                    <tr>
+                        <th>Gender:</th>
+                        <td class="align-middle">{{ queryset.Gender }}</td>
+                    </tr>
+                    <tr>
+                        <th>Race:</th>
+                        <td>{{ queryset.Race }}</td>
+                    </tr>
+                    <tr>
+                        <th>BMI:</th>
+                        <td>{{ queryset.BMI }}</td>
+                    </tr>
+                    <tr>
+                        <th>Disease:</th>
+                        <td>{{ queryset.Disease }}</td>
+                    </tr>
+                    <tr>
+                        <th>Comorbidity:</th>
+                        <td>{{ queryset.Comorbidity }}</td>
+                    </tr>
+
+                    </tbody>
+                </table>
+
+            </div>
+            <div class="col">
+                <span class="badge badge-primary mb-3" style="font-size: larger">Surgery Information</span>
+                <table>
+                    <tbody>
+                    <tr>
+                        <th>Application for Surgery Type:</th>
+                        <td class="align-middle">{{ queryset.surgery_type }}</td>
+                    </tr>
+                    <tr>
+                        <th>Surgical Site:</th>
+                        <td class="align-middle">{{ queryset.surgical_site }}</td>
+                    </tr>
+                    <tr>
+                        <th>Surgical Approach:</th>
+                        <td>{{ queryset.Surgical_approach }}</td>
+                    </tr>
+                    <tr>
+                        <th>ASA Physical Status:</th>
+                        <td>{{ queryset.ASA_physical_status }}</td>
+                    </tr>
+
+                    </tbody>
+                </table>
+
+            </div>
+
+        </div>
+        <hr/>
+        <div class="row mt-3">
+            <div class="col-3">
+                <span class="badge badge-primary" style="font-size: larger">Period of fluid therapy</span>
+            </div>
+            <div class="col-8">
+                {{ queryset.Period_of_fluid_therapy1 }}
+            </div>
+        </div>
+        <hr/>
+        <div class="row mb-3">
+            <div class="col">
+                <span class="badge badge-primary mb-3" style="font-size: larger">FT Recommendation</span>
+                <table>
+                    <tbody>
+                    <tr>
+                        <th class="mr-4">Liquid Treatment:</th>
+                        <td class="align-middle">{{ queryset.liquid_treatment }}</td>
+                    </tr>
+                    <tr>
+                        <th>Fluid Name:</th>
+                        <td class="align-middle">{{ queryset.Fluid_name }}</td>
+                    </tr>
+                    <tr>
+                        <th>Fluid Type:</th>
+                        <td>{{ queryset.Fluid_type }}</td>
+                    </tr>
+                    <tr>
+                        <th>Dose:</th>
+                        <td>{{ queryset.Dose }}</td>
+                    </tr>
+                    <tr>
+                        <th>Rate:</th>
+                        <td>{{ queryset.Rate }}</td>
+                    </tr>
+                    <tr>
+                        <th>Duration:</th>
+                        <td>{{ queryset.Duration }}</td>
+                    </tr>
+                    <tr>
+                        <th>Monitoring Parameters:</th>
+                        <td>{{ queryset.Monitoring_Parameters }}</td>
+                    </tr>
+                    <tr>
+                        <th>Monitoring Frequency:</th>
+                        <td>{{ queryset.Monitoring_frequency }}</td>
+                    </tr>
+                    <tr>
+                        <th>Use of vasopressors:</th>
+                        <td>{{ queryset.Use_of_vasopressors }}</td>
+                    </tr>
+                    <tr>
+                        <th>Blood transfusion:</th>
+                        <td>{{ queryset.Blood_transfusion }}</td>
+                    </tr>
+                    <tr>
+                        <th>Additional information:</th>
+                        <td>{{ queryset.Additional_information }}</td>
+                    </tr>
+                    <tr>
+                        <th>Preoperative FT protocol:</th>
+                        <td>{{ queryset.Preoperative_fluid_therapy_protocol }}</td>
+                    </tr>
+                    <tr>
+                        <th>Intraoperative FT protocol:</th>
+                        <td>{{ queryset.Intraoperative_fluid_therapy_protocol }}</td>
+                    </tr>
+                    <tr>
+                        <th>Postoperative FT protocol:</th>
+                        <td>{{ queryset.Postoperative_fluid_therapy_protocol }}</td>
+                    </tr>
+                    <tr>
+                        <th>Other information on FT:</th>
+                        <td>{{ queryset.Other_info_fluid_therapy_protocol }}</td>
+                    </tr>
+                    <tr>
+                        <th>FT Decision Chart:</th>
+                        <td>12</td>
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
+
+
+        </div>
+        <hr/>
+
+
+        <div class="row mb-3">
+            <div class="col">
+                <span class="badge badge-primary mb-3" style="font-size: larger">Outcomes</span>
+                <table>
+                    <tbody>
+                    <tr>
+                        <th>Complications:</th>
+                        <td class="align-middle">{{ queryset.Complications }}</td>
+                    </tr>
+                    <tr>
+                        <th>length of hospital stay:</th>
+                        <td class="align-middle">{{ queryset.length_of_hospital_stay }}</td>
+                    </tr>
+                    <tr>
+                        <th>ICU occupancy:</th>
+                        <td>{{ queryset.ICU_occupancy }}</td>
+                    </tr>
+                    <tr>
+                        <th>test results:</th>
+                        <td>{{ queryset.test_results }}</td>
+                    </tr>
+                    <tr>
+                        <th>vital signs:</th>
+                        <td>{{ queryset.vital_signs }}</td>
+                    </tr>
+                    <tr>
+                        <th>other outomes:</th>
+                        <td>{{ queryset.other_outomes }}</td>
+                    </tr>
+                    <tr>
+                        <th>Conclusion:</th>
+                        <td>{{ queryset.Conclusion }}</td>
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
+
+
+        </div>
+        <hr/>
+        <div class="row mb-3">
+            <div class="col-2">
+                <span class="badge badge-primary " style="font-size: larger">Evidence level</span>
+
+            </div>
+            <div class="col-3">
+                <span>{{ queryset.Evidence_level }}</span>
+            </div>
+            <div class="col-3">
+                <span class="badge badge-primary " style="font-size: larger">Recommendation level</span>
+            </div>
+            <div class="col-3">
+                <span>{{ queryset.strength_of_recommendation }}</span>
+            </div>
+        </div>
+        <div class="row mb-5">
+                        <div class="col-2">
+                <span class="badge badge-primary " style="font-size: larger">Reference</span>
+            </div>
+            <div class="col-6">
+                <span>{{ queryset.Reference }}</span>
+            </div>
+        </div>
+    </div>
+
+    {#        <p>{{ queryset.id }}</p>#}
+    {#        <p>{{ queryset.year }}</p>#}
+    {#<p>{{ queryset.pmid }}</p>#}
+
+{% endblock %}

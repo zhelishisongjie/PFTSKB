@@ -1,0 +1,42 @@
+name: pftskb_py
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - asgiref=3.6.0=pyhd8ed1ab_0
+  - backports.zoneinfo=0.2.1=py39hcbf5309_7
+  - bzip2=1.0.8=h8ffe710_4
+  - ca-certificates=2022.12.7=h5b45459_0
+  - django=4.2=pyhd8ed1ab_0
+  - libffi=3.4.2=h8ffe710_5
+  - libsqlite=3.40.0=hcfcfb64_0
+  - libzlib=1.2.13=hcfcfb64_4
+  - openssl=3.1.0=hcfcfb64_0
+  - pip=23.0.1=pyhd8ed1ab_0
+  - python=3.9.16=h4de0772_0_cpython
+  - python_abi=3.9=3_cp39
+  - setuptools=67.6.1=pyhd8ed1ab_0
+  - sqlparse=0.4.3=pyhd8ed1ab_0
+  - tk=8.6.12=h8ffe710_0
+  - typing_extensions=4.5.0=pyha770c72_0
+  - tzdata=2023c=h71feb2d_0
+  - ucrt=10.0.22621.0=h57928b3_0
+  - vc=14.3=hb6edc58_10
+  - vs2015_runtime=14.34.31931=h4c5c07a_10
+  - wheel=0.40.0=pyhd8ed1ab_0
+  - xz=5.2.6=h8d14728_0
+  - pip:
+      - beautifulsoup4==4.12.2
+      - django-cors-headers==3.14.0
+      - django-filter==23.1
+      - django-livereload==1.7
+      - djangorestframework==3.14.0
+      - importlib-metadata==6.3.0
+      - markdown==3.4.3
+      - mysqlclient==2.1.1
+      - pymemcache==4.0.0
+      - pymysql==1.0.3
+      - pytz==2023.3
+      - soupsieve==2.4
+      - zipp==3.15.0
+prefix: E:\anaconda\envs\pftskb_py

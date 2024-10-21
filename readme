@@ -1,0 +1,11 @@
+pftskb_py
+    urls.py #用于网页跳转的链接
+    settings.py #一些配置
+app01
+    views.py #网站后端代码的逻辑和具体实现
+    models.py #与数据库相连的模型定义
+    forms.py #一些表单的定义
+    templates #前端页面
+        Layout.html #整体的页面框架，分为上，中，下
+    static #一些静态资源 像是插件、图片等等
+    

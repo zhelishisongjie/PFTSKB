@@ -1,0 +1,181 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {% block title %}
+
+
+    {% endblock %}
+
+    <link rel="stylesheet" href="{% static 'plugins/bootstrap-4.6.2/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/layout.css' %}">
+<style>
+    #alltitle {
+    text-align: center;
+            font-family: '方正舒体', serif;
+    color: white;
+    font-size: 55px;
+    border-color: #4F81BD;
+text-shadow: 1px 1px 1px #ffffff; /* 水平偏移 垂直偏移 模糊半径 阴影颜色 */
+            font-style: italic; /* 使用斜体 */
+
+}
+</style>
+    {% block special_css %}
+        <style>
+        .btn-custom {
+    background-color: #4F81BD;
+            color: white;
+  }
+
+        </style>
+
+
+    {% endblock %}
+
+</head>
+<body>
+{#version-5.1#}
+{#<div class="container">#}
+{#    <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">#}
+{#        <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">#}
+{##}
+{#            <img class="bi me-2" src="{% static 'img/img.png' %}" width="40" height="40 alt=">#}
+{##}
+{#            <span class="fs-4"></span>#}
+{#        </a>#}
+{##}
+{#        <ul class="nav nav-pills">#}
+{#            <li class="nav-item">#}
+{#                <a href="/" class="nav-link link-dark" aria-current="page">#}
+{#                    Home#}
+{#                </a>#}
+{#            </li>#}
+{#            <a href="/search/" class="nav-link link-dark" aria-current="page">#}
+{#                Search for parameter information in PFTD#}
+{#            </a>#}
+{#            <li class="nav-item"><a href="/recommend/" class="nav-link link-dark">PFTD recommendation system</a></li>#}
+{##}
+{#            <div class="dropdown">#}
+{#                <a class="btn btn-white " href="#" aria-expanded="false" data-bs-toggle="dropdown">#}
+{#                    PFTD Information analysis tools#}
+{#                </a>#}
+{#                <ul class="dropdown-menu">#}
+{#                    <li><a class="dropdown-item" href="/analysis/publication_year/">Publication Years</a></li>#}
+{#                    <li><a class="dropdown-item" href="/analysis/country_dis/">Country Distribution</a></li>#}
+{#                    <li><a class="dropdown-item" href="/analysis/sankey/">Decision Indicator Sankey</a></li>#}
+{#                    <li><a class="dropdown-item" href="/analysis/Pie/">Decision Indicator Pie</a></li>#}
+{#                    <li><a class="dropdown-item" href="/analysis/graph/">Surgery and Decision Graph</a></li>#}
+{#                    <li><a class="dropdown-item" href="/analysis/line/">Sample Size and Year Distribution</a></li>#}
+{#                    <li><a class="dropdown-item" href="/analysis/polar/">Decision Indicator for Surgery Type</a></li>#}
+{##}
+{##}
+{#                    <li><a class="dropdown-item" href="/analysis/">Something else here</a></li>#}
+{##}
+{#                </ul>#}
+{#            </div>#}
+{##}
+{#            <li class="nav-item"><a href="/Contact_us/" class="nav-link link-dark">Contact us</a></li>#}
+{#        </ul>#}
+{#    </header>#}
+{#</div>#}
+<div class="">
+    <header class="index-header" style="background-color: #4F81BD ">
+        <a href="/">
+            <img class="bi me-2" src="{% static 'img/logo.png' %}" width="90" height="90">
+
+
+        </a>
+        <div  id="alltitle">
+
+            <b> PFTDP-KB</b>
+        </div>
+
+        <div class="menu_nav">
+            <ul>
+                <li>
+                    <a href="/" class="nav-link link-danger" aria-current="page" style="color: white">
+                        <b>Home</b>
+                    </a>
+                </li>
+                <li>
+                    <a href="/search/" class="nav-link link-dark" aria-current="page" style="color: white">
+                        <b>Browse</b>
+                    </a>
+                </li>
+                <li>
+                    <a href="/tool/" class="nav-link link-dark" aria-current="page" style="color: white">
+                        <b>Search</b>
+                    </a>
+                </li>
+{#                <li>#}
+{#                    <a href="/recommend/" class="nav-link link-dark" style="color: white"><b>PFTD recommendation system</b></a>#}
+{#                </li>#}
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="true"><b class="caret" style="color: white">Visual analysis</b></a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="/analysis/publication_year/">Publication Years</a></li>
+                    <li><a class="dropdown-item" href="/analysis/country_dis/">Country Distribution</a></li>
+{#                    <li><a class="dropdown-item" href="/analysis/sankey/">Decision Parameter Sankey</a></li>#}
+                    <li><a class="dropdown-item" href="/analysis/Pie/">Decision Parameter Pie</a></li>
+{#                    <li><a class="dropdown-item" href="/analysis/graph/">Surgery and Decision Graph</a></li>#}
+                    <li><a class="dropdown-item" href="/analysis/line/">Sample Size and Year Distribution</a></li>
+                    <li><a class="dropdown-item" href="/analysis/polar/">Decision Parameter for Surgery Type</a></li>
+                    </ul>
+                <li>
+                    <a href="/recommend/" class="nav-link link-dark" aria-current="page" style="color: white"><b>Recommend</b>
+                </a>
+                </li>
+                 <li>
+                <a href="/Contact_us/" class="nav-link link-dark" style="color: white"><b>Contact us</b></a>
+                </li>
+                <li>
+                    <a href="/help/" class="nav-link link-dark" style="color: white"><b>Help</b></a>
+                </li>
+            </ul>
+        </div>
+
+    </header>
+</div>
+
+
+{% block content %}
+
+{% endblock %}
+<div class="">
+    <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top" style="background-color: #4F81BD ">
+        <p class="col-md-4 mb-0 " style="color: white">&copy; 2023 Designed by Mengqiao He</p>
+
+        <a href="/"
+           class="">
+            <img class="bi me-2" src="{% static 'img/logo.png' %}" width="90" height="90">
+        </a>
+                <a href="/"
+           class=" ">
+            <img class="bi me-2" src="{% static 'img/huaxi.png' %}" width="130" height="100">
+        </a>
+
+        <p class="col-md-4 mb-0 " style="color: white">Institutes for Systems Genetics Frontiers Science Center for Disease-related
+            Molecular Network,West China Hospital, Sichuan University</p>
+
+
+        {#    <ul class="nav col-md-4 justify-content-end">#}
+        {#      <li class="nav-item"><a href="/" class="nav-link px-2 text-muted">Home</a></li>#}
+        {#      <li class="nav-item"><a href="/Common_ExRx/" class="nav-link px-2 text-muted">Common ExRx</a></li>#}
+        {#      <li class="nav-item"><a href="/Personalized_ExRx/" class="nav-link px-2 text-muted">Personalized ExRx</a></li>#}
+        {#      <li class="nav-item"><a href="/Resources/" class="nav-link px-2 text-muted">Resources</a></li>#}
+        {#      <li class="nav-item"><a href="/Contact_us/" class="nav-link px-2 text-muted">Contact us</a></li>#}
+        {#    </ul>#}
+    </footer>
+</div>
+<script src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
+{#    <script src="https://unpkg.com/@popperjs/core@2"></script>#}
+<script src="{% static 'plugins/bootstrap-4.6.2/js/bootstrap.bundle.min.js' %}"></script>
+
+{% block special_js %}
+
+{% endblock %}
+</body>
+</html>

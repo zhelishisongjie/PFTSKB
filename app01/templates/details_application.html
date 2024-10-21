@@ -1,0 +1,192 @@
+{% extends 'Layout.html' %}
+{% load static %}
+
+{% block title %}
+    <title>details application</title>
+    <style>
+      .custom-font-size td {
+    font-size: 10px; /* 或者您希望的任何固定大小 */
+}
+    #table thead th{
+        font-size: 12px;
+    },
+    </style>
+    <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}">
+    {#    <link rel="stylesheet" href="{% static 'css/bootstrap-icons.min.css' %}">#}
+    <link rel="stylesheet" href="{% static 'plugins/bootstrap-table/css/bootstrap-table.min.css' %}">
+    <link rel="stylesheet" href="{% static 'plugins/bootstrap-select/css/bootstrap-select.min.css' %}">
+{% endblock %}
+
+
+{% block content %}
+    <div class="container">
+        <div class="row mb-2 mt-5">
+<span class="badge badge-primary mb-2" style="font-size: larger;background-color: #4F81BD ">Related Information  [{{ id }}]</span>
+ <div id="table_allay">
+
+
+                <table
+                        id="table"
+                        data-toolbar="#toolbar"
+                >
+                </table>
+
+
+            </div>
+        </div>
+
+
+
+    </div>
+
+    {#        <p>{{ queryset.id }}</p>#}
+    {#        <p>{{ queryset.year }}</p>#}
+    {#<p>{{ queryset.pmid }}</p>#}
+
+{% endblock %}
+
+{% block special_js %}
+     <script src="{% static 'plugins/bootstrap-select/js/bootstrap-select.min.js' %}"></script>
+    <script src="https://unpkg.com/tableexport.jquery.plugin/tableExport.min.js"></script>
+    {#        <script src="https://cdn.jsdelivr.net/npm/tableexport.jquery.plugin@1.10.21/tableExport.min.js"></script>#}
+    <script src="{% static 'plugins/bootstrap-table/js/bootstrap-table.min.js' %}"></script>
+    <script src="https://unpkg.com/bootstrap-table@1.21.4/dist/extensions/filter-control/bootstrap-table-filter-control.min.js"></script>
+    <script src="{% static 'plugins/bootstrap-table/js/bootstrap-table-export.min.js' %}"></script>
+    <script>
+    var dataList = {{ data|default:"1"|safe }}
+
+    function operateFormatter(value, row, index) {
+
+
+            return [
+                '<button id="bind" type="button" class="btn-outline-info"style="background-color: #4F81BD;color: white;border: #4F81BD">detail</button>',
+
+            ].join('')
+
+        }
+
+        window.operateEvents = {
+            'click #bind': function (e, value, row, index) {
+                window.open("/search/getdetail/" + row.id, '_blank')
+                {#alert('You click like action, row: ' + JSON.stringify(row))#}
+            }
+        }
+
+        if (dataList === 1) {
+            $('.bar1').hide();
+        } else {
+            var table = document.getElementById('table_allay');
+
+            table.style.display = 'block';
+
+            $articlesTable = $('#table').bootstrapTable('destroy').bootstrapTable({
+                {#load:"",#}
+                {#url: '/recommend/',#}
+                {#method: 'POST',#}
+                data: dataList,
+                dataType: "json",
+                uniqueId: 'id',
+                striped: false,
+                cache: false,
+                sortable: true,
+                sortOrder: 'asc',
+                undefinedText: '--',
+                singleSelect: true,
+                showFullscreen: true,
+                showColumns: true,
+                showColumnsToggleAll: true,
+                {#toolbar: '#soft-toolbar',#}
+                search: true,
+                {#showExport: true,#}
+                {#exportTypes: ['csv'],#}
+                {#strictSearch: true,#}
+                {#clickToSelect: true,#}
+                filterControl: true,
+                pagination: true,
+                sidePagination: "client",
+                pageNumber: 1,
+                pageSize: 10,
+                pageList: [10, 20, 50, 100],
+                {#paginationPreText: "上一页",#}
+                {#paginationNextText: "下一页",#}
+                queryParamsType: "",
+                queryParams: function (params) {
+                    var temp = {
+                        'pageSize': params.pageSize,
+                        'pageNumber': params.pageNumber,
+                        'searchText': params.searchText,
+                        'sortName': params.sortName,
+                        'sortOrder': params.sortOrder
+                    };
+                    return temp;
+                },
+                columns: [
+                            {
+                                field: 'id',
+                                title: 'ID',
+                                align: 'center',
+                            },
+                            {
+                                field: 'Pid',
+                                title: 'PID',
+                                align: 'center',
+                            }, {
+                                field: 'parameters',
+                                title: 'Parameters',
+                                align: 'center',
+                            },
+                             {
+                                field: 'group_name',
+                                title: 'Group Name',
+                                align: 'center',},
+
+{
+                                field: 'classification_of_fluid_therapy_parameters',
+                                title: 'Parameters Classification',
+                                align: 'center',
+                                {#filterControl:"select"#}
+                            }, {
+                                field: 'application',
+                                title: 'Parameters Application',
+                                align: 'center',
+                                {#filterControl:"select"#}
+                            }, {
+                                field: 'surgery_type',
+                                title: 'Application for Surgery Type',
+                                align: 'center',
+                                {#filterControl:"select"#}
+                            }, {
+                                field: 'period_of_fluid_therapy',
+                                title: 'Application for Period',
+                                align: 'center',
+                        minWidth: 200
+                            },
+
+                            {
+                                field: 'pmid',
+                                title: 'PMID',
+                                align: 'center',
+                            },
+                            {
+                        title: 'Details',
+                        align: 'center',
+                        formatter: operateFormatter,
+                        events: window.operateEvents,
+                    }
+                        ],
+                onLoadError: function () {
+
+                },
+                 onPostBody: function() {
+        $('#table').bootstrapTable('resetView').find('tbody').addClass('custom-font-size');
+    }
+
+            });
+            $('.bar1').show();
+
+
+
+        }
+    </script>
+
+{% endblock %}

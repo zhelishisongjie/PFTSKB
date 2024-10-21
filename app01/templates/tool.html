@@ -1,0 +1,653 @@
+{% extends 'Layout.html' %}
+{% load static %}
+
+
+{% block title %}
+    <title xmlns="http://www.w3.org/1999/html">Search</title>
+
+    <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}">
+    {#    <link rel="stylesheet" href="{% static 'css/bootstrap-icons.min.css' %}">#}
+    <link rel="stylesheet" href="{% static 'plugins/bootstrap-table/css/bootstrap-table.min.css' %}">
+    <link rel="stylesheet" href="{% static 'plugins/bootstrap-select/css/bootstrap-select.min.css' %}">
+    <style type="text/css">
+     .custom-font-size td {
+    font-size: 10px; /* 或者您希望的任何固定大小 */
+},
+       #table thead th{
+        font-size: 10px;
+    },
+    .responsive-font {
+    font-size: 1.6vw; /* 根据视口宽度设置字体大小 */
+}
+
+/* 限制字体大小不至于过小或过大 */
+@media (max-width: 768px) {
+    .responsive-font {
+        font-size: 10px; /* 小屏幕上设置最小字体大小 */
+    }
+}
+
+@media (min-width: 1000px) {
+    .responsive-font {
+        font-size: 11px; /* 大屏幕上设置最大字体大小 */
+    }
+}
+        .step-key {
+        {#font-weight: bold;#} font-size: 1.2em;
+            width: 250px;
+            padding: 5px
+        }
+
+        #inputfont {
+            font-size: 16px;
+        }
+
+        #table {
+            font-size: 15px; /* 设置表格的字体大小 */
+
+        }
+
+        #table thead th {
+            font-size: 16px; /* 设置表头单元格的字体大小 */
+        }
+
+        #table_allay {
+            width: auto;
+        {#margin-left: 100px;#}{#margin-right: 100px;#}
+        }
+
+        /* 覆盖边框和文本颜色 */
+        .btn-outline-primary {
+            color: #333; /* 更改文本颜色 */
+            border-color: #4F81BD; /* 更改边框颜色 */
+        }
+
+        /* 当鼠标悬停在按钮上时 */
+
+        /* 当按钮获得焦点或被激活时 */
+        .btn-outline-primary:focus,
+        .btn-outline-primary.focus,
+        .btn-outline-primary:active,
+        .btn-outline-primary.active {
+            color: #fff; /* 焦点或激活时文本颜色 */
+            background-color: #4F81BD; /* 焦点或激活时背景颜色 */
+            border-color: #4F81BD; /* 焦点或激活时边框颜色 */
+        }
+
+    </style>
+{% endblock %}
+
+{% block content %}
+    {#   pipeline#}
+    <div class="container-fluid">
+        <div class="row mt-5">
+            <div class="col-3">
+                <form method="post" id="form1" novalidate>
+                    {% csrf_token %}
+                    <div class="container-fluid px-4 py-2 " id="inputfont">
+                        <div id="step1">
+                            <div class="mb-1">
+                                <div id="title" class="mb-1">
+                                    <img src="{% static 'img/ti.png' %}" alt="" width="35" height="35">
+                                    <button type="button" class="btn responsive-font " style="background-color: #1d6ac9;color: white" disabled
+                                            >
+                                        <b>Parameter information</b>
+                                    </button>
+                                </div>
+
+
+
+                                <div class="row mb-3">
+                                    <div class="col-lg-8 col-md-8">
+                                        <label class="form-label responsive-font"
+                                                 ><b>1.{{ form.application.label }}</b></label>
+                                        <div>{{ form.application }}</div>
+                                        <div class="text-danger">{{ form.application.errors.0 }}</div>
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <div class="col-lg-8 col-md-8">
+                                        <label class="form-label responsive-font"
+                                               ><b>2.{{ form.classification.label }}</b></label>
+                                        <div>{{ form.classification }}</div>
+                                        <div class="text-danger">{{ form.classification.errors.0 }}</div>
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <div class="col-lg-8 col-md-8">
+                                        <label class="form-label responsive-font"><b>3.{{ form.age.label }}</b></label>
+                                        <div>{{ form.age }}</div>
+                                        <div class="text-danger">{{ form.age.errors.0 }}</div>
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <div class="col-lg-8 col-md-8">
+                                        <label class="form-label responsive-font" ><b>4.{{ form.bmi.label }}</b></label>
+                                        <div>{{ form.bmi }}</div>
+                                        <div class="text-danger">{{ form.bmi.errors.0 }}</div>
+                                    </div>
+                                </div>
+                                {#                                <div class="row-cols-lg-4">#}
+                                {##}
+                                {#                                    <div class="col-lg-4">#}
+                                {#                                        <label class="form-label"#}
+                                {#                                               style="font-size: 20px"><b>1.{{ form.classification.label }}</b></label>#}
+                                {#                                        <div style="font-size: 18px">{{ form.classification }}</div>#}
+                                {#                                        <span style="color: red">{{ form.classification.errors.0 }}</span>#}
+                                {#                                    </div>#}
+                                {##}
+                                {#                                    <div class="col-lg-4">#}
+                                {#                                        <label class="form-label"#}
+                                {#                                               style="font-size: 20px"><b>2.{{ form.application.label }}</b></label>#}
+                                {#                                        <div style="font-size: 18px">{{ form.application }}</div>#}
+                                {#                                        <span style="color: red">{{ form.application.errors.0 }}</span>#}
+                                {#                                    </div>#}
+                                {##}
+                                {#                                    <div class="col-lg-4">#}
+                                {#                                        <label class="form-label" style="font-size: 20px"><b>3.{{ form.age.label }}</b></label>#}
+                                {#                                        <div style="font-size: 18px">{{ form.age }}</div>#}
+                                {#                                        <span style="color: red">{{ form.age.errors.0 }}</span>#}
+                                {#                                    </div>#}
+                                {#                                    <div class="col-lg-4">#}
+
+                                {#                                        <div style="font-size: 18px">{{ form.bmi }}</div>#}
+                                {#                                        <span style="color: red">{{ form.bmi.errors.0 }}</span>#}
+                                {#                                    </div>#}
+                                {##}
+                                {##}
+                                {#                                </div>#}
+                            </div>
+
+
+                        </div>
+
+
+                        <div id="step2" class="mt-4">
+                            <div class="mb-1">
+                                <div class="mb-1">
+                                    <img src="{% static 'img/ti.png' %}" alt="" width="35" height="35">
+                                    <button type="button" class="btn responsive-font" style="background-color: #1d6ac9;color: white" disabled
+                                    ><b>Surgery information</b>
+                                    </button>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <div class="col-lg-8 col-md-8">
+                                        <label class="form-label responsive-font"
+                                              ><b>1.{{ form.surgery_type.label }}</b></label>
+                                        <div>{{ form.surgery_type }}</div>
+                                        <span style="color: red">{{ form.surgery_type.errors.0 }}</span>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-lg-8 col-md-8">
+                                        <label class="form-label responsive-font"
+                                               ><b>2.{{ form.surgery_app.label }}</b></label>
+                                        <div style="font-size: 18px">{{ form.surgery_app }}</div>
+                                        <span style="color: red">{{ form.surgery_app.errors.0 }}</span>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-lg-8 col-md-8">
+                                        <label class="form-label responsive-font"
+                                               ><b>3.{{ form.period_of_FT.label }}</b></label>
+                                        <div style="font-size: 18px">{{ form.period_of_FT }}</div>
+                                        <span style="color: red">{{ form.period_of_FT.errors.0 }}</span>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-lg-8 col-md-8">
+                                        <label class="form-label responsive-font"><b>4.{{ form.asa.label }}</b></label>
+                                        <div style="font-size: 18px">{{ form.asa }}</div>
+                                        <span style="color: red">{{ form.asa.errors.0 }}</span>
+                                    </div>
+                                </div>
+
+
+                            </div>
+
+
+                        </div>
+                    </div>
+
+
+                    <div class="row mt-3">
+                        <div class="col-sm-3" style="margin-left: 100px">
+                            <div class="btn-group">
+                                <button id="btn_submit" type="submit" class="btn btn-info btn-space"
+                                        style="background-color: #4F81BD;color: white;border: #4F81BD">
+                                    <span class="fa fa-search btn-icon-space" aria-hidden="true"></span>
+                                    Submit
+                                </button>
+                                <span></span>
+                                <button id="toggleBtn" type="button" class="btn btn-secondary ml-2">
+                                    Toggle Table/Charts
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+            </form>
+        </div>
+        <div class="col-9">
+            <div id="table_allay">
+
+
+                <table
+                        id="table"
+                        data-toolbar="#toolbar"
+                >
+                </table>
+
+
+            </div>
+            <div>
+    <div id="charts" class="mt-4" style="width: 100%" ></div>
+</div>
+
+{#            <div id="charts" class="mt-5" style=" width: 100%;"></div>#}
+
+
+        </div>
+    </div>
+    </div>
+
+
+{% endblock %}
+
+{% block special_js %}
+
+    <script src="{% static 'plugins/bootstrap-select/js/bootstrap-select.min.js' %}"></script>
+    <script src="https://unpkg.com/tableexport.jquery.plugin/tableExport.min.js"></script>
+    {#        <script src="https://cdn.jsdelivr.net/npm/tableexport.jquery.plugin@1.10.21/tableExport.min.js"></script>#}
+    <script src="{% static 'plugins/bootstrap-table/js/bootstrap-table.min.js' %}"></script>
+    <script src="https://unpkg.com/bootstrap-table@1.21.4/dist/extensions/filter-control/bootstrap-table-filter-control.min.js"></script>
+    <script src="{% static 'plugins/bootstrap-table/js/bootstrap-table-export.min.js' %}"></script>
+    <script>
+
+        document.getElementById('toggleBtn').addEventListener('click', function () {
+            var table = document.getElementById('table_allay');
+            var charts = document.getElementById('charts');
+
+            // 检查元素当前的显示状态并切换
+            if (charts.style.display === 'none') {
+                table.style.display = 'none';
+                charts.style.display = 'block';
+                var mychart = echarts.init(document.getElementById('charts'));
+                mychart.resize()
+            } else {
+                table.style.display = 'block';
+                charts.style.display = 'none';
+                var mychart = echarts.init(document.getElementById('charts'));
+                mychart.resize()
+            }
+        });
+    </script>
+    <script>
+        $('#exampleModal').on('hide.bs.modal', function (event) {
+            document.querySelector('#form1').reset();
+        })
+    </script>
+    <script>
+
+        function operateFormatter(value, row, index) {
+
+
+            return [
+                '<button id="bind" type="button" class="btn-outline-info"style="background-color: #4F81BD;color: white;border: #4F81BD">detail</button>',
+
+            ].join('')
+
+        }
+
+        window.operateEvents = {
+            'click #bind': function (e, value, row, index) {
+                window.open("/search/getsearchdetails/" + row.id, '_blank')
+                {#alert('You click like action, row: ' + JSON.stringify(row))#}
+            }
+        }
+        var dataList =
+        {{ data|default:"1"|safe }}
+
+        if (dataList === 1) {
+            $('.bar1').hide();
+        } else {
+            var table = document.getElementById('table_allay');
+
+            table.style.display = 'block';
+
+            $articlesTable = $('#table').bootstrapTable('destroy').bootstrapTable({
+                {#load:"",#}
+                {#url: '/recommend/',#}
+                {#method: 'POST',#}
+                data: dataList,
+                dataType: "json",
+                uniqueId: 'id',
+                striped: false,
+                cache: false,
+                sortable: true,
+                sortOrder: 'asc',
+                undefinedText: '--',
+                singleSelect: true,
+                showFullscreen: true,
+                showColumns: true,
+                showColumnsToggleAll: true,
+                {#toolbar: '#soft-toolbar',#}
+                search: true,
+                showExport: true,
+                exportTypes: ['csv'],
+                {#strictSearch: true,#}
+                {#clickToSelect: true,#}
+                filterControl: true,
+                pagination: true,
+                sidePagination: "client",
+                pageNumber: 1,
+                pageSize: 10,
+                pageList: [10, 20, 50, 100],
+                {#paginationPreText: "上一页",#}
+                {#paginationNextText: "下一页",#}
+                queryParamsType: "",
+                queryParams: function (params) {
+                    var temp = {
+                        'pageSize': params.pageSize,
+                        'pageNumber': params.pageNumber,
+                        'searchText': params.searchText,
+                        'sortName': params.sortName,
+                        'sortOrder': params.sortOrder
+                    };
+                    return temp;
+                },
+                columns: [
+                    {#{#}
+                    {#    title: 'Details',#}
+                    {#   align: 'center',#}
+                    {#    formatter:operateFormatter,#}
+                    {#    events: window.operateEvents,#}
+                    {##}
+                    {
+                        field: 'id',
+                        title: 'ID',
+                        align: 'center',
+                    },
+                    {
+                        field: 'Pid',
+                        title: 'PID',
+                        align: 'center',
+                    }, {
+                        field: 'parameters',
+                        title: 'Parameters',
+                        align: 'center',
+                    },
+                    {
+                        field: 'group_name',
+                        title: 'Group Name',
+                        align: 'center',},
+
+                    {
+                        field: 'classification_of_fluid_therapy_parameters',
+                        title: 'Parameters Classification',
+                        align: 'center',
+                        {#filterControl:"select"#}
+                    }, {
+                        field: 'application',
+                        title: 'Parameters Application',
+                        align: 'center',
+                        {#filterControl:"select"#}
+                    }, {
+                        field: 'surgery_type',
+                        title: 'Application for Surgery Type',
+                        align: 'center',
+                        {#filterControl:"select"#}
+                    }, {
+                        field: 'period_of_fluid_therapy',
+                        title: 'Application for Period',
+                        align: 'center',
+                    },
+
+
+                    {
+                        field: 'pmid',
+                        title: 'PMID',
+                        align: 'center',
+                    },
+                    {
+                        title: 'Details',
+                        align: 'center',
+                        formatter: operateFormatter,
+                        events: window.operateEvents,
+                    }
+                ],
+                onLoadError: function () {
+
+                },
+                 onPostBody: function() {
+        $('#table').bootstrapTable('resetView').find('tbody').addClass('custom-font-size');
+    }
+
+            });
+            $('.bar1').show();
+            var datatable = $('#table').bootstrapTable('getData', false);
+            var firstColumnData = datatable.map(function (row) {
+                return row.id; // 替换 "id" 为你的列名
+            });
+            sessionStorage.setItem('firstColumnData', JSON.stringify(firstColumnData));
+            {#var test = JSON.parse(sessionStorage.getItem('firstColumnData'));#}
+            {#console.log(test)#}
+
+
+        }
+
+    </script>
+    <script src="{% static 'js/echarts.min.js' %}"></script>
+
+    <script>
+    data1 = []
+    links1 = []
+
+
+    {% for item in nodes %}
+        dic = {}
+        dic['name'] = "{{item}}"
+        data1.push(dic)
+    {% endfor %}
+    {% for item in links %}
+        dic = {}
+        dic['source'] = "{{item.source}}"
+        dic['target'] = "{{item.target}}"
+        dic['value'] = "{{item.value}}"
+        links1.push(dic)
+    {% endfor %}
+
+    // 假设每个数据点需要的最小高度是 50px，加上顶部和底部的额外空间 100px
+var minHeightPerItem = 10;
+var extraSpace = 1000;
+
+// 根据data1的长度计算图表的理想高度
+var idealHeight = data1.length * minHeightPerItem + extraSpace;
+{#console.log(idealHeight)#}
+        var charts = document.getElementById('charts');
+        charts.style.display = 'none';
+
+// 更新图表容器的高度
+document.getElementById('charts').style.height = idealHeight + 'px';
+mychart = echarts.init(document.getElementById('charts'));
+mychart.resize();
+
+
+
+     var option = {
+         title: {
+    text: 'Sankey Chart',
+    left: 'center'
+  },
+          tooltip: {
+        trigger: 'item',
+        triggerOn: 'mousemove'
+      },
+      toolbox: {
+                show: true,
+                orient: 'vertical',
+                left: 'right',
+                top: 'center',
+                feature: {
+                  dataView: { readOnly: false },
+                  restore: {},
+                  saveAsImage: {}
+                }
+              },
+      series: [
+        {
+          type: 'sankey',
+          data: data1,
+          links: links1,
+            nodeGap: 16,
+          animation:true,
+          emphasis: {
+            focus: 'adjacency'
+          },
+
+          lineStyle: {
+            color: 'gradient',
+            curveness: 0.5
+          }
+        }
+      ]
+     }
+
+    mychart.clear();
+    mychart.setOption(option);
+     {#const chartsContainer = document.getElementById('charts');#}
+     {##}
+     {#   chartsContainer.style.height = `${idealHeight}px`;#}
+     {##}
+     {#   window.addEventListener('resize', () => {#}
+     {#       chartsContainer.style.height = `${idealHeight}px`;#}
+     {#       mychart.resize();#}
+     {#   });#}
+    </script>
+{#    <script>#}
+{#        var backendData = {{ test|safe }};#}
+{##}
+{#        function countLeafNodes(tree) {#}
+{#            // 如果没有子节点，那么它就是一个叶子节点#}
+{#            if (!tree.children || tree.children.length === 0) {#}
+{#                return 1;#}
+{#            }#}
+{#            // 递归计算所有子节点的叶子节点数量#}
+{#            return tree.children.reduce((sum, child) => sum + countLeafNodes(child), 0);#}
+{#        }#}
+{##}
+{#        function calculateTreeHeight(tree) {#}
+{#            const leafCount = countLeafNodes(tree);#}
+{#            // 你可以定义一个基础高度，然后根据叶子节点数量来增加高度#}
+{#            const baseHeight = 300; // 基础高度，可以根据需要进行调整#}
+{#            const heightPerLeaf = 10; // 每个叶子节点增加的高度，可以根据需要进行调整#}
+{#            return Math.max(baseHeight, leafCount * heightPerLeaf);#}
+{#        }#}
+{##}
+{#        function generateTreeSeries(dataArray) {#}
+{#            const series = [];#}
+{#            const seriesPerRow = 2; // 每行显示的树形图数量#}
+{#            let accumulatedHeight = 30; // 累积高度，用于计算每棵树的顶部位置#}
+{#            let rowMaxHeight = 0; // 当前行的最大高度#}
+{##}
+{#            dataArray.forEach((treeData, index) => {#}
+{#                const isLeft = index % seriesPerRow === 0;#}
+{#                const treeHeight = calculateTreeHeight(treeData); // 计算当前树的高度#}
+{#                rowMaxHeight = Math.max(rowMaxHeight, treeHeight); // 更新当前行的最大高度#}
+{##}
+{#                // 对于每一行的第二个图表，我们不需要更新累积高度#}
+{#                // 只有当我们完成这一行的处理，即处理下一行的第一个图表时，我们才更新累积高度#}
+{#                if (isLeft && index !== 0) {#}
+{#                    accumulatedHeight += rowMaxHeight + 30; // 增加一些额外的间隔#}
+{#                    rowMaxHeight = treeHeight; // 重置行最大高度为当前树的高度#}
+{#                }#}
+{##}
+{#                const seriesConfig = {#}
+{#                    type: 'tree',#}
+{#                    name: treeData.name,#}
+{#                    data: [treeData],#}
+{#                    top: `${accumulatedHeight}px`,#}
+{#                    height: `${treeHeight}px`,#}
+{#                    left: isLeft ? '7%' : '60%',#}
+{#                    right: isLeft ? '60%' : '7%',#}
+{#                };#}
+{##}
+{#                series.push(seriesConfig);#}
+{#            });#}
+{##}
+{#            // 返回series和最终的累积高度，以便外部调用时可以设置容器高度#}
+{#            return {series, finalHeight: accumulatedHeight + rowMaxHeight};#}
+{#        }#}
+{##}
+{#            function generateTreeSeries(dataArray) {#}
+{#          const series = [];#}
+{#          const seriesPerRow = 2; // 每行显示的树形图数量#}
+{#          const seriesHeight = 100 / Math.ceil(dataArray.length / seriesPerRow); // 计算每个树形图的高度百分比#}
+{##}
+{#          dataArray.forEach((data, index) => {#}
+{#            const row = Math.floor(index / seriesPerRow);#}
+{#            const isLeft = index % seriesPerRow === 0;#}
+{##}
+{#            const seriesConfig = {#}
+{#              type: 'tree',#}
+{#              name: `tree${index + 1}`,#}
+{#              data: [data],#}
+{#              top: `${row * seriesHeight}%`,#}
+{#                bottom: `${100 - (row + 1) * seriesHeight}%`, // 修改这里#}
+{#              left: isLeft ? '7%' : '60%',#}
+{#              right: isLeft ? '60%' : '7%',#}
+{#                label: {#}
+{#            normal: {#}
+{#              position: 'left', // 标签位置#}
+{#              verticalAlign: 'middle', // 垂直对齐方式#}
+{#              align: 'left', // 水平对齐方式#}
+{#              fontSize: 10, // 字体大小#}
+{#              rotate: 45, // 旋转角度#}
+{#                roam: true,#}
+{#            },#}
+{#          },#}
+{#              // 其他配置...#}
+{#            };#}
+{##}
+{#            series.push(seriesConfig);#}
+{#          });#}
+{##}
+{#          return series;#}
+{##}
+{#        var result = generateTreeSeries(backendData);#}
+{#        var charts = document.getElementById('charts');#}
+{#        charts.style.display = 'none';#}
+{#        var mychart = echarts.init(document.getElementById('charts'));#}
+{##}
+{#        var option = {#}
+{#            title: {#}
+{#                text: 'Surgery Type with Decision Indicator',#}
+{#                left: 'center',#}
+{#            },#}
+{#            tooltip: {},#}
+{#            series: result.series#}
+{#        }#}
+{##}
+{#        mychart.clear();#}
+{#        mychart.setOption(option);#}
+{##}
+{#        const chartsContainer = document.getElementById('charts');#}
+{##}
+{#        chartsContainer.style.height = `${result.finalHeight}px`;#}
+{##}
+{#        window.addEventListener('resize', () => {#}
+{#            chartsContainer.style.height = `${result.finalHeight}px`;#}
+{#            mychart.resize();#}
+{#        });#}
+{##}
+{##}
+{#    </script>#}
+
+
+{% endblock %}

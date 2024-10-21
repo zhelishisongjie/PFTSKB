@@ -1,0 +1,184 @@
+{% extends 'Layout.html' %}
+{% load static %}
+
+
+{% block title %}
+    <title>Analyze</title>
+{% endblock %}
+{% block special_css %}
+        <link rel="stylesheet" href="{% static 'plugins/bootstrap-select/css/bootstrap-select.min.css' %}">
+    <style>
+        #charts {
+            height: 500px;
+            width: 500px;
+        }
+        .center {
+    {#margin: auto;#}
+    width: 70%;
+    {#border: 3px solid green;#}
+    padding: 10px;
+}
+    </style>
+
+{% endblock %}
+
+{% block content %}
+
+    <div class="">
+                                           <div class="mt-5 mb-5">
+        <div class="text-center" style="background-color: #4F81BD">
+            <div style="height: 60px;color: white;font-size: 35px"> PFTD Information Analysis Tools for Publication Years</div>
+        </div>
+    </div>
+    </div>
+     <div class="container">
+        <form id="myForm" method="post" novalidate class="center mt-3 mb-3"  >
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-3">
+                    <div>{{ form.category }}</div>
+                    <span style="color: red">{{ form.category.errors.0 }}</span>
+
+                </div>
+                <div class="col-3 ml-5 mr-5">
+                    <select name="name" id="user" class="selectpicker" data-live-search="true" data-actions-box="true" data-size="5" multiple title="Choose">
+
+                    </select>
+
+
+                </div>
+                <div class="col-3">
+                    <div class="btn-group">
+                        <button id="btn_submit" type="submit" class="btn btn-info btn-space" style="
+    border: none;
+    border-radius: 5px;
+    background-color: #4F81BD;
+">
+                            <span class="fa fa-search btn-icon-space" aria-hidden="true"></span>
+                            Submit
+                        </button>
+                        <span></span>
+                        <a id="btn_reset" type="button" href="/analysis/publication_year/" class="btn btn-default btn-space" >
+                            <span class="fa fa-eraser btn-icon-space" aria-hidden="true"></span>
+                            Reset
+                        </a>
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
+        </form>
+        <div id="charts" class="mt-4" style="height: 900px; width: 100%"></div>
+
+    </div>
+
+
+
+{% endblock %}
+
+{% block special_js %}
+    <script src="{% static 'js/echarts.min.js' %}"></script>
+        <script src="{% static 'plugins/bootstrap-select/js/bootstrap-select.min.js' %}"></script>
+    <script>
+        var mychart = echarts.init(document.getElementById('charts'));
+        $('#user').val('').selectpicker('refresh');
+            // 如果category选择框也是用bootstrap-select插件渲染的
+        $("#user2").val('').selectpicker('refresh');
+        var xdata = [];
+        var series_data = [];
+
+        {% for item in data %}
+            xdata.push("{{ item.year }}")
+            series_data.push({{ item.count }})
+
+        {% endfor %}
+        var option = {
+            title: {
+    text: 'Publication Years{{ option }}',
+    left: 'center'
+  },
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'shadow'
+                }
+            },
+              toolbox: {
+    feature: {
+      restore: {},
+      saveAsImage: {}
+    }
+  },
+            xAxis: {
+                type: 'category',
+                data: xdata,
+                axisTick: {
+                    alignWithLabel: true
+                }
+            },
+            yAxis: {
+                type: 'value'
+            },
+            series: [{
+                data: series_data,
+                type: 'bar',
+                barWidth: '60%',
+                colorBy:'data'
+            }],
+  {#            dataZoom: [#}
+  {#  {#}
+  {#    show: true,#}
+  {#    realtime: true,#}
+  {#    start: 65,#}
+  {#    end: 85#}
+  {#  },#}
+  {#  {#}
+  {#    type: 'inside',#}
+  {#    realtime: true,#}
+  {#    start: 65,#}
+  {#    end: 85#}
+  {#  }#}
+  {#],#}
+        };
+        mychart.clear();
+        mychart.setOption(option);
+
+    </script>
+    <script>
+
+    function restSelecter(divId){
+	 // 清空下拉框
+		$(divId).find("option").remove();
+		$(divId).selectpicker('refresh');
+
+}
+    function selectOnchange(obj) {
+            var value = obj.options[obj.selectedIndex].value
+            {#alert(value)#}
+            $.ajax({
+                type: "GET",
+                url: "category_search/",    //后台处理函数的url
+                data: {type: value},
+                success: function (result) {  //获取后台处理后传过来的result
+                    {#alert(result)#}
+                    {#var selectObj = $("#input_val");#}
+                    {#alert(result)#}
+                    $("#user").html(result)
+                    $("#user").selectpicker('refresh')
+
+                }
+            });
+        }
+        function reset_bar(obj){
+        $.ajax({
+            type: "GET",
+            url: "localhost:8000/analysis/publication_year/",    //后台处理函数的url
+        });
+    }
+
+    </script>
+
+{% endblock %}

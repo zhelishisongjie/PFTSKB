@@ -1,0 +1,164 @@
+{% extends 'Layout.html' %}
+{% load static %}
+
+{% block title %}
+    <title>details</title>
+    <style>
+     .th{
+
+     }
+    </style>
+{% endblock %}
+
+
+{% block content %}
+    <div class="container">
+
+            <div class="mt-2 mb-3" style="display: flex; justify-content: center;" >
+                <h1>Detail Information</h1>
+            </div>
+
+
+        <div class="row mb-3">
+            <div class="col">
+                <span class="badge badge-primary mb-3" style="font-size: larger;background-color: #4F81BD ">Parameter</span>
+                <table>
+                    <tbody>
+                    <tr>
+                        <th>PID:</th>
+                        <td class="align-middle"><a href="/search/getdetails/{{ queryset.pid }}" target="_blank">{{ queryset.pid }}</a></td>
+                    </tr>
+                    <tr>
+                        <th>Parameter_name:</th>
+                        <td class="align-middle">{{ queryset.parameters }}</td>
+                    </tr>
+                    <tr>
+                        <th>Defination:</th>
+                        <td>{{ queryset.defination }}</td>
+                    </tr>
+                    <tr>
+                        <th>Parameter Classification:</th>
+                        <td>{{ queryset.classification_of_fluid_therapy_parameters }}</td>
+                    </tr>
+
+                    </tbody>
+                </table>
+
+            </div>
+
+
+        </div>
+        <hr/>
+        <div class="row mb-3">
+            <div class="col">
+                <span class="badge badge-primary mb-3" style="font-size: larger;background-color: #4F81BD ">Application</span>
+                <table>
+                    <tbody>
+                    <tr>
+                        <th>Parameter Application:</th>
+                        <td class="align-middle">{{ queryset.application }}</td>
+                    </tr>
+                    <tr>
+                        <th>Application for Surgery Type:</th>
+                        <td class="align-middle">{{ queryset.surgery_type }}</td>
+                    </tr>
+                    <tr>
+                        <th>Application for Period:</th>
+                        <td class="align-middle">{{ queryset.period_of_fluid_therapy }}</td>
+                    </tr>
+
+                    <tr>
+                        <th>Surgical Approach:</th>
+                        <td>{{ queryset.surgical_approach }}</td>
+                    </tr>
+
+
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+               <hr/>
+
+        <div class="row mb-3">
+            <div class="col">
+                <span class="badge badge-primary mb-3" style="font-size: larger;background-color: #4F81BD ">Reference information</span>
+                <table>
+                    <tbody>
+                    <tr>
+                        <th class="mr-4">PMID:</th>
+                        <td class="align-middle"><a href="https://pubmed.ncbi.nlm.nih.gov/{{ queryset.pmid }}" target="_blank">{{ queryset.pmid }}</a>
+</td>
+                    </tr>
+                    <tr>
+                        <th>Year:</th>
+                        <td class="align-middle">{{ queryset.year }}</td>
+                    </tr>
+                    <tr>
+                        <th>Study Design:</th>
+                        <td>{{ queryset.study_design }}</td>
+                    </tr>
+                    <tr>
+                        <th>Group-name:</th>
+                        <td>{{ queryset.group_name }}</td>
+                    </tr>
+                    <tr>
+                        <th>Reference:</th>
+                        <td>{{ queryset.reference }}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+
+        </div>
+        <hr/>
+
+
+        <div class="row mb-3">
+            <div class="col">
+                <span class="badge badge-primary mb-3" style="font-size: larger;background-color: #4F81BD ">Sample information</span>
+                <table>
+                    <tbody>
+                    <tr>
+                        <th>Sample size:</th>
+                        <td class="align-middle">{{ queryset.sample_size }}</td>
+                    </tr>
+                    <tr>
+                        <th>Gender:</th>
+                        <td class="align-middle">{{ queryset.gender }}</td>
+                    </tr>
+                    <tr>
+                        <th>Population:</th>
+                        <td>{{ queryset.age }}</td>
+                    </tr>
+                    <tr>
+                        <th>Race:</th>
+                        <td>{{ queryset.race }}</td>
+                    </tr>
+                    <tr>
+                        <th>Region:</th>
+                        <td>{{ queryset.region }}</td>
+                    </tr>
+                    <tr>
+                        <th>BMI:</th>
+                        <td>{{ queryset.bmi }}</td>
+                    </tr>
+                    <tr>
+                        <th>ASA Physical Status:</th>
+                        <td>{{ queryset.asa_physical_status }}</td>
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+    </div>
+
+    {#        <p>{{ queryset.id }}</p>#}
+    {#        <p>{{ queryset.year }}</p>#}
+    {#<p>{{ queryset.pmid }}</p>#}
+
+{% endblock %}
