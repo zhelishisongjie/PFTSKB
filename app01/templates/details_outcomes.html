@@ -1,0 +1,166 @@
+{% extends 'Layout.html' %}
+{% load static %}
+
+{% block title %}
+    <title>details</title>
+    <style>
+      table {
+    border-collapse: separate; /* 保持单元格之间的间隔 */
+    border-spacing: 0 10px; /* 设置行之间的间距为10px */
+  }
+
+  th, td {
+    padding: 10px 15px; /* 增加单元格内部的上下左右间距 */
+    vertical-align: top; /* 调整内容的垂直对齐方式 */
+  }
+
+  th {
+      width: 200px;
+    text-align: left; /* 使表头文本左对齐 */
+    font-weight: bold; /* 表头加粗 */
+  }
+    </style>
+{% endblock %}
+
+
+{% block content %}
+    <div class="container">
+
+            <div class="mt-2 mb-3" style="display: flex; justify-content: center;" >
+                <h1>Detail Information</h1>
+            </div>
+
+
+        <div class="row mb-3">
+            <div class="col">
+                <span class="badge badge-primary mb-3" style="font-size: larger;background-color: #4F81BD ">Outcomes</span>
+                <table>
+                    <tbody>
+                    <tr>
+                        <th>PMID:</th>
+                        <td class="align-middle"><a href="https://pubmed.ncbi.nlm.nih.gov/{{ queryset.pmid }}" target="_blank">{{ queryset.pmid }}</a></td>
+                    </tr>
+                    <tr>
+                        <th>Group Name:</th>
+                        <td class="align-middle">{{ queryset.group_name }}</td>
+                    </tr>
+                    <tr>
+                        <th>Effect Comparsion:</th>
+                        <td>{{ queryset.Effect_comparison }}</td>
+                    </tr>
+
+                    </tbody>
+                </table>
+
+            </div>
+
+
+        </div>
+        <hr/>
+        <div class="row mb-3">
+            <div class="col">
+                <span class="badge badge-primary mb-3" style="font-size: larger;background-color: #4F81BD ">Complication</span>
+                <table>
+                    <tbody>
+                    <tr>
+                        <th>Complication Name:</th>
+                        <td class="align-middle">{{ queryset.Complications_name }}</td>
+                    </tr>
+                    <tr>
+                        <th>Result:</th>
+                        <td class="align-middle">{{ queryset.Result1 }}</td>
+                    </tr>
+                    <tr>
+                        <th>Statistics:</th>
+                        <td class="align-middle">{{ queryset.Statictics1 }}</td>
+                    </tr>
+
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+                <hr/>
+        <div class="row mb-3">
+            <div class="col">
+                <span class="badge badge-primary mb-3" style="font-size: larger;background-color: #4F81BD ">Length of Hospital Stay</span>
+                <table>
+                    <tbody>
+                    <tr>
+                        <th>Outcome Name:</th>
+                        <td class="align-middle">{{ queryset.Outcome_name1 }}</td>
+                    </tr>
+                    <tr>
+                        <th>Result:</th>
+                        <td class="align-middle">{{ queryset.Result2 }}</td>
+                    </tr>
+                    <tr>
+                        <th>Statistics:</th>
+                        <td class="align-middle">{{ queryset.Statictics2 }}</td>
+                    </tr>
+
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+               <hr/>
+
+        <div class="row mb-3">
+            <div class="col">
+                <span class="badge badge-primary mb-3" style="font-size: larger;background-color: #4F81BD ">ICU Occupancy</span>
+                <table>
+                    <tbody>
+                    <tr>
+                        <th class="mr-4">Outcome Name:</th>
+                        <td class="align-middle">{{ queryset.Outcome_name2 }}</td>
+                    </tr>
+                    <tr>
+                        <th>Result:</th>
+                        <td class="align-middle">{{ queryset.Result3 }}</td>
+                    </tr>
+                    <tr>
+                        <th>Statistics:</th>
+                        <td>{{ queryset.Statictics3 }}</td>
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
+
+
+        </div>
+        <hr/>
+
+
+        <div class="row mb-3">
+            <div class="col">
+                <span class="badge badge-primary mb-3" style="font-size: larger;background-color: #4F81BD ">Mortality</span>
+                 <table>
+                    <tbody>
+                    <tr>
+                        <th class="mr-4">Outcome Name:</th>
+                        <td class="align-middle">{{ queryset.Outcome_name3 }}</td>
+                    </tr>
+                    <tr>
+                        <th>Result:</th>
+                        <td class="align-middle">{{ queryset.Result4 }}</td>
+                    </tr>
+                    <tr>
+                        <th>Statistics:</th>
+                        <td>{{ queryset.Statictics4 }}</td>
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+    </div>
+
+    {#        <p>{{ queryset.id }}</p>#}
+    {#        <p>{{ queryset.year }}</p>#}
+    {#<p>{{ queryset.pmid }}</p>#}
+
+{% endblock %}

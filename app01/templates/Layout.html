@@ -15,7 +15,7 @@
     text-align: center;
             font-family: '方正舒体', serif;
     color: white;
-    font-size: 55px;
+    font-size: 30px;
     border-color: #4F81BD;
 text-shadow: 1px 1px 1px #ffffff; /* 水平偏移 垂直偏移 模糊半径 阴影颜色 */
             font-style: italic; /* 使用斜体 */
@@ -89,7 +89,7 @@ text-shadow: 1px 1px 1px #ffffff; /* 水平偏移 垂直偏移 模糊半径 阴�
         </a>
         <div  id="alltitle">
 
-            <b> PFTDP-KB</b>
+            <b> PFTDKB-RD</b>
         </div>
 
         <div class="menu_nav">
@@ -99,16 +99,80 @@ text-shadow: 1px 1px 1px #ffffff; /* 水平偏移 垂直偏移 模糊半径 阴�
                         <b>Home</b>
                     </a>
                 </li>
-                <li>
-                    <a href="/search/" class="nav-link link-dark" aria-current="page" style="color: white">
-                        <b>Browse</b>
-                    </a>
+
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="true"><b class="caret" style="color: white">FT Assisted Decision Tool</b></a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="/recommend/">Recommended of Fluid Therapy Regimen</a></li>
+                    </ul>
                 </li>
-                <li>
-                    <a href="/tool/" class="nav-link link-dark" aria-current="page" style="color: white">
-                        <b>Search</b>
-                    </a>
+
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="true"><b class="caret" style="color: white">FT Decision Parameters Match Tool</b></a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="/tool/">Match Decision Parameters</a></li>
+                    </ul>
                 </li>
+
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="true"><b class="caret" style="color: white">Research</b></a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="/research/preview/">Preview Information</a></li>
+                         <li><a class="dropdown-item" href="/research/publication/">Publication Information</a></li>
+                         <li><a class="dropdown-item" href="/research/study/">Study Information</a></li>
+                    </ul>
+                </li>
+
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="true"><b class="caret" style="color: white">Baseline</b></a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="/baseline/patient/">Patient Information</a></li>
+                         <li><a class="dropdown-item" href="/baseline/surgery/">Surgery Information</a></li>
+                         <li><a class="dropdown-item" href="/baseline/disease/">Disease Information</a></li>
+                    </ul>
+                </li>
+
+                                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="true"><b class="caret" style="color: white">Fluid therapy</b></a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="/search/1">FT Parameters</a></li>
+                         <li><a class="dropdown-item" href="/search/2">FT Regimens</a></li>
+                    </ul>
+                </li>
+
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="true"><b class="caret" style="color: white">Outcomes</b></a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="/outcome/complication/">Complications</a></li>
+                         <li><a class="dropdown-item" href="/outcome/hospital/">Length of Hospital Stay</a></li>
+                         <li><a class="dropdown-item" href="/outcome/icu/">ICU occupancy</a></li>
+                        <li><a class="dropdown-item" href="/outcome/mortality/">Mortality</a></li>
+                    </ul>
+                </li>
+
+
+
+{#                <li>#}
+{#                    <a href="/search/" class="nav-link link-dark" aria-current="page" style="color: white">#}
+{#                        <b>Browse</b>#}
+{#                    </a>#}
+{#                </li>#}
+{#                <li>#}
+{#                    <a href="/tool/" class="nav-link link-dark" aria-current="page" style="color: white">#}
+{#                        <b>Search</b>#}
+{#                    </a>#}
+{#                </li>#}
+{#                                <li>#}
+{#                    <a href="/research/" class="nav-link link-dark" aria-current="page" style="color: white">#}
+{#                        <b>Research</b>#}
+{#                    </a>#}
+{#                </li>#}
 {#                <li>#}
 {#                    <a href="/recommend/" class="nav-link link-dark" style="color: white"><b>PFTD recommendation system</b></a>#}
 {#                </li>#}
@@ -124,10 +188,15 @@ text-shadow: 1px 1px 1px #ffffff; /* 水平偏移 垂直偏移 模糊半径 阴�
                     <li><a class="dropdown-item" href="/analysis/line/">Sample Size and Year Distribution</a></li>
                     <li><a class="dropdown-item" href="/analysis/polar/">Decision Parameter for Surgery Type</a></li>
                     </ul>
-                <li>
-                    <a href="/recommend/" class="nav-link link-dark" aria-current="page" style="color: white"><b>Recommend</b>
-                </a>
                 </li>
+
+
+
+{##}
+{#                <li>#}
+{#                    <a href="/recommend/" class="nav-link link-dark" aria-current="page" style="color: white"><b>Recommend</b>#}
+{#                </a>#}
+{#                </li>#}
                  <li>
                 <a href="/Contact_us/" class="nav-link link-dark" style="color: white"><b>Contact us</b></a>
                 </li>

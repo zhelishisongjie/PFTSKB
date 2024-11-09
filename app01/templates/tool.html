@@ -78,9 +78,18 @@
 {% endblock %}
 
 {% block content %}
+        {% if sign == 1 %}
+<div id="toolbar" class="bar1">
+    <div class="alert alert-primary alert-dismissible fade show text-center" style="font-size: 12px" role="alert">
+        <strong>There is currently no completely matching information, the following information can provide you with reference.</strong>
+
+</div>
+</div>
+
+    {% endif %}
     {#   pipeline#}
     <div class="container-fluid">
-        <div class="row mt-5">
+        <div class="row mt-3">
             <div class="col-3">
                 <form method="post" id="form1" novalidate>
                     {% csrf_token %}
@@ -258,6 +267,8 @@
     </div>
 
 
+
+
 {% endblock %}
 
 {% block special_js %}
@@ -288,6 +299,7 @@
             }
         });
     </script>
+
     <script>
         $('#exampleModal').on('hide.bs.modal', function (event) {
             document.querySelector('#form1').reset();

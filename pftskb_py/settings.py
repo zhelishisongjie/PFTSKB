@@ -106,7 +106,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'HOST': '127.0.0.1',         # 数据库的ip
         'PORT': '3306',              # 端口，一般默认为3306
-        'NAME': 'pftd_decision_indicator',          # 数据库名称
+        'NAME': 'pftdp_kb',          # 数据库名称
         'USER': 'root',              # 用户名
         'PASSWORD': 'aA1508525874!',        # 密码
     },
@@ -143,8 +143,12 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
+STATIC_ROOT = '/root/PFTSKB/collected_static'
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'app01', 'static'),
+]
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'collected_static')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field

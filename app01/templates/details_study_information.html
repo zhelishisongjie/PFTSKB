@@ -1,0 +1,87 @@
+{% extends 'Layout.html' %}
+{% load static %}
+
+{% block title %}
+    <title>details</title>
+    <style>
+      table {
+    border-collapse: separate; /* 保持单元格之间的间隔 */
+    border-spacing: 0 10px; /* 设置行之间的间距为10px */
+  }
+
+  th, td {
+    padding: 10px 15px; /* 增加单元格内部的上下左右间距 */
+    vertical-align: top; /* 调整内容的垂直对齐方式 */
+  }
+
+  th {
+      width: 150px;
+    text-align: left; /* 使表头文本左对齐 */
+    font-weight: bold; /* 表头加粗 */
+  }
+    </style>
+{% endblock %}
+
+
+{% block content %}
+    <div class="container">
+
+            <div class="mt-2 mb-3" style="display: flex; justify-content: center;" >
+                <h1>Detail Information</h1>
+            </div>
+
+
+        <div class="row mb-3">
+            <div class="col">
+                <span class="badge badge-primary mb-3" style="font-size: larger;background-color: #4F81BD ">Study Information Details</span>
+                <table>
+                    <tbody>
+                    <tr>
+                        <th>PMID:</th>
+                         <td class="align-middle">{{ queryset.id }}</td>
+{#                        <td class="align-middle"><a href="/search/getdetails/{{ queryset.id }}" target="_blank">{{ queryset.id }}</a></td>#}
+                    </tr>
+                    <tr>
+                        <th>Study Design:</th>
+                        <td class="align-middle">{{ queryset.Study_Design }}</td>
+                    </tr>
+                    <tr>
+                        <th>Sample Size:</th>
+                        <td>{{ queryset.Sample_Size }}</td>
+                    </tr>
+                                        <tr>
+                        <th>Group Name:</th>
+                        <td>{{ queryset.group_name }}</td>
+                    </tr>
+                                        <tr>
+                        <th>Region:</th>
+                        <td>{{ queryset.Region }}</td>
+                    </tr>
+                                        <tr>
+                        <th>Title:</th>
+                        <td>{{ queryset.Title }}</td>
+                    </tr>
+                                                            <tr>
+                        <th>Key Points:</th>
+                        <td>{{ queryset.Conclusion }}</td>
+                    </tr>
+                    <tr>
+                        <th>Year:</th>
+                        <td>{{ queryset.Year }}</td>
+                    </tr>
+
+                    </tbody>
+                </table>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+    {#        <p>{{ queryset.id }}</p>#}
+    {#        <p>{{ queryset.year }}</p>#}
+    {#<p>{{ queryset.pmid }}</p>#}
+
+{% endblock %}

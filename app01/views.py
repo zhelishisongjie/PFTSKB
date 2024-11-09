@@ -19,7 +19,7 @@ def home(request):
     if request.method == 'GET':
         # 获取分类下的条目数#
         data_st = PftdDecisionIndicator.objects.raw(
-            "SELECT id, Application as app,COUNT(*) as nums FROM `pftd_decision_indicator` GROUP BY Application"
+            "SELECT id, Application as app,COUNT(*) as nums FROM `pftd_decision_indicator` GROUP BY Application,id"
         )
 
         print(data_st)
@@ -59,7 +59,7 @@ def home(request):
                 data_map[record.app.strip().title()] = record.nums
 
         cls = ['Treatment information', 'Physical examinations', 'Intake factors', 'Insensible losses', 'Complications',
-               'clinical signs', 'Other factors', 'Vital signs', 'volume loss factors', 'Laboratory tests',
+               'Clinical signs', 'Other factors', 'Vital signs', 'Volume loss factors', 'Laboratory tests',
                'Physiological factors', 'Hemodynamic parameters']
         # cls = ['Physiological factors', 'volume loss factors', 'Vital signs', 'Hemodynamic parameters',
         #        'Laboratory tests', 'Other factors', 'clinical signs', 'Intake factors', 'Complications',
@@ -73,7 +73,7 @@ def home(request):
             cls_map[i] = temp
             temp += 1
         data_tt = PftdDecisionIndicator.objects.raw(
-            "SELECT id, Classification_of_fluid_therapy_Parameters as clas,Period_of_fluid_therapy as ft,COUNT(*) as nums FROM `pftd_decision_indicator` GROUP BY Classification_of_fluid_therapy_Parameters,Period_of_fluid_therapy"
+            "SELECT id, Classification_of_fluid_therapy_Parameters as clas,Period_of_fluid_therapy as ft,COUNT(*) as nums FROM `pftd_decision_indicator` GROUP BY Classification_of_fluid_therapy_Parameters,Period_of_fluid_therapy,id"
         )
         for i in data_tt:
             if ";" in i.ft:
@@ -88,12 +88,12 @@ def home(request):
                                         "focus": 'series'
                                     }, "data": [0] * len(cls)}
                         ft_array.append(item)
-                        dic_temp["data"][cls_map[i.clas]] = int(i.nums)
+                        dic_temp["data"][cls_map[i.clas.capitalize()]] = int(i.nums)
                         res.append(dic_temp)
                     else:
                         for j in res:
                             if j["name"] == item:
-                                j["data"][cls_map[i.clas]] += int(i.nums)
+                                j["data"][cls_map[i.clas.capitalize()]] += int(i.nums)
             else:
                 name = i.ft
                 dic_temp = {"name": name, "type": 'bar', "stack": 'total',
@@ -106,13 +106,13 @@ def home(request):
 
                 if name not in ft_array:
                     ft_array.append(name)
-                    dic_temp["data"][cls_map[i.clas]] = int(i.nums)
+                    dic_temp["data"][cls_map[i.clas.capitalize()]] = int(i.nums)
                     res.append(dic_temp)
 
                 else:
                     for j in res:
                         if j["name"] == name:
-                            j["data"][cls_map[i.clas]] += int(i.nums)
+                            j["data"][cls_map[i.clas.capitalize()]] += int(i.nums)
 
         # print(data_map)
         # print(res)
@@ -190,6 +190,186 @@ def home_select(request, id):
         return render(request, "details_application.html", {'data': json.dumps(data), 'id': 'Fluid volume estimation'})
 
 
+def preview(request):
+
+    return render(request, "research_preview.html")
+def publication(request):
+
+    return render(request, "research_publication.html")
+def study(request):
+
+    return render(request, "research_study.html")
+
+def study_details(request,id):
+    queryset = Pftd.objects.get(id=id)
+    return render(request, "details_study_information.html", {'queryset': queryset})
+
+def patient(request):
+    return render(request, "baseline_patient.html")
+
+def surgery(request):
+    return render(request, "baseline_surgery.html")
+
+def disease(request):
+    return render(request, "baseline_disease.html")
+
+def complication(request):
+    return render(request, "outcome_complication.html")
+def hospital(request):
+    return render(request, "outcome_len_hos.html")
+def icu(request):
+    return render(request, "outcome_ICU.html")
+def mortality(request):
+    return render(request, "outcome_Mortality.html")
+
+def outcome_details(request,id):
+    queryset = Pftd.objects.get(id=id)
+    return render(request, "details_outcomes.html", {'queryset': queryset})
+
+def get_pftd_data(request,num):
+    if request.method == 'GET':
+        #preview information
+        if num == 1:
+            queryset = Pftd.objects.raw(
+                "SELECT id,pmid,Title,group_name,Conclusion FROM `pftd` GROUP BY pmid,Title,group_name")
+            # total = PftdDecisionIndicator.objects.count()
+            # queryset = PftdDecisionIndicator.objects.all()
+            rows = []
+            for obj in queryset:
+                rows.append({'id': obj.id, 'pmid': obj.pmid, 'Title': obj.Title,
+                             'Conclusion': obj.Conclusion,
+                             'group_name': obj.group_name})
+
+            data = {'total': len(queryset), 'totalNotFiltered': len(queryset), 'rows': rows}
+
+            return HttpResponse(json.dumps(data, separators=(',', ':')), content_type='application/json')
+        if num == 2:
+            queryset = Pftd.objects.raw(
+                "SELECT id,pmid,`Year`,Title,Journal,Reference FROM `pftd` GROUP BY pmid")
+            # total = PftdDecisionIndicator.objects.count()
+            # queryset = PftdDecisionIndicator.objects.all()
+            rows = []
+            for obj in queryset:
+                rows.append({'id': obj.id, 'pmid': obj.pmid, 'Title': obj.Title,
+                             'Year': obj.Year,'Reference': obj.Reference,
+                             'Journal': obj.Journal})
+
+            data = {'total': len(queryset), 'totalNotFiltered': len(queryset), 'rows': rows}
+
+            return HttpResponse(json.dumps(data, separators=(',', ':')), content_type='application/json')
+        if num == 3:
+            queryset = Pftd.objects.raw(
+                "SELECT id,pmid,group_name,Study_Design,Region,Sample_Size FROM `pftd` GROUP BY pmid,group_name")
+            # total = PftdDecisionIndicator.objects.count()
+            # queryset = PftdDecisionIndicator.objects.all()
+            rows = []
+            for obj in queryset:
+                rows.append({'id': obj.id, 'pmid': obj.pmid, 'group_name': obj.group_name,
+                             'Study_Design': obj.Study_Design, 'Region': obj.Region,
+                             'Sample_Size': obj.Sample_Size})
+
+            data = {'total': len(queryset), 'totalNotFiltered': len(queryset), 'rows': rows}
+
+            return HttpResponse(json.dumps(data, separators=(',', ':')), content_type='application/json')
+        if num == 4:
+            queryset = Pftd.objects.raw(
+                "SELECT id,pmid,Gender,Age,ASA_physical_status,BMI,Race FROM `pftd` GROUP BY pmid,ASA_physical_status")
+            # total = PftdDecisionIndicator.objects.count()
+            # queryset = PftdDecisionIndicator.objects.all()
+            rows = []
+            for obj in queryset:
+                rows.append({'id': obj.id, 'pmid': obj.pmid, 'Gender': obj.Gender,
+                             'Age': obj.Age, 'ASA_physical_status': obj.ASA_physical_status,
+                             'BMI': obj.BMI,'Race': obj.Race})
+
+            data = {'total': len(queryset), 'totalNotFiltered': len(queryset), 'rows': rows}
+
+            return HttpResponse(json.dumps(data, separators=(',', ':')), content_type='application/json')
+        if num == 5:
+            queryset = Pftd.objects.raw(
+                "SELECT id,pmid,group_name,ASA_physical_status,Surgical_approach,surgery_type,surgical_site FROM `pftd` GROUP BY pmid,group_name,ASA_physical_status,surgical_site")
+            # total = PftdDecisionIndicator.objects.count()
+            # queryset = PftdDecisionIndicator.objects.all()
+            rows = []
+            for obj in queryset:
+                rows.append({'id': obj.id, 'pmid': obj.pmid, 'group_name': obj.group_name,
+                             'ASA_physical_status': obj.ASA_physical_status, 'Surgical_approach': obj.Surgical_approach,
+                             'surgery_type': obj.surgery_type,'surgical_site': obj.surgical_site})
+
+            data = {'total': len(queryset), 'totalNotFiltered': len(queryset), 'rows': rows}
+
+            return HttpResponse(json.dumps(data, separators=(',', ':')), content_type='application/json')
+        if num == 6:
+            queryset = Pftd.objects.raw(
+                "SELECT id,pmid,group_name,Disease,Comorbidity FROM `pftd` GROUP BY pmid,group_name,Disease,Comorbidity")
+            # total = PftdDecisionIndicator.objects.count()
+            # queryset = PftdDecisionIndicator.objects.all()
+            rows = []
+            for obj in queryset:
+                rows.append({'id': obj.id, 'pmid': obj.pmid, 'group_name': obj.group_name,
+                             'Disease': obj.Disease, 'Comorbidity': obj.Comorbidity})
+
+            data = {'total': len(queryset), 'totalNotFiltered': len(queryset), 'rows': rows}
+
+            return HttpResponse(json.dumps(data, separators=(',', ':')), content_type='application/json')
+        if num == 7:
+            queryset = Pftd.objects.raw(
+                "SELECT id,pmid,group_name,Effect_comparison,Complications_name,Result1,Statictics1 FROM `pftd` GROUP BY pmid,group_name,Effect_comparison,Complications_name,Result1,Statictics1")
+            # total = PftdDecisionIndicator.objects.count()
+            # queryset = PftdDecisionIndicator.objects.all()
+            rows = []
+            for obj in queryset:
+                rows.append({'id': obj.id, 'pmid': obj.pmid, 'group_name': obj.group_name,
+                             'Effect_comparison': obj.Effect_comparison, 'Complications_name': obj.Complications_name,'Result1': obj.Result1,'Statictics1': obj.Statictics1})
+
+            data = {'total': len(queryset), 'totalNotFiltered': len(queryset), 'rows': rows}
+
+            return HttpResponse(json.dumps(data, separators=(',', ':')), content_type='application/json')
+        if num == 8:
+            queryset = Pftd.objects.raw(
+                "SELECT id,pmid,group_name,Effect_comparison,Outcome_name1,Result2,Statictics2 FROM `pftd` GROUP BY pmid,group_name,Effect_comparison,Outcome_name1,Result2,Statictics2")
+            # total = PftdDecisionIndicator.objects.count()
+            # queryset = PftdDecisionIndicator.objects.all()
+            rows = []
+            for obj in queryset:
+                rows.append({'id': obj.id, 'pmid': obj.pmid, 'group_name': obj.group_name,
+                             'Effect_comparison': obj.Effect_comparison, 'Outcome_name1': obj.Outcome_name1,
+                             'Result2': obj.Result2, 'Statictics2': obj.Statictics2})
+
+            data = {'total': len(queryset), 'totalNotFiltered': len(queryset), 'rows': rows}
+
+            return HttpResponse(json.dumps(data, separators=(',', ':')), content_type='application/json')
+        if num == 9:
+            queryset = Pftd.objects.raw(
+                "SELECT id,pmid,group_name,Effect_comparison,Outcome_name2,Result3,Statictics3 FROM `pftd` GROUP BY pmid,group_name,Effect_comparison,Outcome_name2,Result3,Statictics3")
+            # total = PftdDecisionIndicator.objects.count()
+            # queryset = PftdDecisionIndicator.objects.all()
+            rows = []
+            for obj in queryset:
+                rows.append({'id': obj.id, 'pmid': obj.pmid, 'group_name': obj.group_name,
+                             'Effect_comparison': obj.Effect_comparison, 'Outcome_name2': obj.Outcome_name2,
+                             'Result3': obj.Result3, 'Statictics3': obj.Statictics3})
+
+            data = {'total': len(queryset), 'totalNotFiltered': len(queryset), 'rows': rows}
+
+            return HttpResponse(json.dumps(data, separators=(',', ':')), content_type='application/json')
+        if num == 10:
+            queryset = Pftd.objects.raw(
+                "SELECT id,pmid,group_name,Effect_comparison,Outcome_name3,Result4,Statictics4 FROM `pftd` GROUP BY pmid,group_name,Effect_comparison,Outcome_name3,Result4,Statictics4")
+            # total = PftdDecisionIndicator.objects.count()
+            # queryset = PftdDecisionIndicator.objects.all()
+            rows = []
+            for obj in queryset:
+                rows.append({'id': obj.id, 'pmid': obj.pmid, 'group_name': obj.group_name,
+                             'Effect_comparison': obj.Effect_comparison, 'Outcome_name3': obj.Outcome_name3,
+                             'Result4': obj.Result4, 'Statictics4': obj.Statictics4})
+
+            data = {'total': len(queryset), 'totalNotFiltered': len(queryset), 'rows': rows}
+
+            return HttpResponse(json.dumps(data, separators=(',', ':')), content_type='application/json')
+
+
+
 def analysis(request):
     return render(request, "analysis/analysis_py.html")
 
@@ -213,62 +393,123 @@ def get_queryset_or_none(value, field_name):
     return None
 
 
-def getlist(request):
+def getlist(request, id):
     if request.method == 'POST':
-        data = json.loads(request.body)
-        classification = data.get('classification').get("value") if isinstance(data.get('classification'),
-                                                                               dict) else None
-        application = data.get('application').get("value") if isinstance(data.get('application'), dict) else None
-        surgeryType = data.get('surgeryType').get("value") if isinstance(data.get('surgeryType'), dict) else None
-        Period_ft = data.get('Period_ft').get("value") if isinstance(data.get('Period_ft'), dict) else None
+        if id == 2:
+            data = json.loads(request.body)
+            classification = data.get('classification').get("value") if isinstance(data.get('classification'),
+                                                                                   dict) else None
+            application = data.get('application').get("value") if isinstance(data.get('application'), dict) else None
+            surgeryType = data.get('surgeryType').get("value") if isinstance(data.get('surgeryType'), dict) else None
+            Period_ft = data.get('Period_ft').get("value") if isinstance(data.get('Period_ft'), dict) else None
 
-        print(classification, application, surgeryType, Period_ft)
-        if surgeryType == 'Other surgeries':
-            surgeries = ["Non-cardiac surgery",
-                         "post-endoscopic retrograde cholangiopancreatography(ERCP)", "urgent PCI", "Oncosurgery", "NA",
-                         "other surgery", "other surgeries"]
-            # query = Q()
-            # for surgery in surgeries:
-            #     condition = get_queryset_or_none(surgery, 'surgery_type')
-            #     if condition:
-            #         query |= condition  # 使用OR操作符连接条件
-            # print(query)
-            queryset = PftdDecisionIndicator.objects.filter(surgery_type__in=surgeries)
-            rows = []
-            for obj in queryset:
-                rows.append({'id': obj.id, 'Pid': obj.pid, 'parameters': obj.parameters,
-                             'classification_of_fluid_therapy_parameters': obj.classification_of_fluid_therapy_parameters,
-                             'application': obj.application, 'surgery_type': obj.surgery_type,
-                             'period_of_fluid_therapy': obj.period_of_fluid_therapy, 'group_name': obj.group_name,
-                             'pmid': obj.pmid})
+            print(classification, application, surgeryType, Period_ft)
+            if surgeryType == 'Other surgeries':
+                surgeries = ["Non-cardiac surgery",
+                             "post-endoscopic retrograde cholangiopancreatography(ERCP)", "urgent PCI", "Oncosurgery",
+                             "NA",
+                             "other surgery", "other surgeries"]
+                # query = Q()
+                # for surgery in surgeries:
+                #     condition = get_queryset_or_none(surgery, 'surgery_type')
+                #     if condition:
+                #         query |= condition  # 使用OR操作符连接条件
+                # print(query)
+                queryset = Pftd.objects.filter(surgery_type__in=surgeries)
+                rows = []
+                for obj in queryset:
+                    rows.append({'id': obj.id, 'Period_of_fluid_therapy1': obj.Period_of_fluid_therapy1,
+                                 'liquid_treatment': obj.liquid_treatment,
+                                 'Fluid_name': obj.Fluid_name,
+                                 'Fluid_type': obj.Fluid_type, 'surgery_type': obj.surgery_type,
+                                 'Dose': obj.Dose, 'Rate': obj.Rate,
+                                 'Duration': obj.Duration})
 
-            data = {'total': queryset.count(), 'totalNotFiltered': queryset.count(), 'rows': rows}
-            return HttpResponse(json.dumps(data, separators=(',', ':')), content_type='application/json')
+                data = {'total': queryset.count(), 'totalNotFiltered': queryset.count(), 'rows': rows}
+                return HttpResponse(json.dumps(data, separators=(',', ':')), content_type='application/json')
+            else:
+                query = Q()
+                for value, field_name in zip([classification, application, surgeryType, Period_ft],
+                                             ['classification_of_fluid_therapy_parameters', 'application',
+                                              'surgery_type',
+                                              'Period_of_fluid_therapy1']):
+                    condition = get_queryset_or_none(value, field_name)
+                    if condition:
+                        query &= condition
+
+                print(query)
+                queryset = Pftd.objects.filter(query)
+                # total = PftdDecisionIndicator.objects.filter(query).count()
+                # queryset = PftdDecisionIndicator.objects.all().filter(
+                #     classification_of_fluid_therapy_parameters=classification, application=application,
+                #     surgery_type=surgeryType)
+                rows = []
+                for obj in queryset:
+                    rows.append({'id': obj.id, 'Period_of_fluid_therapy1': obj.Period_of_fluid_therapy1,
+                                 'liquid_treatment': obj.liquid_treatment,
+                                 'Fluid_name': obj.Fluid_name,
+                                 'Fluid_type': obj.Fluid_type, 'surgery_type': obj.surgery_type,
+                                 'Dose': obj.Dose, 'Rate': obj.Rate,
+                                 'Duration': obj.Duration})
+
+                data = {'total': queryset.count(), 'totalNotFiltered': queryset.count(), 'rows': rows}
+                return HttpResponse(json.dumps(data, separators=(',', ':')), content_type='application/json')
+
         else:
-            query = Q()
-            for value, field_name in zip([classification, application, surgeryType, Period_ft],
-                                         ['classification_of_fluid_therapy_parameters', 'application', 'surgery_type',
-                                          'period_of_fluid_therapy']):
-                condition = get_queryset_or_none(value, field_name)
-                if condition:
-                    query &= condition
+            data = json.loads(request.body)
+            classification = data.get('classification').get("value") if isinstance(data.get('classification'),
+                                                                                   dict) else None
+            application = data.get('application').get("value") if isinstance(data.get('application'), dict) else None
+            surgeryType = data.get('surgeryType').get("value") if isinstance(data.get('surgeryType'), dict) else None
+            Period_ft = data.get('Period_ft').get("value") if isinstance(data.get('Period_ft'), dict) else None
 
-            print(query)
-            queryset = PftdDecisionIndicator.objects.filter(query)
-            # total = PftdDecisionIndicator.objects.filter(query).count()
-            # queryset = PftdDecisionIndicator.objects.all().filter(
-            #     classification_of_fluid_therapy_parameters=classification, application=application,
-            #     surgery_type=surgeryType)
-            rows = []
-            for obj in queryset:
-                rows.append({'id': obj.id, 'Pid': obj.pid, 'parameters': obj.parameters,
-                             'classification_of_fluid_therapy_parameters': obj.classification_of_fluid_therapy_parameters,
-                             'application': obj.application, 'surgery_type': obj.surgery_type,
-                             'period_of_fluid_therapy': obj.period_of_fluid_therapy, 'group_name': obj.group_name,
-                             'pmid': obj.pmid})
+            print(classification, application, surgeryType, Period_ft)
+            if surgeryType == 'Other surgeries':
+                surgeries = ["Non-cardiac surgery",
+                             "post-endoscopic retrograde cholangiopancreatography(ERCP)", "urgent PCI", "Oncosurgery", "NA",
+                             "other surgery", "other surgeries"]
+                # query = Q()
+                # for surgery in surgeries:
+                #     condition = get_queryset_or_none(surgery, 'surgery_type')
+                #     if condition:
+                #         query |= condition  # 使用OR操作符连接条件
+                # print(query)
+                queryset = PftdDecisionIndicator.objects.filter(surgery_type__in=surgeries)
+                rows = []
+                for obj in queryset:
+                    rows.append({'id': obj.id, 'Pid': obj.pid, 'parameters': obj.parameters,
+                                 'classification_of_fluid_therapy_parameters': obj.classification_of_fluid_therapy_parameters,
+                                 'application': obj.application, 'surgery_type': obj.surgery_type,
+                                 'period_of_fluid_therapy': obj.period_of_fluid_therapy, 'group_name': obj.group_name,
+                                 'pmid': obj.pmid})
 
-            data = {'total': queryset.count(), 'totalNotFiltered': queryset.count(), 'rows': rows}
-            return HttpResponse(json.dumps(data, separators=(',', ':')), content_type='application/json')
+                data = {'total': queryset.count(), 'totalNotFiltered': queryset.count(), 'rows': rows}
+                return HttpResponse(json.dumps(data, separators=(',', ':')), content_type='application/json')
+            else:
+                query = Q()
+                for value, field_name in zip([classification, application, surgeryType, Period_ft],
+                                             ['classification_of_fluid_therapy_parameters', 'application', 'surgery_type',
+                                              'period_of_fluid_therapy']):
+                    condition = get_queryset_or_none(value, field_name)
+                    if condition:
+                        query &= condition
+
+                print(query)
+                queryset = PftdDecisionIndicator.objects.filter(query)
+                # total = PftdDecisionIndicator.objects.filter(query).count()
+                # queryset = PftdDecisionIndicator.objects.all().filter(
+                #     classification_of_fluid_therapy_parameters=classification, application=application,
+                #     surgery_type=surgeryType)
+                rows = []
+                for obj in queryset:
+                    rows.append({'id': obj.id, 'Pid': obj.pid, 'parameters': obj.parameters,
+                                 'classification_of_fluid_therapy_parameters': obj.classification_of_fluid_therapy_parameters,
+                                 'application': obj.application, 'surgery_type': obj.surgery_type,
+                                 'period_of_fluid_therapy': obj.period_of_fluid_therapy, 'group_name': obj.group_name,
+                                 'pmid': obj.pmid})
+
+                data = {'total': queryset.count(), 'totalNotFiltered': queryset.count(), 'rows': rows}
+                return HttpResponse(json.dumps(data, separators=(',', ':')), content_type='application/json')
 
         # list1 = data.split(";")
         # type1 = list1[1]
@@ -323,27 +564,44 @@ def getlist(request):
     #     print(data)
 
     if request.method == 'GET':
-        # page_size = int(request.GET['pageSize'])
-        # page_number = int(request.GET['pageNumber'])
+        if id == 2:
+            total = Pftd.objects.count()
+            queryset = Pftd.objects.all()
+            rows = []
+            for obj in queryset:
+                rows.append({'id': obj.id, 'Period_of_fluid_therapy1': obj.Period_of_fluid_therapy1, 'liquid_treatment': obj.liquid_treatment,
+                             'Fluid_name': obj.Fluid_name,
+                             'Fluid_type': obj.Fluid_type, 'surgery_type': obj.surgery_type,
+                             'Dose': obj.Dose, 'Rate': obj.Rate,
+                             'Duration': obj.Duration})
 
-        # queryset = PftdDecisionIndicator.objects.order_by('id')[(page_number - 1) * page_size:page_number * page_size]
-        total = PftdDecisionIndicator.objects.count()
-        queryset = PftdDecisionIndicator.objects.all()
-        rows = []
-        for obj in queryset:
-            rows.append({'id': obj.id, 'Pid': obj.pid, 'parameters': obj.parameters,
-                         'classification_of_fluid_therapy_parameters': obj.classification_of_fluid_therapy_parameters,
-                         'application': obj.application, 'surgery_type': obj.surgery_type,
-                         'period_of_fluid_therapy': obj.period_of_fluid_therapy, 'group_name': obj.group_name,
-                         'pmid': obj.pmid})
+            data = {'total': total, 'totalNotFiltered': total, 'rows': rows}
 
-        data = {'total': total, 'totalNotFiltered': total, 'rows': rows}
+            return HttpResponse(json.dumps(data, separators=(',', ':')), content_type='application/json')
+        else:
+            # page_size = int(request.GET['pageSize'])
+            # page_number = int(request.GET['pageNumber'])
 
-        return HttpResponse(json.dumps(data, separators=(',', ':')), content_type='application/json')
+            # queryset = PftdDecisionIndicator.objects.order_by('id')[(page_number - 1) * page_size:page_number * page_size]
+            total = PftdDecisionIndicator.objects.count()
+            queryset = PftdDecisionIndicator.objects.all()
+            rows = []
+            for obj in queryset:
+                rows.append({'id': obj.id, 'Pid': obj.pid, 'parameters': obj.parameters,
+                             'classification_of_fluid_therapy_parameters': obj.classification_of_fluid_therapy_parameters,
+                             'application': obj.application, 'surgery_type': obj.surgery_type,
+                             'period_of_fluid_therapy': obj.period_of_fluid_therapy, 'group_name': obj.group_name,
+                             'pmid': obj.pmid})
+
+            data = {'total': total, 'totalNotFiltered': total, 'rows': rows}
+
+            return HttpResponse(json.dumps(data, separators=(',', ':')), content_type='application/json')
 
 
-def search(request):
+def search(request,id):
     queryset = PftdDecisionIndicator.objects.all()
+
+    queryset2 =Pftd.objects.all()
     surgery_type_choice = PftdDecisionIndicator.objects.raw(
         "SELECT id,surgery_type FROM `pftd_decision_indicator` GROUP BY surgery_type")
     # class_choice = PftdDecisionIndicator.objects.raw(
@@ -419,9 +677,15 @@ def search(request):
     #     else:
     #         period_ft_array.append(i.ft)
     # period_ft_array1 = list(set(period_ft_array))
-    return render(request, "search.html",
+    if id == 1:
+
+        return render(request, "search1.html",
                   {"queryset": queryset, "st": surgery_type_array, "class": class_choice_array, "app": app_choice,
                    'period_ft': period_ft_array})
+    else:
+        return render(request, "search2.html",
+                      {"queryset": queryset2, "st": surgery_type_array, "class": class_choice_array, "app": app_choice,
+                       'period_ft': period_ft_array})
 
 def getsearchdetails(request, id):
     queryset = PftdDecisionIndicator.objects.get(id=id)
@@ -1079,15 +1343,22 @@ def tool(request):
                 raw_out = []
                 links = []
                 nodes = []
+
+                sign = 1  # 初始化 sign 为 1，假设第一个查询为空
+                first_query = True  # 用于标记是否是第一个查询
                 # print(option_dict)
                 # print(len(option_dict))
                 for search_temp1 in search_temp_arr:
 
                     queryset1 = PftdDecisionIndicator.objects.raw(
                         "select * from pftd_decision_indicator where " + search_temp1)
+
                     if queryset1:
                         print("select * from pftd_decision_indicator where " + search_temp1)
                         print(option_dict)
+                        # 只有在第一次查询时，才修改 sign 值
+                        if first_query:
+                            sign = 0  # 第一个查询有结果时，sign 设置为 0，表示不需要弹窗
                         search_temps = []
                         if option_dict:
                             new_dict = {key: option_dict[key] for key in
@@ -1153,6 +1424,8 @@ def tool(request):
                         #     nodes = list(set([link['source'] for link in links] + [link['target'] for link in links]))
                         queryset = queryset1
                         break
+                    # 标记已经完成第一个查询
+                    first_query = False
                         # for item in queryset1:
                         #     surgeryType = item.surgery_type
                         #     PT = item.period_of_fluid_therapy
@@ -1253,8 +1526,9 @@ def tool(request):
                 # print(len(data))
                 # print(data)
                 # return HttpResponse(json.dumps(data, separators=(',', ':')), content_type='application/json')
+                print(sign)
                 return render(request, "tool.html",
-                              {"form": form, "data": json.dumps(data), 'nodes': nodes, 'links': links})
+                              {"form": form, "data": json.dumps(data), 'nodes': nodes, 'links': links, 'sign':sign})
 
 
 

@@ -1,0 +1,454 @@
+{% extends 'Layout.html' %}
+{% load static %}
+
+
+{% block title %}
+    <title>Browse</title>
+{% endblock %}
+
+{% block special_css %}
+    <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'plugins/bootstrap-table/css/bootstrap-table.min.css' %}">
+    <link rel="stylesheet" href="{% static 'plugins/bootstrap-select/css/bootstrap-select.min.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+    .custom-font-size td {
+    font-size: 10px; /* 或者您希望的任何固定大小 */
+}
+    #table thead th{
+        font-size: 12px;
+    }
+        .selected-item {
+            background-color: #4F81BD;
+        {#border-color: your-color;#} color: white;
+        }
+
+        .high-contrast-accordion .card {
+            border: 1px solid #000; /* 更深的边框颜色提高对比度 */
+        }
+
+        .high-contrast-accordion .card-header {
+            background-color: #4F81BD; /* 暗色背景 */
+            color: white; /* 白色字体，高对比度 */
+        }
+
+        .high-contrast-accordion .card-body {
+            background-color: #f8f9fa; /* 浅色背景，与暗色标题形成对比 */
+        }
+
+        .list-group-item.active:hover,
+        .list-group-item.active:focus {
+            background-color: #0056b3 !important; /* 悬浮和聚焦时使用更深的颜色 */
+        }
+    </style>
+{% endblock %}
+
+
+{% block content %}
+    <div class="mb-5">
+        <div class="">
+            <div class="mt-5 mb-5">
+                <div class="text-center" style="background-color: #4F81BD">
+                    <div style="height: 60px;color: white;font-size: 35px"> Disease Information
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid">
+
+            <div class="">
+{#                <div>#}
+                    {#                    <p><b>You can filter the data:</b></p>#}
+{#                    <div id="toolbar">#}
+                        {#                        <select class="selectpicker" data-live-search="true" data-size="5"#}
+                        {#                                title="Choose one of the following..." onchange="selectOnchange(this)">#}
+                        {#                            <optgroup label="Classification" style="font-size: larger">#}
+                        {#                                {% for class in class %}#}
+                        {#                                    <option value="{{ class.class }};1">{{ class.class }}</option>#}
+                        {#                                {% endfor %}#}
+                        {##}
+                        {#                            </optgroup>#}
+                        {#                            <optgroup label="Application">#}
+                        {#                                {% for app in app %}#}
+                        {#                                    <option value="{{ app }};2">{{ app }}</option>#}
+                        {#                                {% endfor %}#}
+                        {##}
+                        {#                            </optgroup>#}
+                        {#                            <optgroup label="Surgery Type">#}
+                        {#                                {% for st in st %}#}
+                        {#                                    <option value="{{ st.surgery_type }};3">{{ st.surgery_type }}</option>#}
+                        {#                                {% endfor %}#}
+                        {##}
+                        {#                            </optgroup>#}
+                        {#                        </select>#}
+{#                        <a class="btn ml-2 " style="background-color: #4F81BD;color: white" href="/search/"#}
+{#                           role="button"> Reset</a>#}
+{##}
+{#                    </div>#}
+{##}
+{#                </div>#}
+
+
+                <table
+                        id="table"
+                        data-toolbar="#toolbar"
+                        data-toggle="table"
+                        data-show-toggle="true"
+                        data-show-fullscreen="true"
+                        data-show-columns="true"
+                        data-show-columns-toggle-all="true"
+{#                        data-show-export="true"#}
+                >
+                </table>
+            </div>
+        </div>
+
+
+        {#            <form action="/search/getlist/" class="row g-3" method="post">#}
+        {#                {% csrf_token %}#}
+        {#                <div class="col-auto">#}
+        {#                    <label for="search" class="visually-hidden">Search</label>#}
+        {#                    <input class="form-control" name="search" placeholder="Search" maxlength="100" required>#}
+        {#                </div>#}
+        {#                <div class="col-auto">#}
+        {#                    <button type="submit" class="btn btn-primary mb-3">Search</button>#}
+        {#                </div>#}
+        {#            </form>#}
+
+
+    </div>
+
+
+
+
+{% endblock %}
+
+{% block special_js %}
+
+    <script src="https://unpkg.com/tableexport.jquery.plugin/tableExport.min.js"></script>
+    {#        <script src="https://cdn.jsdelivr.net/npm/tableexport.jquery.plugin@1.10.21/tableExport.min.js"></script>#}
+    <script src="{% static 'plugins/bootstrap-table/js/bootstrap-table.min.js' %}"></script>
+    <script src="https://unpkg.com/bootstrap-table@1.21.4/dist/extensions/filter-control/bootstrap-table-filter-control.min.js"></script>
+    <script src="{% static 'plugins/bootstrap-table/js/bootstrap-table-export.min.js' %}"></script>
+    <script src="{% static 'plugins/bootstrap-select/js/bootstrap-select.min.js' %}"></script>
+
+
+
+    <script>
+
+        function operateFormatter(value, row, index) {
+
+
+            return [
+                '<button id="bind" type="button" class="btn-outline-info"style="background-color: #4F81BD;color: white;border: #4F81BD">detail</button>',
+
+            ].join('')
+
+        }
+
+        window.operateEvents = {
+            'click #bind': function (e, value, row, index) {
+                window.open("/search/getsearchdetails/" + row.id, '_blank')
+                {#alert('You click like action, row: ' + JSON.stringify(row))#}
+            }
+        }
+    {#    $('#accordionExample').on('shown.bs.collapse', function (e) {#}
+    {#$(e.target).prev('.card-header').find('.fas').removeClass('fa-chevron-down').addClass('fa-chevron-up');}).on('hidden.bs.collapse', function (e) {#}
+    {#$(e.target).prev('.card-header').find('.fas').removeClass('fa-chevron-up').addClass('fa-chevron-down');});#}
+
+
+        $articlesTable = $('#table').bootstrapTable('destroy').bootstrapTable({
+            url: '/get_pftd/6',
+            method: 'GET',
+            dataType: "json",
+            uniqueId: 'id',
+            striped: false,
+            cache: false,
+            sortable: true,
+            sortOrder: 'asc',
+            undefinedText: '--',
+            singleSelect: true,
+            {#showFullscreen:true,#}
+            {#showColumns:true,#}
+            {#showColumnsToggleAll:true,#}
+            {#toolbar: '#soft-toolbar',#}
+            search: true,
+            {#showExport:true,#}
+            {#exportTypes: ['csv'],#}
+            {#strictSearch: true,#}
+            {#clickToSelect: true,#}
+            {#filterControl:true,#}
+            pagination: true,
+            sidePagination: "client",
+            pageNumber: 1,
+            pageSize: 10,
+            pageList: [10, 20, 50, 100],
+            {#paginationPreText: "上一页",#}
+            {#paginationNextText: "下一页",#}
+            queryParamsType: "",
+            queryParams: function (params) {
+                var temp = {
+                    'pageSize': params.pageSize,
+                    'pageNumber': params.pageNumber,
+                    'searchText': params.searchText,
+                    'sortName': params.sortName,
+                    'sortOrder': params.sortOrder
+                };
+                return temp;
+            },
+            columns: [
+                {#{#}
+                {#    title: 'Details',#}
+                {#   align: 'center',#}
+                {#    formatter:operateFormatter,#}
+                {#    events: window.operateEvents,#}
+                {##}
+                {#{#}
+                {#                field: 'id',#}
+                {#                title: 'ID',#}
+                {#                align: 'center',#}
+                {##}
+                {#            },#}
+                 {
+                    field: 'pmid',
+                    title: 'PMID',
+                    align: 'center',
+                },
+                {
+                    field: 'group_name',
+                    title: 'Group Name',
+                    align: 'center',
+                },
+                                {
+                    field: 'Disease',
+                    title: 'Disease',
+                    align: 'center',
+                },
+                                                {
+                    field: 'Comorbidity',
+                    title: 'Comorbidity',
+                    align: 'center',
+                }
+
+
+
+            ],
+            onLoadError: function () {
+
+            },
+            onPostBody: function() {
+        $('#table').bootstrapTable('resetView').find('tbody').addClass('custom-font-size');
+    }
+        });
+
+    </script>
+{#    <script>#}
+{#        function selectListItem(item) {#}
+{#            // 找到当前active的list-group-item元素并移除active类#}
+{#            const activeItems = document.querySelectorAll('.list-group-item.active');#}
+{#            activeItems.forEach(i => i.classList.remove('active'));#}
+{##}
+{#            // 为被点击的元素添加active类#}
+{#            item.classList.add('active');#}
+{#        }#}
+{##}
+{#        const userSelections = {#}
+{#            classification: null,#}
+{#            application: null,#}
+{#            surgeryType: null#}
+{#        };#}
+{##}
+{#        function sendDataToBackend() {#}
+{#            function operateFormatter(value, row, index) {#}
+{##}
+{##}
+{#            return [#}
+{#                '<button id="bind" type="button" class="btn-outline-info"style="background-color: #4F81BD;color: white;border: #4F81BD">detail</button>',#}
+{##}
+{#            ].join('')#}
+{##}
+{#        }#}
+{##}
+{#        window.operateEvents = {#}
+{#            'click #bind': function (e, value, row, index) {#}
+{#                window.open("/search/getsearchdetails/" + row.id, '_blank')#}
+                {#alert('You click like action, row: ' + JSON.stringify(row))#}
+{#            }#}
+{#        }#}
+{##}
+            {#var value = obj.options[obj.selectedIndex].value#}
+            {#console.log(obj)#}
+            {#var value = obj.value#}
+{#            if (Object.values(userSelections).some(selection => selection !== null)) {#}
+{#                 $.ajax({#}
+{#                type: "POST",#}
+{#                url: "getlist/",    //后台处理函数的url#}
+{#                contentType: 'application/json',#}
+{#                data: JSON.stringify(userSelections),#}
+{#                success: function (result) {  //获取后台处理后传过来的result#}
+                    {#alert(result)#}
+{#                    $articlesTable = $('#table').bootstrapTable('destroy').bootstrapTable({#}
+{#                        data: result,#}
+{#                        uniqueId: 'id',#}
+{#                        striped: false,#}
+{#                        cache: false,#}
+{#                        sortable: true,#}
+{#                        sortOrder: 'asc',#}
+{#                        undefinedText: '--',#}
+{#                        singleSelect: true,#}
+                        {#showFullscreen:true,#}
+                        {#showColumns:true,#}
+                        {#showColumnsToggleAll:true,#}
+                        {#toolbar: '#soft-toolbar',#}
+{#                        search: true,#}
+                        {#showExport:true,#}
+                        {#exportTypes: ['csv'],#}
+                        {#strictSearch: true,#}
+                        {#clickToSelect: true,#}
+                        {#filterControl:true,#}
+{#                        pagination: true,#}
+{#                        sidePagination: "client",#}
+{#                        pageNumber: 1,#}
+{#                        pageSize: 10,#}
+{#                        pageList: [10, 20, 50, 100],#}
+                        {#paginationPreText: "上一页",#}
+                        {#paginationNextText: "下一页",#}
+{#                        queryParamsType: "",#}
+{#                        queryParams: function (params) {#}
+{#                            var temp = {#}
+{#                                'pageSize': params.pageSize,#}
+{#                                'pageNumber': params.pageNumber,#}
+{#                                'searchText': params.searchText,#}
+{#                                'sortName': params.sortName,#}
+{#                                'sortOrder': params.sortOrder#}
+{#                            };#}
+{#                            return temp;#}
+{#                        },#}
+{#                        columns: [#}
+{#                            {#}
+{#                                field: 'id',#}
+{#                                title: 'ID',#}
+{#                                align: 'center',#}
+{#                            },#}
+{#                            {#}
+{#                                field: 'Pid',#}
+{#                                title: 'PID',#}
+{#                                align: 'center',#}
+{#                            }, {#}
+{#                                field: 'parameters',#}
+{#                                title: 'Parameters',#}
+{#                                align: 'center',#}
+{#                            },#}
+{#                             {#}
+{#                                field: 'group_name',#}
+{#                                title: 'Group Name',#}
+{#                                align: 'center',},#}
+{##}
+{#{#}
+{#                                field: 'classification_of_fluid_therapy_parameters',#}
+{#                                title: 'Classification',#}
+{#                                align: 'center',#}
+                                {#filterControl:"select"#}
+{#                            }, {#}
+{#                                field: 'application',#}
+{#                                title: 'Application',#}
+{#                                align: 'center',#}
+                                {#filterControl:"select"#}
+{#                            }, {#}
+{#                                field: 'surgery_type',#}
+{#                                title: 'Surgery Type',#}
+{#                                align: 'center',#}
+                                {#filterControl:"select"#}
+{#                            }, {#}
+{#                                field: 'period_of_fluid_therapy',#}
+{#                                title: 'Period of Application',#}
+{#                                align: 'center',#}
+{#                            },#}
+{##}
+{#                            {#}
+{#                                field: 'pmid',#}
+{#                                title: 'PMID',#}
+{#                                align: 'center',#}
+{#                            },#}
+{#                            {#}
+{#                        title: 'Details',#}
+{#                        align: 'center',#}
+{#                        formatter: operateFormatter,#}
+{#                        events: window.operateEvents,#}
+{#                    }#}
+{#                        ],#}
+{#                        onLoadError: function () {#}
+{##}
+{#                        },#}
+{#                         onPostBody: function() {#}
+{#        $('#table').bootstrapTable('resetView').find('tbody').addClass('custom-font-size');#}
+{#    }#}
+{#                    });#}
+                    {#$("#user").html(result)#}
+{#                }#}
+{#            });#}
+{#            }#}
+{#            else{#}
+{#                 console.log('No selections to send');#}
+{#            }#}
+{##}
+{##}
+{##}
+{#//$(document).on('click', '.list-group-item', function() {#}
+{#            //  $('.list-group-item').removeClass('active');#}
+{#            // $(this).addClass('active');#}
+{#//});#}
+{#        }#}
+{#        $(document).on('click', '.list-group-item', function() {#}
+{#            var category = $(this).data('category');#}
+{#            var value = $(this).data('value');#}
+{##}
+{#            // 首先移除所有 list-group 中所有 item 的 'active' 类#}
+{#            $('#accordionExample .list-group-item').removeClass('active');#}
+{##}
+{#            // 如果当前点击的 item 不是 'active'，则设置其为 'active'#}
+{#            if (!$(this).hasClass('active')) {#}
+{#                $(this).addClass('active');#}
+{#                userSelections[category] = {value: value};#}
+{#            } else {#}
+{#                // 如果当前点击的 item 已经是 'active'，则取消选择#}
+{#                userSelections[category] = null;#}
+{#            }#}
+{##}
+{#            // 遍历 userSelections 对象，确保只有当前点击的类别保持选择状态#}
+{#            Object.keys(userSelections).forEach(function (key) {#}
+{#                if (key !== category) {#}
+{#                    userSelections[key] = null;#}
+{#                }#}
+{#            });#}
+{#            sendDataToBackend();#}
+{##}
+{#        });#}
+{##}
+{##}
+{##}
+{#        function selectOption(selection) {#}
+            {#userSelections[selection.type] = {value:selection.value};#}
+{#            // 移除同类别所有按钮的 active 状态#}
+{#            var category = selection.type;#}
+{#            var value = selection.value;#}
+{#            if (category) {#}
+{#                userSelections[category] = {value: value};#}
+{##}
+{#                //sendDataToBackend();#}
+{#            }#}
+{##}
+            {#$(element).siblings().removeClass('active');#}
+            {##}
+            {#// 为点击的按钮添加 active 状态#}
+            {#$(element).addClass('active');#}
+{#            //console.log(userSelections)#}
+{#            //sendDataToBackend();#}
+{#        }#}
+{##}
+{##}
+{#    </script>#}
+
+
+
+{% endblock %}
