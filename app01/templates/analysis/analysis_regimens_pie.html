@@ -1,0 +1,171 @@
+{% extends 'Layout.html' %}
+{% load static %}
+{% block title %}
+    <title>Analyze</title>
+{% endblock %}
+{% block special_css %}
+    <style>
+        #charts {
+            height: 500px;
+            width: 500px;
+        }
+
+        .center {
+        {#margin: auto;#} width: 70%;
+        {#border: 3px solid green;#} padding: 10px;
+        }
+    </style>
+{% endblock %}
+
+
+{% block content %}
+    <div class="">
+     <div class="mt-5 mb-5">
+        <div class="text-center" style="background-color: #4F81BD">
+            <div style="height: 60px;color: white;font-size: 35px"> PFT regimens for surgery </div>
+        </div>
+    </div>
+    </div>
+
+    <div class="container">
+        <form method="post" novalidate class="center mt-3 mb-3">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-3">
+                    <div>{{ form.category_cd }}</div>
+                    <span style="color: red">{{ form.category_cd.errors.0 }}</span>
+                </div>
+{#                <div class="col-3">#}
+{#                    <div class="btn-group">#}
+{#                        <button id="btn_submit" type="submit" class="btn btn-info btn-space" style="#}
+{#                                border: none;#}
+{#                                border-radius: 5px;#}
+{#                                background-color: #4F81BD;#}
+{#                            ">#}
+{#                            <span class="fa fa-search btn-icon-space" aria-hidden="true"></span>#}
+{#                            Submit#}
+{#                        </button>#}
+{#                        <span></span>#}
+{#                        <a id="btn_reset" type="button" href="/analysis/line/"#}
+{#                           class="btn btn-default btn-space">#}
+{#                            <span class="fa fa-eraser btn-icon-space" aria-hidden="true"></span>#}
+{#                            Reset#}
+{#                        </a>#}
+{#                    </div>#}
+{#                </div>#}
+            </div>
+        </form>
+        <div id="charts" class="mt-4" style="height: 900px; width: 100%"></div>
+    </div>
+{% endblock %}
+
+
+{% block special_js %}
+    <script src="{% static 'js/echarts.min.js' %}"></script>
+    <script>
+var chartDom = document.getElementById('charts');
+var myChart = echarts.init(chartDom);
+var option;
+
+option = {
+  tooltip: {
+    trigger: 'item',
+    formatter: '{a} <br/>{b}: {c} ({d}%)'
+  },
+  legend: {
+    data: [
+      'Direct',
+      'Marketing',
+      'Search Engine',
+      'Email',
+      'Union Ads',
+      'Video Ads',
+      'Baidu',
+      'Google',
+      'Bing',
+      'Others'
+    ]
+  },
+  series: [
+    {
+      name: 'Surgery phase',
+      type: 'pie',
+      selectedMode: 'single',
+      radius: [0, '30%'],
+      label: {
+        position: 'inner',
+        fontSize: 14
+      },
+      labelLine: {
+        show: false
+      },
+      data: [
+        { value: 1548, name: 'preoperative',selected: true },
+        { value: 775, name: 'intraoperative' },
+        { value: 679, name: 'postoperative' }
+      ]
+    },
+    {
+      name: 'Surgery type',
+      type: 'pie',
+      radius: ['45%', '60%'],
+      labelLine: {
+        length: 30
+      },
+      label: {
+        formatter: '{a|{a}}{abg|}\n{hr|}\n  {b|{b}：}{c}  {per|{d}%}  ',
+        backgroundColor: '#F6F8FC',
+        borderColor: '#8C8D8E',
+        borderWidth: 1,
+        borderRadius: 4,
+        rich: {
+          a: {
+            color: '#6E7079',
+            lineHeight: 22,
+            align: 'center'
+          },
+          hr: {
+            borderColor: '#8C8D8E',
+            width: '100%',
+            borderWidth: 1,
+            height: 0
+          },
+          b: {
+            color: '#4C5058',
+            fontSize: 14,
+            fontWeight: 'bold',
+            lineHeight: 33
+          },
+          per: {
+            color: '#fff',
+            backgroundColor: '#4C5058',
+            padding: [3, 4],
+            borderRadius: 4
+          }
+        }
+      },
+      data: [
+        { value: 1155, name: 'Abdominal Surgery' },
+        { value: 162, name: 'Gynecological surgery' },
+        { value: 141, name: 'Neuro surgery' },
+        { value: 64, name: 'Vascular surgery' },
+
+        { value: 161, name: 'Thoracic surgery' },
+        { value: 199, name: 'Urological surgery' },
+        { value: 265, name: 'Orthopedic surgery' },
+        { value: 474, name: 'Cardiac surgery' },
+        { value: 7, name: 'Bariatric surgery' },
+
+        { value: 13, name: 'Pediatric surgery' },
+        { value: 47, name: 'Head and neck surgery' },
+        { value: 12, name: 'Other surgery' },
+        { value: 48, name: 'Critically ill surgery' },
+        { value: 60, name: 'Obstetric surgery' },
+
+      ]
+    }
+  ]
+};
+option && myChart.setOption(option);
+    </script>
+{% endblock %}

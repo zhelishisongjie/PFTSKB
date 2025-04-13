@@ -8,11 +8,43 @@
 {% block title %}
     <title xmlns="http://www.w3.org/1999/html">recommend</title>
 
-    <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}">
+    {# <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}">#}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     {#    <link rel="stylesheet" href="{% static 'css/bootstrap-icons.min.css' %}">#}
     <link rel="stylesheet" href="{% static 'plugins/bootstrap-table/css/bootstrap-table.min.css' %}">
     <link rel="stylesheet" href="{% static 'plugins/bootstrap-select/css/bootstrap-select.min.css' %}">
+
+
     <style type="text/css">
+        /* 模式选择按钮 */
+        .mode-btn {
+            transition: all 0.3s ease;
+            min-width: 220px;
+            padding: 1rem 1.5rem;
+        }
+
+        .mode-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .mode-btn.active {
+            background-color: rgba(79, 129, 189, 0.15) !important;
+            border-color: #4F81BD !important;
+            box-shadow: 0 2px 6px rgba(79, 129, 189, 0.2);
+        }
+
+        /* 响应式调整 */
+        @media (max-width: 768px) {
+            .btn-group-toggle {
+                flex-direction: column;
+            }
+            .mode-btn {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+        }
+
+
         .step-key {
         {#font-weight: bold;#} font-size: 1.2em;
             width: 250px;
@@ -55,44 +87,128 @@
             border-color: #4F81BD; /* 焦点或激活时边框颜色 */
         }
 
+
     </style>
 {% endblock %}
 
+
+
+
 {% block content %}
-    <div class="">
-    <div class="mt-5 mb-5">
-        <div class="text-center" style="background-color: #4F81BD;border: #4F81BD">
-            <div style="height: 60px;color: white;font-size: 35px"> PFTD Recommendation System</div>
+    {# 新增工具说明区块 #}
+    <div class="container mb-4 p-4 bg-light rounded shadow-sm">
+        <div class="d-flex align-items-center mb-3">
+            <i class="fa fa-info-circle fa-2x mr-3 text-primary"></i>
+            <h4 class="mb-0">FT Clinical Assistance Tool</h4>
         </div>
-    </div>
+        <p class="text-muted">
+            <h5 class="text-secondary mb-3">Introduction</h5>
+            Fluid therapy clinical assistance system standardized the included knowledge and constructed a knowledge - clinical assistance tool. Users (including the general public, medical student, researchers, professional surgeons and nurses ) only need to input patient information, and the tool can automatically match and output personalized fluid therapy regimens and studies containing that information. The output content involves patient information, surgical information, perioperative fluid therapy information, outcomes and prognosis, and other information for users reference.
+        </p>
+
+<!-- input output
+
+        <div class="row">
+
+            <div class="col-md-6 mb-4">
+                <div class="card h-100 border-primary">
+                    <div class="card-header bg-soft-primary text-primary">
+                        <i class="fa fa-edit mr-2"></i>Required Inputs
+                    </div>
+                    <div class="card-body">
+                        <ul class="pl-3 mb-0">
+                            <li>Patient Information</li>
+                            <li>Surgery Information</li>
+                            <li>Parameter Information</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-md-6 mb-4">
+                <div class="card h-100 border-success">
+                    <div class="card-header bg-soft-success text-success">
+                        <i class="fa fa-info-circle mr-2"></i>Generated Outputs
+                    </div>
+                    <div class="card-body">
+                        <ul class="pl-3 mb-0">
+                            <li>personalized fluid therapy regimens</li>
+                            <li>Surgical Details</li>
+                            <li>Assessment Parameters</li>
+                            <li>Relevant Clinical Studies</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+-->
+
+        <!-- Disclaimer -->
+        <div class="alert alert-warning mt-3">
+            <i class="fa fa-exclamation-triangle mr-2"></i>
+            Outputs should be used as clinical reference only
+        </div>
     </div>
 
-    {#   pipeline#}
-    <div class="container px-4 py-2">
-        <div class="text-center">
-            <button type="button" class="btn btn-lg" data-toggle="collapse"
-                    data-target="#collapseExample"
-                    aria-expanded="false"
-                    aria-controls="collapseExample"
-                    style="background-color: #4F81BD;color: white;outline-color: #4F81BD"> Start Recommend
-            </button>
+
+    <!--
+        <div class="row text-center">
+            <div class="col-md-4 mb-3">
+                <div class="border p-2 rounded">
+                    <i class="fa fa-layer-group fa-2x text-primary"></i>
+                    <h5 class="mt-2">Basic Matching</h5>
+                    <p class="small mb-0">Patient Information Only</p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="border p-2 rounded">
+                    <i class="fa fa-chart-line fa-2x text-success"></i>
+                    <h5 class="mt-2">Advance Matching</h5>
+                    <p class="small mb-0">Patient + Surgery Data</p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="border p-2 rounded">
+                    <i class="fa fa-flask fa-2x text-warning"></i>
+                    <h5 class="mt-2">Professional</h5>
+                    <p class="small mb-0">Full Parameters Analysis</p>
+                </div>
+            </div>
         </div>
     </div>
-    {#        start btn#}
-    {#    <div class="container px-4 py-5">#}
-    {#        <div class="text-center">#}
-    {#            <button type="button" class="btn btn-outline-info btn-lg" data-bs-toggle="collapse"#}
-    {#                    data-bs-target="#collapseExample"#}
-    {#                    aria-expanded="false"#}
-    {#                    aria-controls="collapseExample"> Start developing personalized Liquid Therapy#}
-    {#            </button>#}
-    {#        </div>#}
-    {#    </div>#}
-    <div class="collapse" id="collapseExample">
-        <form method="post" id="form1" novalidate>
-            {% csrf_token %}
-            <div class="container px-4 py-2 " id="inputfont">
-                <div id="step1">
+    -->
+
+
+
+
+    {# 匹配模式选择按钮 #}
+    <div class="container text-center mb-5">
+        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+            <label class="btn btn-outline-primary active mode-btn" data-mode="basic">
+                <input type="radio" name="mode" autocomplete="off" checked>
+                <i class="fa fa-layer-group mr-2"></i>Basic Matching
+            </label>
+            <label class="btn btn-outline-success mode-btn" data-mode="advance">
+                <input type="radio" name="mode" autocomplete="off">
+                <i class="fa fa-chart-line mr-2"></i>Advance Matching
+            </label>
+            <label class="btn btn-outline-warning mode-btn" data-mode="professional">
+                <input type="radio" name="mode" autocomplete="off">
+                <i class="fa fa-flask mr-2"></i>Professional
+            </label>
+        </div>
+    </div>
+
+
+
+    {# 表单容器 #}
+    <form method="post" id="form1" novalidate>
+        {% csrf_token %}
+
+        <div class="container px-4 py-2" id="inputfont">
+            {# Patients Information (始终显示) #}
+            <div id="step1">
                     <div class="mb-3">
                         <div id="title" class="mb-3">
                             <img src="{% static 'img/img.png' %}" alt="" width="30" height="35">
@@ -142,7 +258,19 @@
                                     <span style="color: red">{{ form.bmi.errors.0 }}</span>
                                 </div>
 
+                                {# period_of_FT #}
+                                <div class="col-7 mb-2">
+                                    <div><label style="font-size: 20px"><b>5.{{ form.period_of_FT.label }}</b></label></div>
+                                    <div>
+                                        {% for radio in form.period_of_FT %}
+                                            {{ radio.tag }}
+                                            <label class="form-check-label" style="font-size: 18px">{{ radio.choice_label }}</label>
+                                        {% endfor %}
+                                    </div>
+                                    <span style="color: red">{{ form.period_of_FT.errors.0 }}</span>
+                                </div>
 
+                                {# Are there any of the following comorbidities #}
                                 <div class="col-8">
                                     <label class="form-label" style="font-size: 20px"><b>4.Are there any of the following
                                         comorbidities</b></label>
@@ -173,11 +301,18 @@
                                                    data-target="#exampleModal">
                                             <label class="form-check-label" for="sepsis shock" style="font-size: 18px">sepsis shock</label>
                                         </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" id="None"
+                                                   name="None"
+                                                   value="None" data-toggle="modal">
+                                            <label class="form-check-label" for="sepsis shock" style="font-size: 18px">None of above</label>
+                                        </div>
 
                                     </div>
-
-
                                 </div>
+
+
+
 
                             </div>
                         </div>
@@ -212,11 +347,10 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
 
-
-                <div id="step2" class="mt-4">
+            {# Surgery Information (默认隐藏) #}
+            <div id="step2" class="mt-4">
                     <div class="mb-3">
                         <div class="mb-3">
                             <img src="{% static 'img/tag1.png' %}" alt="" width="30" height="35">
@@ -268,17 +402,7 @@
                                     <span style="color: red">{{ form.asa.errors.0 }}</span>
                                 </div>
 
-                        {# period_of_FT #}
-                                <div class="col-7 mb-2">
-                                    <div><label style="font-size: 20px"><b>5.{{ form.period_of_FT.label }}</b></label></div>
-                                    <div>
-                                        {% for radio in form.period_of_FT %}
-                                            {{ radio.tag }}
-                                            <label class="form-check-label" style="font-size: 18px">{{ radio.choice_label }}</label>
-                                        {% endfor %}
-                                    </div>
-                                    <span style="color: red">{{ form.period_of_FT.errors.0 }}</span>
-                                </div>
+
 
 
 
@@ -288,10 +412,8 @@
                     </div>
                 </div>
 
-
-
-
-                <div id="step3" class="mt-4">
+            {# Parameters (默认隐藏) #}
+            <div id="step3" class="mt-4">
                     <div class="mb-3">
                         <div class="mb-3">
                             <img src="{% static 'img/tag5.png' %}" alt="" width="30" height="35">
@@ -307,68 +429,14 @@
                     </div>
                         {# Container to dynamically add parameters #}
                         <div class="col-12 mt-3" id="parameters-container"></div>
-
-
-
-
-
-
                     </div>
-                </div>
-
-                {#            <div id="step3" class="mt-4">#}
-                {#                <div class="mb-3">#}
-                {#                    <div class="mb-3">#}
-                {#                        <img src="{% static 'img/img_1.png' %}" alt="" width="30" height="35">#}
-                {#                        <button type="button" class="btn btn-info btn-outline-info  " disabled>Perioperative Fluid#}
-                {#                            Therapy Decision parameters#}
-                {#                        </button>#}
-                {#                    </div>#}
-                {#                    <div>#}
-                {#                    <div><label><b>Parameter1:</b></label></div>#}
-                {#                        <select class="selectpicker" data-live-search="true" data-size="5"#}
-                {#                                title="Choose one of the following..." onchange="selectOnchange(this)">#}
-                {#                            <optgroup label="Classification" style="font-size: larger">#}
-                {#                                {% for class in class %}#}
-                {#                                    <option value="{{ class.class }};1">{{ class.class }}</option>#}
-                {#                                {% endfor %}#}
-                {##}
-                {#                            </optgroup>#}
-                {##}
-                {##}
-                {#                        </select>#}
-                {#                        <select class="selectpicker" data-live-search="true" data-size="5"#}
-                {#                                title="Choose one of the following..." onchange="selectOnchange(this)">#}
-                {#                            <optgroup label="Application">#}
-                {#                                {% for app in app %}#}
-                {#                                    <option value="{{ app }};2">{{ app }}</option>#}
-                {#                                {% endfor %}#}
-                {##}
-                {#                            </optgroup>#}
-                {#                        </select>#}
-                {##}
-                {#                        <select class="selectpicker" data-live-search="true" data-size="5"#}
-                {#                                title="Choose one of the following..." onchange="selectOnchange(this)">#}
-                {#                            <optgroup label="Surgery Type">#}
-                {#                                {% for st in st %}#}
-                {#                                    <option value="{{ st.surgery_type }};3">{{ st.surgery_type }}</option>#}
-                {#                                {% endfor %}#}
-                {##}
-                {#                            </optgroup>#}
-                {#                        </select>#}
-                {##}
-                {#                    </div>#}
-                {##}
-                {#                        {% include "caslator_for_recommend.html" %}#}
-                {##}
-                {##}
-                {##}
-                {##}
-                {#                </div>#}
-                {#            </div>#}
+            </div>
 
 
-                <div class="row">
+
+
+
+         <div class="row">
                     <div class="col-sm-3" style="margin-left: 500px">
                         <div class="btn-group">
                             <button id="btn_submit" type="submit" class="btn btn-info btn-space"
@@ -383,16 +451,11 @@
                             </button>
                         </div>
                     </div>
-                </div>
-
-            </div>
-
-        </form>
-
+         </div>
+            <!-- 原有提交按钮保持不变 -->
+        </div>
+    </form>
     </div>
-
-
-
 
 
     {#    <p>#}
@@ -410,13 +473,10 @@
     {#</div>#}
 
 
-
-
     <div id="toolbar" class="bar1">
         {% include "caslator_for_recommend.html" %}
     </div>
     <div id="table_allay">
-
 
         <table
                 id="table"
@@ -428,231 +488,39 @@
     </div>
 
 
-    {#    <form method="post">#}
-    {#    {% csrf_token %}#}
-    {#        <div class="container px-4 py-2 collapse" id="collapseExample">#}
-    {#            <div id="step1">#}
-    {#                <div class="mb-3">#}
-    {#                    <img src="{% static 'img/img_1.png' %}" alt="" width="30" height="35">#}
-    {#                    <button type="button" class="btn btn-info btn-outline-info  " disabled>#}
-    {#                        Patients information#}
-    {#                    </button>#}
-    {##}
-    {#                </div>#}
-    {#                <div>#}
-    {##}
-    {#                    <table>#}
-    {#                        <tbody>#}
-    {#                        <tr height="50">#}
-    {#                            <td class="step-key">Age (years):</td>#}
-    {#                            <td><input class="underline_input" type="number" min="0" step="1" name="age" id="age"#}
-    {#                                       size="12">#}
-    {#                            </td>#}
-    {#                        </tr>#}
-    {#                        <tr height="50">#}
-    {#                            <td class="step-key">Gender:</td>#}
-    {#                            <td>#}
-    {#                                <div class="form-check form-check-inline">#}
-    {#                                    <input class="form-check-input" type="radio" name="Male" id="Male" value="M">#}
-    {#                                    <label class="form-check-label" for="Male">Male</label>#}
-    {#                                </div>#}
-    {#                                <div class="form-check form-check-inline">#}
-    {#                                    <input class="form-check-input" type="radio" name="Female" id="Female" value="F">#}
-    {#                                    <label class="form-check-label" for="Female">Female</label>#}
-    {#                                </div>#}
-    {##}
-    {#                            </td>#}
-    {#                        </tr>#}
-    {#                        <tr height="50">#}
-    {#                            <td class="step-key">BMI:</td>#}
-    {#                            <td><input class="underline_input" type="number" min="0" step="1" name="bmi" id="bmi"#}
-    {#                                       size="12"></td>#}
-    {#                        </tr>#}
-    {##}
-    {#                        </tbody>#}
-    {#                    </table>#}
-    {##}
-    {##}
-    {#                </div>#}
-
-    {##}
-    {##}
-    {##}
-    {##}
-    {##}
-
-    {#                <table>#}
-    {#                    <tbody>#}
-    {#                    <tr height="50">#}
-    {#                        <td class="step-key">Surgical approach:</td>#}
-    {#                        <td>#}
-    {#                            <div class="form-check form-check-inline">#}
-    {#                                <input class="form-check-input" type="radio" name="Open surgery" id="Open surgery" value="Open surgery">#}
-    {#                                <label class="form-check-label" for="Open surgery">Open surgery</label>#}
-    {#                            </div>#}
-    {#                            <div class="form-check form-check-inline">#}
-    {#                                <input class="form-check-input" type="radio" name="Laparoscopic surgery" id="Laparoscopic surgery" value="Laparoscopic surgery">#}
-    {#                                <label class="form-check-label" for="Laparoscopic surgery">Laparoscopic surgery</label>#}
-    {#                            </div>#}
-    {#                        </td>#}
-    {#                    </tr>#}
-    {#                    <tr height="50">#}
-    {#                        <td class="step-key">Surgery type:</td>#}
-    {#                        <td>#}
-    {#                            <select class="form-select" aria-label="Default select example" onchange="selectOnchange(this)">#}
-    {#                                <option value="Thoracic surgery">Thoracic surgery</option>#}
-    {#                                <option value="Abdominal Surgery">Abdominal Surgery</option>#}
-    {#                                <option value="Cardiac surgery">Cardiac surgery</option>#}
-    {#                                <option value="Gynaecology and obstetrics">Gynaecology and obstetrics</option>#}
-    {#                                <option value="Neurosurgery">Neurosurgery</option>#}
-    {#                                <option value="Bone surgery">Bone surgery</option>#}
-    {#                                <option value="Vascular Surgery">Vascular Surgery</option>#}
-    {#                                <option value="Otolaryngology">Otolaryngology</option>#}
-    {#                                <option value="Orthopaedic surgery">Orthopaedic surgery</option>#}
-    {#                                <option value="Craniotomy">Craniotomy</option>#}
-    {#                                <option value="Urology Surgery">Urology Surgery</option>#}
-    {#                                <option value="Pediatric surgery">Pediatric surgery</option>#}
-    {#                                <option value="Others">Others</option>#}
-    {#                            </select>#}
-    {#                        </td>#}
-    {#                    </tr>#}
-    {##}
-    {#                    <tr height="50">#}
-    {#                        <td class="step-key">Surgical Site:</td>#}
-    {#                        <td>#}
-    {#                        <select id="user" class="form-select" aria-label="Default select example">#}
-    {#                        </select>#}
-    {#                        </td>#}
-    {#                    </tr>#}
-    {##}
-    {#                    <tr height="50">#}
-    {#                        <td class="step-key">ASA physical status:</td>#}
-    {#                        <td>#}
-    {#                            <div class="form-check form-check-inline">#}
-    {#                                <input class="form-check-input" type="radio" name="stage" id="Ⅰ" value="Ⅰ">#}
-    {#                                <label class="form-check-label" for="Ⅰ">Ⅰ</label>#}
-    {#                            </div>#}
-    {#                            <div class="form-check form-check-inline">#}
-    {#                                <input class="form-check-input" type="radio" name="stage" id="Ⅱ" value="Ⅱ">#}
-    {#                                <label class="form-check-label" for="Ⅱ">Ⅱ</label>#}
-    {#                            </div>#}
-    {#                            <div class="form-check form-check-inline">#}
-    {#                                <input class="form-check-input" type="radio" name="stage" id="Ⅲ" value="Ⅲ">#}
-    {#                                <label class="form-check-label" for="Ⅲ">Ⅲ</label>#}
-    {#                            </div>#}
-    {#                            <div class="form-check form-check-inline">#}
-    {#                                <input class="form-check-input" type="radio" name="stage" id="Ⅳ" value="Ⅳ">#}
-    {#                                <label class="form-check-label" for="Ⅳ">Ⅳ</label>#}
-    {#                            </div>#}
-    {##}
-    {#                        </td>#}
-    {#                    </tr>#}
-    {#                    <tr height="50">#}
-    {#                        <td class="step-key">Period of FT:</td>#}
-    {#                        <td>#}
-    {#                            <div class="form-check form-check-inline">#}
-    {#                                <input class="form-check-input" type="radio" name="postoperative" id="postoperative" value="postoperative">#}
-    {#                                <label class="form-check-label" for="postoperative">postoperative</label>#}
-    {#                            </div>#}
-    {#                                        <div class="form-check form-check-inline">#}
-    {#                                <input class="form-check-input" type="radio" name="intraoperative" id="intraoperative" value="intraoperative">#}
-    {#                                <label class="form-check-label" for="intraoperative">intraoperative</label>#}
-    {#                            </div>#}
-    {#                            <div class="form-check form-check-inline">#}
-    {#                                <input class="form-check-input" type="radio" name="postoperative" id="postoperative" value="postoperative">#}
-    {#                                <label class="form-check-label" for="postoperative">postoperative</label>#}
-    {#                            </div>#}
-    {#                        </td>#}
-    {#                    </tr>#}
-    {#                    </tbody>#}
-    {#                </table>#}
-    {##}
-    {##}
-    {##}
-    {#            </div>#}
-    {#            <div id="step3" class="mt-4">#}
-    {#                <div class="mb-3">#}
-    {#                    <img src="{% static 'img/img_1.png' %}" alt="" width="30" height="35">#}
-    {#                    <button type="button" class="btn btn-info btn-outline-info  " disabled>Perioperative Fluid Therapy Decision parameters#}
-    {#                    </button>#}
-    {##}
-    {#                </div>#}
-    {##}
-    {#                <table class="mt-3 mb-3">#}
-    {#                    <tbody>#}
-    {#                    <tr height="50">#}
-    {#                        <td class="step-key"><h6><b> Basic search</b></h6></td>#}
-    {#                    </tr>#}
-    {#                    <tr>#}
-    {#                        <td >Parameter 1:</td>#}
-    {#                        <td><input class="underline_input" type="text" name="Parameter1" id="Parameter1"></td>#}
-    {#                        <td >Value:</td>#}
-    {#                        <td><input class="underline_input" type="text" name="Value1" id="Value1"></td>#}
-    {#                    </tr>#}
-    {#                    <tr>#}
-    {#                        <td class="step-key"></td>#}
-    {#                        <td>#}
-    {#                            <div class="form-check form-check-inline">#}
-    {#                                <input class="form-check-input" type="checkbox" id="Unreasonable breath lessness"#}
-    {#                                       name="symptoms" value="Unreasonable breath lessness">#}
-    {#                                <label class="form-check-label" for="Unreasonable breath lessness">Unreasonable breath#}
-    {#                                    lessness</label>#}
-    {#                            </div>#}
-    {#                        </td>#}
-    {#                    </tr>#}
-    {#                    <tr>#}
-    {#                        <td class="step-key"></td>#}
-    {#                        <td>#}
-    {#                            <div class="form-check form-check-inline">#}
-    {#                                <input class="form-check-input" type="checkbox" id="Dizziness, fainting, blackouts"#}
-    {#                                       name="symptoms" value="Dizziness, fainting, blackouts">#}
-    {#                                <label class="form-check-label" for="Dizziness, fainting, blackouts">Dizziness,#}
-    {#                                    fainting, blackouts</label>#}
-    {#                            </div>#}
-    {#                        </td>#}
-    {#                    </tr>#}
-    {#                    <tr>#}
-    {#                        <td class="step-key"></td>#}
-    {#                        <td>#}
-    {#                            <div class="form-check form-check-inline">#}
-    {#                                <input class="form-check-input" type="checkbox" id="Ankle swelling" name="symptoms"#}
-    {#                                       value="Ankle swelling">#}
-    {#                                <label class="form-check-label" for="Ankle swelling">Ankle swelling</label>#}
-    {#                            </div>#}
-    {#                        </td>#}
-    {#                    </tr>#}
-    {#                    <tr>#}
-    {#                        <td class="step-key"></td>#}
-    {#                        <td>#}
-    {#                            <div class="form-check form-check-inline">#}
-    {#                                <input class="form-check-input" type="checkbox"#}
-    {#                                       id="Unpleasant awareness of a forceful, rapid or irregular heart rate"#}
-    {#                                       value="Unpleasant awareness of a forceful, rapid or irregular heart rate">#}
-    {#                                <label class="form-check-label"#}
-    {#                                       for="Unpleasant awareness of a forceful, rapid or irregular heart rate">Unpleasant#}
-    {#                                    awareness of a forceful, rapid or irregular heart rate</label>#}
-    {#                            </div>#}
-    {#                        </td>#}
-    {#                    </tr>#}
-    {##}
-    {##}
-    {#                    </tbody>#}
-    {#                </table>#}
-    {##}
-    {#            </div>#}
-    {##}
-    {##}
-
-    {##}
-    {##}
-    {#        </div>#}
-    {#    </form>#}
 
 
 
 {% endblock %}
 
 {% block special_js %}
+    <script>
+    // 修复1：确保文档加载完成
+    $(document).ready(function() {
+        console.log("文档加载完成");
+
+        // 修复2：正确绑定点击事件
+        $('.mode-btn').on('click', function() {
+            // 修复3：移除Bootstrap原生切换逻辑
+            $('.mode-btn').removeClass('active').find('input').prop('checked', false);
+            $(this).addClass('active').find('input').prop('checked', true);
+
+            // 获取当前模式
+            const mode = $(this).data('mode');
+            console.log("当前模式:", mode);
+
+            // 修复4：控制显示逻辑
+            $('#step1').show(); // 始终显示患者信息
+            $('#step2').toggle(mode === 'advance' || mode === 'professional');
+            $('#step3').toggle(mode === 'professional');
+        });
+
+        // 初始化显示基本模式
+        $('.mode-btn[data-mode="basic"]').trigger('click');
+    });
+</script>
+
+
 
     <script src="{% static 'plugins/bootstrap-select/js/bootstrap-select.min.js' %}"></script>
     <script src="https://unpkg.com/tableexport.jquery.plugin/tableExport.min.js"></script>
@@ -660,7 +528,6 @@
     <script src="{% static 'plugins/bootstrap-table/js/bootstrap-table.min.js' %}"></script>
     <script src="https://unpkg.com/bootstrap-table@1.21.4/dist/extensions/filter-control/bootstrap-table-filter-control.min.js"></script>
     <script src="{% static 'plugins/bootstrap-table/js/bootstrap-table-export.min.js' %}"></script>
-
 
 
 
@@ -1021,8 +888,6 @@
           {#container.appendChild(parentDiv);#}
       }
     }
-
-
     </script>
 
 
@@ -1034,13 +899,9 @@
             document.querySelector('#form1').reset();
         })
     </script>
-
-
     <script>
 
         function operateFormatter(value, row, index) {
-
-
             return [
                 '<button id="bind" type="button" class="btn-outline-info"style="background-color: #4F81BD;color: white;border: #4F81BD">detail</button>',
 
@@ -1110,6 +971,14 @@
                         title: 'ID',
                         align: 'center',
                     }, {
+                        field: 'IFTP',
+                        title: 'IFTP',
+                        aligh: 'center',
+                    },{
+                        field: 'IFTP_subgroup',
+                        title: 'IFTP_subgroup',
+                        aligh: 'center',
+                    },{
                         field: 'Period_of_fluid',
                         title: 'Period_of_fluid',
                         align: 'center',
@@ -1136,70 +1005,6 @@
                     }, {
                         field: 'duration',
                         title: 'duration',
-                        align: 'center',
-                    }, {
-                        field: 'monitoring',
-                        title: 'monitoring',
-                        align: 'center',
-                    }, {
-                        field: 'monitoring_parameters',
-                        title: 'monitoring_parameters',
-                        align: 'center',
-                    }, {
-                        field: 'monitoring_frequency',
-                        title: 'monitoring_frequency',
-                        align: 'center',
-                    }, {
-                        field: 'use_of_vasopressors',
-                        title: 'use_of_vasopressors',
-                        align: 'center',
-                    }, {
-                        field: 'blood_transfusion',
-                        title: 'blood_transfusion',
-                        align: 'center',
-                    }, {
-                        field: 'additional_information',
-                        title: 'additional_information',
-                        align: 'center',
-                    }, {
-                        field: "parameter1",
-                        title: "parameter1",
-                        align: 'center',
-                    }, {
-                        field: "classification1",
-                        title: "classification1",
-                        align: 'center',
-                    }, {
-                        field: "parameter2",
-                        title: "parameter2",
-                        align: 'center',
-                    }, {
-                        field: "classification2",
-                        title: "classification2",
-                        align: 'center',
-                    }, {
-                        field: "parameter3",
-                        title: "parameter3",
-                        align: 'center',
-                    }, {
-                        field: "classification3",
-                        title: "classification3",
-                        align: 'center',
-                    }, {
-                        field: "parameter4",
-                        title: "parameter4",
-                        align: 'center',
-                    }, {
-                        field: "classification4",
-                        title: "classification4",
-                        align: 'center',
-                    }, {
-                        field: "parameter5",
-                        title: "parameter5",
-                        align: 'center',
-                    }, {
-                        field: "classification5",
-                        title: "classification5",
                         align: 'center',
                     }, {
                         title: 'Details',
@@ -1792,10 +1597,8 @@
 
                     });
 
-
                 }
             });
-
         }
 
 

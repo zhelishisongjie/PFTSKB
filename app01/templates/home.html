@@ -27,16 +27,17 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            margin: 10px; /* 调整标签之间的间距 */
+            margin: 8px; /* 调整标签之间的间距 */
             text-decoration: none; /* 移除链接下划线 */
             color: #000; /* 设置文字颜色，根据需要调整 */
+            font-size: 1rem;
         }
 
         .tag-image {
-            width: 80px; /* 统一图片宽度 */
-            height: 80px; /* 统一图片高度 */
-            object-fit: contain; /* 确保图片按比例缩放以适应容器 */
-            margin-bottom: 8px; /* 增加图片与文字之间的间距 */
+            width: 60px;       /* 设置图标宽度 */
+            height: 60px;      /* 设置图标高度 */
+            margin-right: 8px; /* 图标和文字间距 */
+            object-fit: contain; /* 保持图标比例 */
         }
 
         .image-container {
@@ -55,70 +56,86 @@
     <div class="container px-4 py-5">
         <div class="text-center mb-3">
             <h3>Welcome to</h3>
-            <h3>Perioperative Fluid Therapy Decision support information Knowledge Base and Recommendation System </h3>
-            <h5>(PFTDKB-RD)</h5>
+            <h3>Perioperative Fluid Therapy Knowledge Base </h3>
+            <h5>(PFTKB)</h5>
         </div>
         <div class="mt-4">
-            <p style="text-indent:2em;line-height: 30px;font-size: 18px">PFTDP-KB(Perioperative Fluid Therapy Decision
-                Parameter information knowledge base) is a decision-making information sharing platform for
-                perioperative intravenous fluid therapy based on data extraction and analysis from the Pubmed literature
-                database. This knowledge data platform collected preoperative, intraoperative, and postoperative factors
-                which are article-supported to be associated with the perioperative fluid therapy decision. The PFTDP-KB
-                including 2182 records of intravenous fluid management decision parameters information for surgical
-                patients, which can auxiliary support the fluid type estimation, fluid rate assessment, transfusion
-                assessment and the use of vasoactive agents assessment. This knowledge data platform can provide
-                evidence support and knowledge decision-making sharing for clinical intravenous fluid therapy.
-                Furtherly, it can improve the efficiency of perioperative fluid therapy.</p>
+            <p style="text-indent:2em;line-height: 30px;font-size: 18px">
+                Perioperative Fluid Therapy Knowledge Base (PFTKB) is a meticulously designed digital platform dedicated to advancing knowledge dissemination in perioperative intravenous fluid management. This comprehensive repository consolidates all peer-reviewed clinical studies related to perioperative fluid therapy indexed in PubMed through March 1, 2025.
+            </p>
+            <p style="text-indent:2em;line-height: 30px;font-size: 18px">
+                As a critical component of surgical care, fluid therapy presents complex challenges stemming from patient heterogeneity, multifaceted clinical scenarios, and limitations in practitioner experience. PFTKB addresses these complexities by providing an integrated knowledge ecosystem that synthesizes demographic data, surgical variables, and fluid management protocols. Our platform serves as both an evidence-based decision support system and a collaborative hub for clinical knowledge exchange.
+            </p>
+            <p style="text-indent:2em;line-height: 30px;font-size: 18px">
+                Guided by the principles of intelligent medicine，the PFTKB features a Intelligent  matching tool that enables users to input case-specific information and retrieve targeted research insights. This provision affords medical professionals a tailored reference resource. Additionally, PFTKB offers multidimensional data visualization tools for comparative outcome analysis. Users can procure information most pertinent to their needs. We steadfastly believe that it is through the active exchange and interaction of information that true progress in medicine is galvanized.
+            </p>
+            <p style="text-indent:2em;line-height: 30px;font-size: 18px">
+                Furthermore, our platform harbors immense potential, with an aspiration to proffer formidable decision support tools in the future. We aim to offer customized research references to different user groups including medical staff, patients, and the public, predicated on various clinical parameters.
+                We extend a warm welcome to all visitors, hoping that you garner substantial insights from our website. For inquiries regarding data collaboration or feature requests, please contact our research coordination team. Your feedback and suggestions are highly prized. We anticipate offering more precise and personalized services in the future.
+            </p>
         </div>
 
     </div>
 
-    {#<div class="container d-flex align-items-center">#}
-    {##}
-    {#    <div class="image-container" style="flex: 4;text-align: center;">#}
-    {#        <img src="{% static 'img/img_5.png' %}" style="max-width: 100%; height: auto;">#}
-    {#    </div>#}
-    {##}
-    {#    <div class="tags-container text-center" style="flex: 1; display: flex; flex-direction: column;justify-content: right;">#}
-    {#        <!-- 标签链接 -->#}
-    {#        <a href="/home/getselect/1" class="tag-link" target="_blank">#}
-    {#            <img src="{% static 'img/tag1.png' %}" class="tag-image">#}
-    {#            Fluid volume estimation#}
-    {#        </a>#}
-    {#                <a href="/home/getselect/2" class="tag-link" target="_blank">#}
-    {#            <img src="{% static 'img/tag2.png' %}" class="tag-image">#}
-    {#            Fluid type estimation#}
-    {#        </a>#}
-    {#                <a href="/home/getselect/3" class="tag-link" target="_blank">#}
-    {#            <img src="{% static 'img/tag3.png' %}" class="tag-image">#}
-    {#            Fluid therapy rate assessment#}
-    {#        </a>#}
-    {#                <a href="/home/getselect/4" class="tag-link" target="_blank">#}
-    {#            <img src="{% static 'img/tag4.png' %}" class="tag-image">#}
-    {#         Transfusion assessment#}
-    {#        </a>#}
-    {#        <!-- 其他标签链接类似，省略... -->#}
-    {#        <a href="/home/getselect/5" class="tag-link" target="_blank">#}
-    {#            <img src="{% static 'img/tag5.png' %}" class="tag-image">#}
-    {#            Use of vasoactive agents assessment#}
-    {#        </a>#}
-    {#    </div>#}
-    {##}
-    {#</div>#}
+
     <div class="container">
 
         <div class="image-container text-center">
-            <img src="{% static 'img/process.jpg' %}" style="max-width: 100%; height: auto;">
+            <img src="{% static 'img/process1.jpg' %}" style="max-width: 60%; height: auto;">
         </div>
+
+
+
+{#    <div class="container mt-2">#}
+{#        <div class="text-left">#}
+{#            <h5>Applications</h5>#}
+{#        </div>#}
+{#    </div>#}
+{##}
+{#    <div class="container mt-3">#}
+{#        <div class="tags-container text-center">#}
+{#            <!-- 标签链接 -->#}
+{#            <a href="/home/getselect/1" class="tag-link" target="_blank">#}
+{#                <img src="{% static 'img/tag1.png' %}" class="tag-image">#}
+{#                Fluid volume estimation#}
+{#            </a>#}
+{#            <a href="/home/getselect/2" class="tag-link" target="_blank">#}
+{#                <img src="{% static 'img/tag2.png' %}" class="tag-image">#}
+{#                Fluid type estimation#}
+{#            </a>#}
+{#            <a href="/home/getselect/3" class="tag-link" target="_blank">#}
+{#                <img src="{% static 'img/tag3.png' %}" class="tag-image">#}
+{#                Fluid therapy rate assessment#}
+{#            </a>#}
+{#            <a href="/home/getselect/4" class="tag-link" target="_blank">#}
+{#                <img src="{% static 'img/tag4.png' %}" class="tag-image">#}
+{#                Transfusion assessment#}
+{#            </a>#}
+{#            <!-- 其他标签链接类似，省略... -->#}
+{#            <a href="/home/getselect/5" class="tag-link" target="_blank">#}
+{#                <img src="{% static 'img/tag5.png' %}" class="tag-image">#}
+{#                Use of vasoactive agents assessment#}
+{#            </a>#}
+{#        </div>#}
+{#    </div>#}
+{##}
+{##}
+{#      <div class="image-container text-center">#}
+{#            <img src="{% static 'img/phase.jpg' %}" style="max-width: 100%; height: auto;">#}
+{#      </div>#}
+
+
+
+
+
+    <div class="row align-items-center mt-3">  <!-- 添加align-items-center垂直居中 -->
+        <!-- 左侧列：标签链接 -->
+    <div class="col-md-6">  <!-- 占6份宽度 -->
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="mb-0">Application of PFT assessment parameters</h5>
+            <h5 class="mb-0 d-md-none">PFT regimens for surgeries</h5> <!-- 手机端显示 -->
         </div>
-        <div class="container mt-2">
-        <div class="text-left">
-            <h5>Applications</h5>
-        </div>
-    </div>
-         <div class="container mt-3">
         <div class="tags-container text-center">
-            <!-- 标签链接 -->
             <a href="/home/getselect/1" class="tag-link" target="_blank">
                 <img src="{% static 'img/tag1.png' %}" class="tag-image">
                 Fluid volume estimation
@@ -135,28 +152,57 @@
                 <img src="{% static 'img/tag4.png' %}" class="tag-image">
                 Transfusion assessment
             </a>
-            <!-- 其他标签链接类似，省略... -->
             <a href="/home/getselect/5" class="tag-link" target="_blank">
                 <img src="{% static 'img/tag5.png' %}" class="tag-image">
                 Use of vasoactive agents assessment
             </a>
         </div>
-
     </div>
+
+    <!-- 右侧列：图片 -->
+    <div class="col-md-6">  <!-- 占6份宽度 -->
+        <div class="d-none d-md-block"> <!-- 只在中等屏幕以上显示 -->
+            <h5 class="text-center mb-3">PFT regimens for surgeries</h5>
+        </div>
+        <div class="image-container text-center">
+            <img src="{% static 'img/phase.jpg' %}" style="max-width: 70%; height: auto;">
+        </div>
+    </div>
+
+</div>
+</div>
+
+
+
+
+
+
+
+
      <div class="container mt-3">
         <div class="text-left">
             <h5>News</h5>
         </div>
     </div>
+
     <div class="container mt-3">
         <div class="text-center">
-            <p>March 12, 2024---The PFTDP-KB was corrected 2182 records collected from 402 articles in Pubmed.The
-                perioperative fluid therapy decision parameters are classified into the following eleven categories
-                based on their characteristics: </p>
-            {#            <h4>PFTDKB-RD  Implementation Summary</h4>#}
-            <div id="charts_bar" class="mt-4" style="height: 600px; width: 100%"></div>
+            <p> As of March 1, 2025, the PFTKB platform hosts knowledge data from 402 original clinical studies sourced from PubMed, encompassing a total sample size of 11,158. It has identified and categorized 145 perioperative fluid therapy parameters into eleven distinct types, as illustrated in the diagram below. Furthermore, the platform provides detailed information on PFT plans for 839 cohorts across 14 surgical categories, accumulating a total of 2,738 PFT subgroup regimens.  </p>
         </div>
 
+          <div class="row mt-4">
+
+         <!-- 柱状图（右侧，宽度 50%） -->
+        <div class="col-md-6">
+            <div id="charts_bar" style="height: 600px; width: 100%;"></div>
+        </div>
+
+        <!-- 桑基图（左侧，宽度 50%） -->
+        <div class="col-md-6">
+            <div id="charts_sankey" style="height: 600px; width: 100%;"></div>
+        </div>
+
+    </div>
     </div>
 
 
@@ -228,187 +274,161 @@
     <script src="{% static 'plugins/bootstrap-select/js/bootstrap-select.min.js' %}"></script>
     <script>
         {#var mychart = echarts.init(document.getElementById('charts_pie'));#}
-        var mychart1 = echarts.init(document.getElementById('charts_bar'));
-        {#const themeJson =#}
-        {#{{ pie|safe }}#}
-        {##}
-        {#var option = {#}
-        {#    tooltip: {},#}
-        {##}
-        {#    series: [{#}
-        {#        type: 'pie',#}
-        {#        radius: '60%',#}
-        {#        label: {#}
-        {#            show: true,#}
-        {#            position: 'outside', // 标签的位置，'outside' 表示标签在扇区外部#}
-        {#            formatter: '{b}: {c}' // 格式化标签文本#}
-        {#        },#}
-        {#center: ['75%', '75%'],#}
-        {#        data: Object.keys(themeJson).map(function (key) {#}
-        {#            return {#}
-        {#                name: key.replace('.js', ''),#}
-        {#                value: themeJson[key]#}
-        {#            };#}
-        {#        })#}
-        {#    }],#}
-        {##}
 
-        var option1 = {
-            tooltip: {
-                trigger: 'axis',
-                axisPointer: {
-                    // Use axis to trigger tooltip
-                    type: 'shadow' // 'shadow' as default; can also be 'line' or 'shadow'
-                }
-            },
-            legend: {
-                data: ['preoperative', 'intraoperative', 'postoperative']
-            },
-            grid: {
-                left: '3%',
-                right: '4%',
-                bottom: '3%',
-                containLabel: true
-            },
-            xAxis: {
-                type: 'value'
-            },
-            yAxis: {
-                type: 'category',
-                data: ['Treatment information', 'Physical examinations', 'Intake factors', 'Insensible losses', 'Complications', 'clinical signs', 'Other factors', 'Vital signs', 'volume loss factors', 'Laboratory tests', 'Physiological factors', 'Hemodynamic parameters']
-                {#data: ['Treatment information','Physical examinations','Intake factors','Insensible losses','Complications','clinical signs','Other factors','Vital signs','volume loss factors','Laboratory tests','Physiological factors','Hemodynamic parameters']#}
-            },
-            series: {{ res|safe }}
-        };
-        {#mychart.clear();#}
+
+var mychart1 = echarts.init(document.getElementById('charts_bar'));
+var option1 = {
+    title: {
+        text: 'Fluid therapy assessment parameters'
+    },
+    tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+            type: 'shadow'
+        }
+    },
+    legend: {
+        data: ['preoperative', 'intraoperative', 'postoperative'],
+        top: '5%'
+    },
+    grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+    },
+    xAxis: {
+        type: 'value'
+    },
+    yAxis: {
+        type: 'category',
+        data: ['Treatment information', 'Physical examinations', 'Intake factors', 'Insensible losses', 'Complications', 'clinical signs', 'Other factors', 'Vital signs', 'volume loss factors', 'Laboratory tests', 'Physiological factors', 'Hemodynamic parameters']
+    },
+    series: {{ res|safe }}
+};
         mychart1.clear();
         mychart1.setOption(option1);
-        {#mychart.setOption(option);#}
 
+
+
+
+
+
+
+
+// 桑基图初始化
+var sankeyChart = echarts.init(document.getElementById('charts_sankey'));
+var sankeyOption = {
+    title: {
+        text: 'Fluid therapy regimens for surgeries'
+    },
+    tooltip: {
+        trigger: 'item',
+        triggerOn: 'mousemove'
+    },
+    series: [{
+        type: 'sankey',
+        nodeWidth: 15,
+        nodeGap: 18,
+        layout: 'none',
+        emphasis: {
+            focus: 'adjacency'
+        },
+        nodeAlign: 'left',
+        data: [{'name': 'Abdominal Surgery'},
+ {'name': 'Thoracic surgery'},
+ {'name': 'Cardiac surgery'},
+ {'name': 'Neurosurgery'},
+ {'name': 'Urological surgery'},
+ {'name': 'Orthopedic surgery'},
+ {'name': 'Vascular Surgery'},
+ {'name': 'critically ill surgery'},
+
+ {'name': 'Obstetric surgery'},
+ {'name': 'pediatric surgery'},
+ {'name': 'colonoscopy'},
+ {'name': 'Gynecological surgery'},
+ {'name': 'Head and neck surgery'},
+ {'name': 'Non-Cardiac Surgery'},
+ {'name': 'Bariatric surgery'},
+ {'name': 'kidney transplant'},
+ {'name': 'other surgery'},
+ {'name': 'urgent PCI'},
+ {'name': 'intraoperative'},
+ {'name': 'postoperative'},
+ {'name': 'preoperative'}],
+links: [{'source': 'Abdominal Surgery',
+  'target': 'intraoperative',
+  'value': 853},
+ {'source': 'Abdominal Surgery', 'target': 'postoperative', 'value': 213},
+ {'source': 'Abdominal Surgery', 'target': 'preoperative', 'value': 89},
+ {'source': 'Thoracic surgery', 'target': 'intraoperative', 'value': 105},
+ {'source': 'Thoracic surgery', 'target': 'postoperative', 'value': 46},
+ {'source': 'Thoracic surgery', 'target': 'preoperative', 'value': 10},
+ {'source': 'Cardiac surgery', 'target': 'intraoperative', 'value': 259},
+ {'source': 'Cardiac surgery', 'target': 'postoperative', 'value': 192},
+ {'source': 'Cardiac surgery', 'target': 'preoperative', 'value': 23},
+ {'source': 'Neurosurgery', 'target': 'intraoperative', 'value': 97},
+ {'source': 'Neurosurgery', 'target': 'postoperative', 'value': 33},
+ {'source': 'Neurosurgery', 'target': 'preoperative', 'value': 11},
+ {'source': 'Urological surgery', 'target': 'intraoperative', 'value': 147},
+ {'source': 'Urological surgery', 'target': 'postoperative', 'value': 33},
+ {'source': 'Urological surgery', 'target': 'preoperative', 'value': 19},
+ {'source': 'Orthopedic surgery', 'target': 'intraoperative', 'value': 195},
+ {'source': 'Orthopedic surgery', 'target': 'postoperative', 'value': 16},
+ {'source': 'Orthopedic surgery', 'target': 'preoperative', 'value': 54},
+ {'source': 'Vascular Surgery', 'target': 'intraoperative', 'value': 45},
+ {'source': 'Vascular Surgery', 'target': 'postoperative', 'value': 15},
+ {'source': 'Vascular Surgery', 'target': 'preoperative', 'value': 4},
+ {'source': 'critically ill surgery',
+  'target': 'intraoperative',
+  'value': 16},
+ {'source': 'critically ill surgery', 'target': 'postoperative', 'value': 16},
+ {'source': 'critically ill surgery', 'target': 'preoperative', 'value': 16},
+ {'source': 'Obstetric surgery', 'target': 'intraoperative', 'value': 42},
+ {'source': 'Obstetric surgery', 'target': 'postoperative', 'value': 0},
+ {'source': 'Obstetric surgery', 'target': 'preoperative', 'value': 18},
+ {'source': 'pediatric surgery', 'target': 'intraoperative', 'value': 13},
+ {'source': 'pediatric surgery', 'target': 'postoperative', 'value': 0},
+ {'source': 'pediatric surgery', 'target': 'preoperative', 'value': 0},
+ {'source': 'colonoscopy', 'target': 'intraoperative', 'value': 1},
+ {'source': 'colonoscopy', 'target': 'postoperative', 'value': 1},
+ {'source': 'colonoscopy', 'target': 'preoperative', 'value': 2},
+ {'source': 'Gynecological surgery', 'target': 'intraoperative', 'value': 110},
+ {'source': 'Gynecological surgery', 'target': 'postoperative', 'value': 9},
+ {'source': 'Gynecological surgery', 'target': 'preoperative', 'value': 43},
+ {'source': 'Head and neck surgery', 'target': 'intraoperative', 'value': 37},
+ {'source': 'Head and neck surgery', 'target': 'postoperative', 'value': 10},
+ {'source': 'Head and neck surgery', 'target': 'preoperative', 'value': 0},
+ {'source': 'Non-Cardiac Surgery', 'target': 'intraoperative', 'value': 2},
+ {'source': 'Non-Cardiac Surgery', 'target': 'postoperative', 'value': 0},
+ {'source': 'Non-Cardiac Surgery', 'target': 'preoperative', 'value': 0},
+ {'source': 'Bariatric surgery', 'target': 'intraoperative', 'value': 7},
+ {'source': 'Bariatric surgery', 'target': 'postoperative', 'value': 0},
+ {'source': 'Bariatric surgery', 'target': 'preoperative', 'value': 0},
+ {'source': 'kidney transplant', 'target': 'intraoperative', 'value': 0},
+ {'source': 'kidney transplant', 'target': 'postoperative', 'value': 0},
+ {'source': 'kidney transplant', 'target': 'preoperative', 'value': 0},
+ {'source': 'other surgery', 'target': 'intraoperative', 'value': 6},
+ {'source': 'other surgery', 'target': 'postoperative', 'value': 12},
+ {'source': 'other surgery', 'target': 'preoperative', 'value': 2},
+ {'source': 'urgent PCI', 'target': 'intraoperative', 'value': 2},
+ {'source': 'urgent PCI', 'target': 'postoperative', 'value': 5},
+ {'source': 'urgent PCI', 'target': 'preoperative', 'value': 0}],
+        lineStyle: {
+            color: 'source',
+            curveness: 0.5
+        },
+        label: {
+            color: '#333',
+            fontSize: 12
+        }
+    }]
+};
+
+sankeyChart.setOption(sankeyOption);
     </script>
-    {#    <script>#}
-    {#        var mychart1 = echarts.init(document.getElementById('charts_bar'));#}
-    {#        const themeJson ={{ pie|safe }}#}
-    {##}
-    {#        var option1 = {#}
-    {#            tooltip: {#}
-    {#    trigger: 'axis',#}
-    {#    axisPointer: {#}
-    {#      // Use axis to trigger tooltip#}
-    {#      type: 'shadow' // 'shadow' as default; can also be 'line' or 'shadow'#}
-    {#    }#}
-    {#  },#}
-    {#  legend: {},#}
-    {#  grid: {#}
-    {#    left: '3%',#}
-    {#    right: '4%',#}
-    {#    bottom: '3%',#}
-    {#    containLabel: true#}
-    {#  },#}
-    {#  xAxis: {#}
-    {#    type: 'value'#}
-    {#  },#}
-    {#  yAxis: {#}
-    {#    type: 'category',#}
-    {#    data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']#}
-    {#  },#}
-    {#  series: [#}
-    {#    {#}
-    {#      name: 'Direct',#}
-    {#      type: 'bar',#}
-    {#      stack: 'total',#}
-    {#      label: {#}
-    {#        show: true#}
-    {#      },#}
-    {#      emphasis: {#}
-    {#        focus: 'series'#}
-    {#      },#}
-    {#      data: [320, 302, 301, 334, 390, 330, 320]#}
-    {#    },#}
-    {#    {#}
-    {#      name: 'Mail Ad',#}
-    {#      type: 'bar',#}
-    {#      stack: 'total',#}
-    {#      label: {#}
-    {#        show: true#}
-    {#      },#}
-    {#      emphasis: {#}
-    {#        focus: 'series'#}
-    {#      },#}
-    {#      data: [120, 132, 101, 134, 90, 230, 210]#}
-    {#    },#}
-    {#    {#}
-    {#      name: 'Affiliate Ad',#}
-    {#      type: 'bar',#}
-    {#      stack: 'total',#}
-    {#      label: {#}
-    {#        show: true#}
-    {#      },#}
-    {#      emphasis: {#}
-    {#        focus: 'series'#}
-    {#      },#}
-    {#      data: [220, 182, 191, 234, 290, 330, 310]#}
-    {#    },#}
-    {#    {#}
-    {#      name: 'Video Ad',#}
-    {#      type: 'bar',#}
-    {#      stack: 'total',#}
-    {#      label: {#}
-    {#        show: true#}
-    {#      },#}
-    {#      emphasis: {#}
-    {#        focus: 'series'#}
-    {#      },#}
-    {#      data: [150, 212, 201, 154, 190, 330, 410]#}
-    {#    },#}
-    {#    {#}
-    {#      name: 'Search Engine',#}
-    {#      type: 'bar',#}
-    {#      stack: 'total',#}
-    {#      label: {#}
-    {#        show: true#}
-    {#      },#}
-    {#      emphasis: {#}
-    {#        focus: 'series'#}
-    {#      },#}
-    {#      data: [820, 832, 901, 934, 1290, 1330, 1320]#}
-    {#    }#}
-    {#  ]#}
-    {#        };#}
-    {#        mychart1.clear();#}
-    {#        mychart1.setOption(option1);#}
-    {##}
-    {#    </script>#}
-    {#    <script>#}
-    {#    function restSelecter(divId){#}
-    {#	 // 清空下拉框#}
-    {#		$(divId).find("option").remove();#}
-    {#		$(divId).selectpicker('refresh');#}
-    {##}
-    {#        function selectOnchange(obj) {#}
-    {#            var value = obj.options[obj.selectedIndex].value#}
-    {#alert(value)#}
-    {#            $.ajax({#}
-    {#                type: "GET",#}
-    {#                url: "category_search/",    //后台处理函数的url#}
-    {#                data: {type: value},#}
-    {#                success: function (result) {  //获取后台处理后传过来的result#}
-    {#alert(result)#}
-    {#var selectObj = $("#input_val");#}
-    {#alert(result)#}
-    {#                    $("#user").html(result)#}
-    {#                    $("#user").selectpicker('refresh')#}
-    {##}
-    {#                }#}
-    {#            });#}
-    {#        }#}
-    {#        function reset_bar(obj){#}
-    {#        $.ajax({#}
-    {#            type: "GET",#}
-    {#            url: "localhost:8000/analysis/publication_year/",    //后台处理函数的url#}
-    {#        });#}
-    {#    }#}
-    {#    </script>#}
+
 
 {% endblock %}
 

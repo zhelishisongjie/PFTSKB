@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-ndxvg98okjhy8a5)j^50+*0%i-d33ktykizmwvjixp1#7^k9t8"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 
@@ -40,7 +40,6 @@ INSTALLED_APPS = [
     'corsheaders',
     'livereload',
     'app01.apps.App01Config',
-
 ]
 
 CACHES = {

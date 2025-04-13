@@ -27,18 +27,25 @@
     <div class="container">
 
             <div class="mt-2 mb-3" style="display: flex; justify-content: center;" >
-                <h1>Detail Information</h1>
+                <h1 style="color: white;
+                   background-color: #4F81BD;
+                   font-size: larger;
+                   padding: 8px 12px;
+                   border-radius: 4px;
+                   display: inline-block;">Study Information Details
+                </h1>
             </div>
+
 
 
         <div class="row mb-3">
             <div class="col">
-                <span class="badge badge-primary mb-3" style="font-size: larger;background-color: #4F81BD ">Study Information Details</span>
+               <!--<span class="badge badge-primary mb-3" style="font-size: larger;background-color: #4F81BD ">Study Information Details</span>-->
                 <table>
                     <tbody>
                     <tr>
                         <th>PMID:</th>
-                         <td class="align-middle">{{ queryset.id }}</td>
+                         <td class="align-middle">{{ queryset.pmid }}</td>
 {#                        <td class="align-middle"><a href="/search/getdetails/{{ queryset.id }}" target="_blank">{{ queryset.id }}</a></td>#}
                     </tr>
                     <tr>
@@ -63,7 +70,7 @@
                     </tr>
                                                             <tr>
                         <th>Key Points:</th>
-                        <td>{{ queryset.Conclusion }}</td>
+                        <td>{{ queryset.Key_points }}</td>
                     </tr>
                     <tr>
                         <th>Year:</th>

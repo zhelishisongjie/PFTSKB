@@ -186,6 +186,19 @@
             {#paginationPreText: "上一页",#}
             {#paginationNextText: "下一页",#}
             queryParamsType: "",
+            responseHandler: function(res) {
+                // 处理不同数据结构 (修复错误2)
+                let data = Array.isArray(res) ? res : (res.rows || []);
+
+                // 过滤空行逻辑
+                return data.filter(function(row) {
+                    return !(
+                        (row.Outcome_name2 === null || row.Outcome_name2 === "") &&
+                        (row.Result3 === null || row.Result3 === "") &&
+                        (row.Statictics3 === null || row.Statictics3 === "")
+                    );
+                });
+            },
             queryParams: function (params) {
                 var temp = {
                     'pageSize': params.pageSize,
@@ -204,13 +217,12 @@
                 {#    events: window.operateEvents,#}
                 {##}
                 {
-                                field: 'id',
-                                title: 'ID',
-                                align: 'center',
+                    field: 'id',
+                    title: 'ID',
+                    align: 'center',
 
-                            },
-
-                                {
+                },
+                {
                     field: 'Outcome_name2',
                     title: 'Outcome Name',
                     align: 'center',

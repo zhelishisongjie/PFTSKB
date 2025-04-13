@@ -186,6 +186,20 @@
             {#paginationPreText: "上一页",#}
             {#paginationNextText: "下一页",#}
             queryParamsType: "",
+             // 新增 responseHandler 过滤数据
+            responseHandler: function(res) {
+                // 处理不同数据结构 (修复错误2)
+                let data = Array.isArray(res) ? res : (res.rows || []);
+
+                // 过滤空行逻辑
+                return data.filter(function(row) {
+                    return !(
+                        (row.Complications_name === null || row.Complications_name === "") &&
+                        (row.Result1 === null || row.Result1 === "")
+                    );
+                });
+            },
+
             queryParams: function (params) {
                 var temp = {
                     'pageSize': params.pageSize,
@@ -196,6 +210,7 @@
                 };
                 return temp;
             },
+
             columns: [
                 {#{#}
                 {#    title: 'Details',#}
@@ -204,25 +219,21 @@
                 {#    events: window.operateEvents,#}
                 {##}
                 {
-                                field: 'id',
-                                title: 'ID',
-                                align: 'center',
-
-                            },
-
-
-
-                                {
+                    field: 'id',
+                    title: 'ID',
+                    align: 'center',
+                },
+                {
                     field: 'Complications_name',
                     title: 'Complications Name',
                     align: 'center',
                 },
-                                                {
+                {
                     field: 'Result1',
                     title: 'Result',
                     align: 'center',
                 },
- {
+                {
                     field: 'Statictics1',
                     title: 'Statistics',
                     align: 'center',
@@ -242,22 +253,22 @@
                     title: 'PMID',
                     align: 'center',
                 },
-                 {
-                        title: 'Detail',
-                        align: 'center',
-                        formatter: operateFormatter,
-                        events: window.operateEvents,
-                    }
-
-
+                {
+                    title: 'Detail',
+                    align: 'center',
+                    formatter: operateFormatter,
+                    events: window.operateEvents,
+                }
             ],
-            onLoadError: function () {
 
-            },
+            onLoadError: function () {},
             onPostBody: function() {
-        $('#table').bootstrapTable('resetView').find('tbody').addClass('custom-font-size');
-    }
+                    $('#table').bootstrapTable('resetView').find('tbody').addClass('custom-font-size');
+                }
+
+
         });
+
 
     </script>
 {#    <script>#}

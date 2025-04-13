@@ -231,14 +231,15 @@ def get_pftd_data(request,num):
         #preview information
         if num == 1:
             queryset = Pftd.objects.raw(
-                "SELECT id,pmid,Title,group_name,Conclusion FROM `pftd` GROUP BY pmid,Title,group_name")
+                "SELECT id,pmid,Title,Levels_of_Recommendation,Grades_of_Evidence  FROM `pftd` GROUP BY pmid,Title,group_name")
             # total = PftdDecisionIndicator.objects.count()
             # queryset = PftdDecisionIndicator.objects.all()
             rows = []
             for obj in queryset:
                 rows.append({'id': obj.id, 'pmid': obj.pmid, 'Title': obj.Title,
-                             'Conclusion': obj.Conclusion,
-                             'group_name': obj.group_name})
+                             'Key_points': obj.Key_points,
+                             'Grades_of_Evidence': obj.Grades_of_Evidence,
+                             'Levels_of_Recommendation': obj.Levels_of_Recommendation})
 
             data = {'total': len(queryset), 'totalNotFiltered': len(queryset), 'rows': rows}
 
@@ -259,12 +260,12 @@ def get_pftd_data(request,num):
             return HttpResponse(json.dumps(data, separators=(',', ':')), content_type='application/json')
         if num == 3:
             queryset = Pftd.objects.raw(
-                "SELECT id,pmid,group_name,Study_Design,Region,Sample_Size FROM `pftd` GROUP BY pmid,group_name")
+                "SELECT id,pmid,group_name,Study_Design,Region,Sample_Size,Year FROM `pftd` GROUP BY pmid,group_name")
             # total = PftdDecisionIndicator.objects.count()
             # queryset = PftdDecisionIndicator.objects.all()
             rows = []
             for obj in queryset:
-                rows.append({'id': obj.id, 'pmid': obj.pmid, 'group_name': obj.group_name,
+                rows.append({'id': obj.id, 'Year': obj.Year, 'pmid': obj.pmid, 'group_name': obj.group_name,
                              'Study_Design': obj.Study_Design, 'Region': obj.Region,
                              'Sample_Size': obj.Sample_Size})
 
@@ -273,12 +274,12 @@ def get_pftd_data(request,num):
             return HttpResponse(json.dumps(data, separators=(',', ':')), content_type='application/json')
         if num == 4:
             queryset = Pftd.objects.raw(
-                "SELECT id,pmid,Gender,Age,ASA_physical_status,BMI,Race FROM `pftd` GROUP BY pmid,ASA_physical_status")
+                "SELECT id,pmid,Gender,Age,ASA_physical_status,BMI,Race,group_name FROM `pftd` GROUP BY pmid,ASA_physical_status")
             # total = PftdDecisionIndicator.objects.count()
             # queryset = PftdDecisionIndicator.objects.all()
             rows = []
             for obj in queryset:
-                rows.append({'id': obj.id, 'pmid': obj.pmid, 'Gender': obj.Gender,
+                rows.append({'id': obj.id, 'group_name': obj.group_name, 'pmid': obj.pmid, 'Gender': obj.Gender,
                              'Age': obj.Age, 'ASA_physical_status': obj.ASA_physical_status,
                              'BMI': obj.BMI,'Race': obj.Race})
 
@@ -418,7 +419,10 @@ def getlist(request, id):
                 queryset = Pftd.objects.filter(surgery_type__in=surgeries)
                 rows = []
                 for obj in queryset:
-                    rows.append({'id': obj.id, 'Period_of_fluid_therapy1': obj.Period_of_fluid_therapy1,
+                    rows.append({'id': obj.id,
+                                 #'IFTP': obj.IFTP,
+                                 #'IFTP_subgroup': obj.IFTP_subgroup,
+                                 'Period_of_fluid_therapy': obj.Period_of_fluid_therapy,
                                  'liquid_treatment': obj.liquid_treatment,
                                  'Fluid_name': obj.Fluid_name,
                                  'Fluid_type': obj.Fluid_type, 'surgery_type': obj.surgery_type,
@@ -432,7 +436,7 @@ def getlist(request, id):
                 for value, field_name in zip([classification, application, surgeryType, Period_ft],
                                              ['classification_of_fluid_therapy_parameters', 'application',
                                               'surgery_type',
-                                              'Period_of_fluid_therapy1']):
+                                              'Period_of_fluid_therapy']):
                     condition = get_queryset_or_none(value, field_name)
                     if condition:
                         query &= condition
@@ -445,7 +449,10 @@ def getlist(request, id):
                 #     surgery_type=surgeryType)
                 rows = []
                 for obj in queryset:
-                    rows.append({'id': obj.id, 'Period_of_fluid_therapy1': obj.Period_of_fluid_therapy1,
+                    rows.append({'id': obj.id,
+                                 #'IFTP': obj.IFTP,
+                                 #'IFTP_subgroup': obj.IFTP_subgroup,
+                                 'Period_of_fluid_therapy': obj.Period_of_fluid_therapy,
                                  'liquid_treatment': obj.liquid_treatment,
                                  'Fluid_name': obj.Fluid_name,
                                  'Fluid_type': obj.Fluid_type, 'surgery_type': obj.surgery_type,
@@ -477,7 +484,10 @@ def getlist(request, id):
                 queryset = PftdDecisionIndicator.objects.filter(surgery_type__in=surgeries)
                 rows = []
                 for obj in queryset:
-                    rows.append({'id': obj.id, 'Pid': obj.pid, 'parameters': obj.parameters,
+                    rows.append({'id': obj.id,
+                                 #'IFTP': obj.IFTP,
+                                 #'IFTP_subgroup': obj.IFTP_subgroup,
+                                 'Pid': obj.pid, 'parameters': obj.parameters,
                                  'classification_of_fluid_therapy_parameters': obj.classification_of_fluid_therapy_parameters,
                                  'application': obj.application, 'surgery_type': obj.surgery_type,
                                  'period_of_fluid_therapy': obj.period_of_fluid_therapy, 'group_name': obj.group_name,
@@ -502,7 +512,10 @@ def getlist(request, id):
                 #     surgery_type=surgeryType)
                 rows = []
                 for obj in queryset:
-                    rows.append({'id': obj.id, 'Pid': obj.pid, 'parameters': obj.parameters,
+                    rows.append({'id': obj.id,
+                                 #'IFTP': obj.IFTP,
+                                 #'IFTP_subgroup': obj.IFTP_subgroup,
+                                 'Pid': obj.pid, 'parameters': obj.parameters,
                                  'classification_of_fluid_therapy_parameters': obj.classification_of_fluid_therapy_parameters,
                                  'application': obj.application, 'surgery_type': obj.surgery_type,
                                  'period_of_fluid_therapy': obj.period_of_fluid_therapy, 'group_name': obj.group_name,
@@ -569,7 +582,10 @@ def getlist(request, id):
             queryset = Pftd.objects.all()
             rows = []
             for obj in queryset:
-                rows.append({'id': obj.id, 'Period_of_fluid_therapy1': obj.Period_of_fluid_therapy1, 'liquid_treatment': obj.liquid_treatment,
+                rows.append({'id': obj.id,
+                             'IFTP': obj.IFTP,
+                             'IFTP_subgroup': obj.IFTP_subgroup,
+                             'Period_of_fluid_therapy': obj.Period_of_fluid_therapy, 'liquid_treatment': obj.liquid_treatment,
                              'Fluid_name': obj.Fluid_name,
                              'Fluid_type': obj.Fluid_type, 'surgery_type': obj.surgery_type,
                              'Dose': obj.Dose, 'Rate': obj.Rate,
@@ -610,16 +626,16 @@ def search(request,id):
     #     "SELECT id,Application,count(*) as nums  FROM `pftd_decision_indicator` GROUP BY Application ORDER BY nums DESC")
     # period_ft = PftdDecisionIndicator.objects.raw(
     #     "SELECT id,Period_of_fluid_therapy as ft FROM `pftd_decision_indicator` GROUP BY Period_of_fluid_therapy")
-    app_choice = ['fluid volume estimation', 'fluid type estimation', 'fluid therapy rate assessment',
-                  'transfusion assessment', 'Use of vasoactive agents Assessment']
-    class_choice_array = ['Hemodynamic parameters', 'Physiological factors', 'Laboratory tests', 'volume loss factors',
-                          'vital signs', 'Intake factors', 'clinical signs', 'Insensible losses',
+    app_choice = ['Fluid volume estimation', 'Fluid type estimation', 'Fluid therapy rate assessment',
+                  'Transfusion assessment', 'Use of vasoactive agents Assessment']
+    class_choice_array = ['Hemodynamic parameters', 'Physiological factors', 'Laboratory tests', 'Volume loss factors',
+                          'Vital signs', 'Intake factors', 'Clinical signs', 'Insensible losses',
                           'Physical examinations', 'Complications', 'Treatment information', 'Other factors']
     surgery_type_array = ['Cardiac surgery', 'Abdominal surgery', 'Thoracic surgery', 'Urological surgery',
                           'Vascular Surgery', 'Neurosurgery', 'Head and neck surgery', 'Orthopedic surgery',
                           'Gynecological surgery', 'Obstetric surgery', 'Pediatric surgery', 'Bariatric surgery',
                           'Critically ill surgery', 'Other surgeries']
-    period_ft_array = ['preoperative', 'intraoperative', 'postoperative']
+    period_ft_array = ['Preoperative', 'Intraoperative', 'Postoperative']
     # for i in class_choice:
     #     if ";" in i.classification_of_fluid_therapy_parameters:
     #         temp = i.classification_of_fluid_therapy_parameters.split(";")
@@ -690,6 +706,7 @@ def search(request,id):
 def getsearchdetails(request, id):
     queryset = PftdDecisionIndicator.objects.get(id=id)
     return render(request, "details_pftd.html", {'queryset': queryset})
+
 def getdetails(request, id):
     #queryset = PftdDecisionIndicator.objects.get(id=id)
     queryset = Pftd.objects.get(id=id)
@@ -706,7 +723,7 @@ def getIFTPdetails(request, IFTP):
         rows.append({'IFTP': obj.IFTP, 'IFTP_subgroup': obj.IFTP_subgroup,
                      'id': obj.id,
                      'application': obj.Application1, 'surgery_type': obj.surgery_type,
-                     'period_of_fluid_therapy': obj.Period_of_fluid_therapy1,
+                     'period_of_fluid_therapy': obj.Period_of_fluid_therapy,
                      'pmid': obj.pmid, 'reference': obj.Reference})
 
     data = {'total': len(queryset), 'totalNotFiltered': len(queryset), 'rows': rows}
@@ -720,7 +737,7 @@ def getIFTPsubdetails(request, IFTP_subgroup):
         rows.append({'IFTP': obj.IFTP, 'IFTP_subgroup': obj.IFTP_subgroup,
                      'id': obj.id,
                      'application': obj.Application1, 'surgery_type': obj.surgery_type,
-                     'period_of_fluid_therapy': obj.Period_of_fluid_therapy1,
+                     'period_of_fluid_therapy': obj.Period_of_fluid_therapy,
                      'pmid': obj.pmid, 'reference': obj.Reference})
 
     data = {'total': len(queryset), 'totalNotFiltered': len(queryset), 'rows': rows}
@@ -1645,7 +1662,7 @@ def initClass(request):
             for obj in arr:
                 rows.append({
                     "id": obj.id,
-                    "Period_of_fluid": obj.Period_of_fluid_therapy1,
+                    "Period_of_fluid": obj.Period_of_fluid_therapy,
                     "Liquid_treatment": obj.liquid_treatment,
                     "Fluid_name": obj.Fluid_name,
                     "Fluid_type": obj.Fluid_type,
@@ -1728,7 +1745,7 @@ def initPara(request):
             for obj in arr:
                 rows.append({
                     "id": obj.id,
-                    "Period_of_fluid": obj.Period_of_fluid_therapy1,
+                    "Period_of_fluid": obj.Period_of_fluid_therapy,
                     "Liquid_treatment": obj.liquid_treatment,
                     "Fluid_name": obj.Fluid_name,
                     "Fluid_type": obj.Fluid_type,
@@ -2188,7 +2205,7 @@ def recommend(request):
                 step2_arr.append(asa_temp)
 
             if period_of_FT:
-                period_of_FT_map = generate_map("Period_of_fluid_therapy1", period_of_FT)
+                period_of_FT_map = generate_map("Period_of_fluid_therapy", period_of_FT)
                 period_of_FT_temp = generate_temp(period_of_FT_map)
                 step2_arr.append(period_of_FT_temp)
 
@@ -2374,7 +2391,9 @@ def recommend(request):
                         # print(obj.id,  obj.Classification_FT_assessment_factors1)
                         rows.append({
                             "id": obj.id,
-                            "Period_of_fluid": obj.Period_of_fluid_therapy1,
+                            "IFTP": obj.IFTP,
+                            "IFTP_subgroup": obj.IFTP_subgroup,
+                            "Period_of_fluid": obj.Period_of_fluid_therapy,
                             "Liquid_treatment": obj.liquid_treatment,
                             "Fluid_name": obj.Fluid_name,
                             "Fluid_type": obj.Fluid_type,
@@ -2453,13 +2472,14 @@ class ana_type_form(forms.Form):
 def category_search(request):
     if request.method == 'GET':
         data = request.GET.get('type')
-        tests = PftdDecisionIndicator.objects.raw(
-            "select id," + data + " as name from pftd_decision_indicator GROUP BY " + data)
+        tests = Pftd.objects.raw("select id," + data + " as name from pftd GROUP BY " + data)
         res = []
         if data == 'asa_physical_status':
             # chinese_chr = r'Ⅰ Ⅱ Ⅲ Ⅳ Ⅴ'
             # english_chr = r'I II'
             for i in tests:
+                if i.name is None:
+                    continue
 
                 if ";" in i.name:
                     temp = i.name.split(";")
@@ -2482,13 +2502,18 @@ def category_search(request):
                     res.append(dict_temp)
             res1 = [dict(t) for t in {tuple(d.items()) for d in res}
                     if not any(v in ('Na', None, '', 'NA') for k, v in dict(t).items())]
-            roman_order = {'Ⅰ': 1, 'Ⅱ': 2, 'Ⅲ': 3, 'Ⅳ': 4, 'Ⅴ': 5}
+            roman_order = {
+                'Ⅰ': 1, 'I': 1,
+                'Ⅱ': 2, 'II': 2,
+                'Ⅲ': 3, 'III': 3,
+                'Ⅳ': 4, 'IV': 4,
+                'Ⅴ': 5, 'V': 5
+            }
             sorted_roman_numerals = sorted(res1, key=lambda x: roman_order[x['name']])
             return render(request, "option.html", {'query1': sorted_roman_numerals})
         else:
 
             for i in tests:
-
                 if "; " in i.name:
                     temp = i.name.split("; ")
                     for j in temp:
@@ -2657,37 +2682,64 @@ class ana_cd_form(forms.Form):
                                     choices=type_choices2)
 
 
+import re
+from collections import defaultdict
 def country_dis(request):
     if request.method == 'GET':
+        # 国家名称标准化映射
+        COUNTRY_MAPPING = {
+            'America': 'United States',
+            'USA': 'United States',
+            'UK': 'United Kingdom',
+            'South Korea': 'Korea',
+            'Espana': 'Spain',
+            'Taiwan,China': 'China'
+        }
+        def clean_country_name(name):
+            """清洗国家名称"""
+            name = re.sub(r'[\r\n]', '', name.strip())  # 去除换行和首尾空格
+            name = re.sub(r'，', ',', name)  # 替换中文逗号
+            return COUNTRY_MAPPING.get(name, name)
+
+        NON_COUNTRIES = {'Gothenburg', 'Istanbul', 'Scotland', 'Northern Ireland'}
+
         form = ana_cd_form()
         tests = PftdDecisionIndicator.objects.raw(
             "select id, Region as region, count(*) as count from(select id, pmid,Region from pftd_decision_indicator GROUP BY pmid) as temp GROUP BY Region")
+
+
         res = []
         dis_array = []
         for i in tests:
             if ";" in i.region:
                 temp = i.region.split(";")
+
+
                 for j in temp:
-                    if j not in dis_array:
-                        dis_array.append(j)
-                        dic_temp = {}
-                        dic_temp['name'] = j
-                        dic_temp['count'] = i.count
-                        res.append(dic_temp)
+                    cleaned = clean_country_name(j)
+                    if cleaned and cleaned not in NON_COUNTRIES:  # 新增过滤
+                        if cleaned not in dis_array:
+                            dis_array.append(cleaned)
+                            res.append({'name': cleaned, 'count': i.count})
+                        else:
+                            for k in res:
+                                if k["name"] == cleaned:
+                                    k["count"] += i.count
             else:
-                if i.region not in dis_array:
-                    dis_array.append(i)
-                    dic_temp = {}
-                    dic_temp['name'] = i.region
-                    dic_temp['count'] = i.count
-                    res.append(dic_temp)
-                else:
-                    for k in res:
-                        if k["name"] == i.region:
-                            k["count"] += int(i.count)
-        # print(res)
+                cleaned = clean_country_name(i.region)
+                if cleaned and cleaned not in NON_COUNTRIES:  # 新增过滤
+                    if cleaned not in dis_array:
+                        dis_array.append(cleaned)
+                        res.append({'name': cleaned, 'count': i.count})
+                    else:
+                        for k in res:
+                            if k["name"] == cleaned:
+                                k["count"] += i.count
+        print(res)
         # print(tests)
         return render(request, "analysis/analysis_cd.html", {'data': res, "form": form})
+
+
     if request.method == 'POST':
         form = ana_cd_form(data=request.POST)
         if form.is_valid():
@@ -2802,8 +2854,6 @@ def get_geodata(request):
 '''
  Analysis for Sankey 
 '''
-
-
 class ana_sankey_form(forms.Form):
     type_choices = (
         ("surgery_type", "Surgical Type"),
@@ -3218,7 +3268,6 @@ def ana_pie(request):
 
         # pie = Pie(i.classification_of_fluid_therapy_parameters)
         # pie.children.append(Pie(i.application).children.append(Pie(i.parameters)))
-
         return render(request, "analysis/analysis_di_circle.html", {"test": json.dumps(result)})
 
 
@@ -3837,6 +3886,23 @@ def ana_di_polar(request):
                  "other surgery", "other surgeries"]
     for i in data_sp_para:
         print(i.name, i.app)
+        if i.app is None or i.name is None:
+            print(f"Skipping row with null values - name: {i.name}, app: {i.app}")
+            continue
+        if i.name.strip().lower() == 'gastrointestinal surgery':
+            continue
+        if i.name.strip().lower() == 'gastric surgery':
+            continue
+        if i.name.strip().lower() == 'autologous breast reconstruction':
+            continue
+        if i.name.strip().lower() == 'abdominal or thoracic surgery':
+            continue
+        if i.name.strip().lower() == 'lung resection':
+            continue
+        if i.name.strip().lower() == 'back surgery':
+            continue
+        if i.name.strip().lower() == 'abdomen；thoracic；extremity；head and trauma':
+            continue
         parameters = [para.strip().title() for para in i.app.split(';')]
         # surgery_type
         names = [para.strip().title() for para in i.name.split(';')]
@@ -3872,3 +3938,10 @@ def ana_di_polar(request):
     # print(res)
     return render(request, "analysis/analysis_di_polar.html",
                   {'x': json.dumps(x), "res": json.dumps(res), "type": json.dumps(para_array)})
+
+
+
+def ana_regimens_pie(request):
+
+    return render(request, "analysis/analysis_regimens_pie.html",
+                  {'x': 0, "res": 0, "type": 0})

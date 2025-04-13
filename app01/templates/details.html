@@ -4,9 +4,19 @@
 {% block title %}
     <title>details</title>
     <style>
-     .th{
-
-     }
+     th.parameter-header {
+      min-width: 300px; /* 根据实际内容调整 */
+      white-space: nowrap; /* 防止表头换行 */
+    }
+     td.parameter-value {
+  min-width: 300px; /* 根据内容调整 */
+  word-wrap: break-word;
+}
+     @media (max-width: 768px) {
+    td.parameter-value {
+    min-width: 300px;
+  }
+}
     </style>
 {% endblock %}
 
@@ -14,7 +24,7 @@
 {% block content %}
     <div class="container">
         <div class="row mb-5" style="text-align: center">
-            <h1>Personalized PFTD recommendation</h1>
+            <h1>Personalized Fluid Therapy Assistance Recommendation</h1>
         </div>
         <div class="row mb-3">
             <div class="col">
@@ -87,16 +97,77 @@
             </div>
 
         </div>
+
+
         <hr/>
         <div class="row mt-3">
             <div class="col-3">
                 <span class="badge badge-primary" style="font-size: larger">Period of fluid therapy</span>
+                <table>
+                    <tbody>
+                    <tr>
+                        <th class="mr-4">Parameter1:</th>
+                        <td class="parameter-value">{{ queryset.Parameter1 }}</td>
+                    </tr>
+                    <tr>
+                        <th>Condition1:</th>
+                        <td class="parameter-value">{{ queryset.Condition1 }}</td>
+                    </tr>
+
+
+                    <tr>
+                        <th class="mr-4">Parameter2:</th>
+                        <td class="parameter-value">{{ queryset.Parameter2 }}</td>
+                    </tr>
+                    <tr>
+                        <th>Condition2:</th>
+                        <td class="parameter-value">{{ queryset.Condition2 }}</td>
+                    </tr>
+
+
+
+                    <tr>
+                        <th class="mr-4">Parameter3:</th>
+                        <td class="parameter-value">{{ queryset.Parameter3 }}</td>
+                    </tr>
+                    <tr>
+                        <th>Condition3:</th>
+                        <td class="parameter-value">{{ queryset.Condition3 }}</td>
+                    </tr>
+
+
+
+                    <tr>
+                        <th class="mr-4">Parameter4:</th>
+                        <td class="parameter-value">{{ queryset.Parameter4 }}</td>
+                    </tr>
+                    <tr>
+                        <th>Condition4:</th>
+                        <td class="parameter-value">{{ queryset.Condition4 }}</td>
+                    </tr>
+
+
+                    <tr>
+                        <th class="mr-4">Parameter5:</th>
+                        <td class="parameter-value">{{ queryset.Parameter5 }}</td>
+                    </tr>
+                    <tr>
+                        <th>Condition5:</th>
+                        <td class="parameter-value">{{ queryset.Condition5 }}</td>
+                    </tr>
+
+
+
+
+
+                    </tbody>
+                </table>
             </div>
-            <div class="col-8">
-                {{ queryset.Period_of_fluid_therapy1 }}
-            </div>
+
         </div>
         <hr/>
+
+
         <div class="row mb-3">
             <div class="col">
                 <span class="badge badge-primary mb-3" style="font-size: larger">FT Recommendation</span>
@@ -162,10 +233,7 @@
                         <th>Other information on FT:</th>
                         <td>{{ queryset.Other_info_fluid_therapy_protocol }}</td>
                     </tr>
-                    <tr>
-                        <th>FT Decision Chart:</th>
-                        <td>12</td>
-                    </tr>
+
 
                     </tbody>
                 </table>
@@ -182,17 +250,48 @@
                 <table>
                     <tbody>
                     <tr>
-                        <th>Complications:</th>
+                        <th class="parameter-header">Complications:</th>
                         <td class="align-middle">{{ queryset.Complications }}</td>
                     </tr>
                     <tr>
-                        <th>length of hospital stay:</th>
+                        <th class="parameter-header">Complications_Result:</th>
+                        <td class="align-middle">{{ queryset.Result1 }}</td>
+                    </tr>
+                    <tr>
+                        <th class="parameter-header">Complications_Statistics:</th>
+                        <td class="align-middle">{{ queryset.Statictics1 }}</td>
+                    </tr>
+
+
+
+                    <tr>
+                        <th class="parameter-header">length of hospital stay:</th>
                         <td class="align-middle">{{ queryset.length_of_hospital_stay }}</td>
                     </tr>
                     <tr>
-                        <th>ICU occupancy:</th>
+                        <th class="parameter-header">length of hospital stay_Result:</th>
+                        <td class="align-middle">{{ queryset.Result2 }}</td>
+                    </tr>
+                    <tr>
+                        <th class="parameter-header">length of hospital stay_Statistics:</th>
+                        <td class="align-middle">{{ queryset.Statictics2 }}</td>
+                    </tr>
+
+
+
+                    <tr>
+                        <th class="parameter-header">ICU occupancy:</th>
                         <td>{{ queryset.ICU_occupancy }}</td>
                     </tr>
+                    <tr>
+                        <th class="parameter-header">ICU occupancy_Result:</th>
+                        <td class="align-middle">{{ queryset.Result3 }}</td>
+                    </tr>
+                    <tr>
+                        <th class="parameter-header">ICU occupancy_Statistics:</th>
+                        <td class="align-middle">{{ queryset.Statictics3 }}</td>
+                    </tr>
+                    <!--
                     <tr>
                         <th>test results:</th>
                         <td>{{ queryset.test_results }}</td>
@@ -205,9 +304,10 @@
                         <th>other outomes:</th>
                         <td>{{ queryset.other_outomes }}</td>
                     </tr>
+                    -->
                     <tr>
-                        <th>Conclusion:</th>
-                        <td>{{ queryset.Conclusion }}</td>
+                        <th>Key_points:</th>
+                        <td>{{ queryset.Key_points }}</td>
                     </tr>
 
                     </tbody>
@@ -217,21 +317,26 @@
 
         </div>
         <hr/>
-        <div class="row mb-3">
-            <div class="col-2">
-                <span class="badge badge-primary " style="font-size: larger">Evidence level</span>
 
+        <div class="row mb-3">
+
+            <div class="col-3">
+                <span class="badge badge-primary " style="font-size: larger">Grades of Evidence</span>
             </div>
             <div class="col-3">
-                <span>{{ queryset.Evidence_level }}</span>
+                <span>{{ queryset.Grades_of_Evidence }}</span>
+            </div>
+
+
+            <div class="col-3">
+                <span class="badge badge-primary " style="font-size: larger">Levels of Recommendation</span>
             </div>
             <div class="col-3">
-                <span class="badge badge-primary " style="font-size: larger">Recommendation level</span>
-            </div>
-            <div class="col-3">
-                <span>{{ queryset.strength_of_recommendation }}</span>
+                <span>{{ queryset.Levels_of_Recommendation }}</span>
             </div>
         </div>
+
+
         <div class="row mb-5">
                         <div class="col-2">
                 <span class="badge badge-primary " style="font-size: larger">Reference</span>

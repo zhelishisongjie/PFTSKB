@@ -58,7 +58,7 @@
         <div class="">
             <div class="mt-5 mb-5">
                 <div class="text-center" style="background-color: #4F81BD">
-                    <div style="height: 60px;color: white;font-size: 35px"> Browse for FT regimen
+                    <div style="height: 60px;color: white;font-size: 35px"> Browse for FT implementation regimen
                     </div>
                 </div>
             </div>
@@ -325,20 +325,30 @@
             },
             columns: [
                 {
-                        field: 'id',
-                        title: 'ID',
-                        align: 'center',
-                    },{
+                    field: 'id',
+                    title: 'ID',
+                    align: 'center',
+                },
+                {
+                    field: 'IFTP',
+                    title: 'IFTP',
+                    align: 'center',
+                },
+                {
+                    field: 'IFTP_subgroup',
+                    title: 'IFTP_subgroup',
+                    align: 'center',
+                },{
                     field: 'surgery_type',
                     title: 'Application for Surgery Type',
                     align: 'center',
                     {#filterControl:"select"#}
                 },
                 {
-                        field: 'Period_of_fluid_therapy1',
-                        title: 'Period_of_fluid',
-                        align: 'center',
-                    }, {
+                    field: 'Period_of_fluid_therapy',
+                    title: 'Period_of_fluid',
+                    align: 'center',
+                }, {
                         field: 'liquid_treatment',
                         title: 'Liquid_treatment',
                         align: 'center',

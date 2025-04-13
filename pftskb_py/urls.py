@@ -78,4 +78,6 @@ urlpatterns = [
     path("analysis/line/", views.ana_sy_line),
     path("analysis/polar/", views.ana_di_polar),
 
+    path("analysis/regimens_pie/", views.ana_regimens_pie),
+
 ]

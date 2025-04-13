@@ -49,7 +49,7 @@
         <div class="">
             <div class="mt-5 mb-5">
                 <div class="text-center" style="background-color: #4F81BD">
-                    <div style="height: 60px;color: white;font-size: 35px"> Browse for FT parameter
+                    <div style="height: 60px;color: white;font-size: 35px"> Browse for FT assessment parameter
                     </div>
                 </div>
             </div>
@@ -309,11 +309,16 @@
                 {#    events: window.operateEvents,#}
                 {##}
                 {
-                                field: 'id',
-                                title: 'ID',
-                                align: 'center',
+                    field: 'id',
+                    title: 'ID',
+                    align: 'center',
 
-                            },
+                },
+                {
+                    field: 'group_name',
+                    title: 'Group Name',
+                    align: 'center',
+                },
                 {
                     field: 'Pid',
                     title: 'PID',
@@ -323,10 +328,6 @@
                     title: 'Parameters',
                     align: 'center',
                 },
-                {
-                                field: 'group_name',
-                                title: 'Group Name',
-                                align: 'center',},
                 {
                     field: 'classification_of_fluid_therapy_parameters',
                     title: 'Parameters Classification',

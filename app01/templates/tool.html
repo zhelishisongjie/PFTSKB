@@ -75,6 +75,59 @@
         }
 
     </style>
+
+    <style>
+    /* 新增样式 */
+    .info-box {
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        transition: all 0.3s ease;
+    }
+
+    .step-card {
+        border: 1px solid #dee2e6;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+
+    .step-card li {
+        margin-bottom: 0.8rem;
+        color: #495057;
+    }
+
+    .fa-info-circle {
+        margin-right: 10px;
+        vertical-align: middle;
+    }
+    /* 新增柔和背景色 */
+    .bg-soft-primary {
+        background-color: rgba(79, 129, 189, 0.15) !important;
+        border-bottom: 2px solid #4F81BD;
+    }
+
+    .bg-soft-success {
+        background-color: rgba(40, 167, 69, 0.15) !important;
+        border-bottom: 2px solid #28a745;
+    }
+
+    /* 调整图标颜色 */
+    .text-primary {
+        color: #4F81BD !important;
+    }
+
+    .text-success {
+        color: #28a745 !important;
+    }
+
+    /* 优化卡片悬停效果 */
+    .card {
+        transition: transform 0.2s;
+    }
+
+    .card:hover {
+        transform: translateY(-3px);
+    }
+
+</style>
+
 {% endblock %}
 
 {% block content %}
@@ -243,26 +296,76 @@
 
             </form>
         </div>
+
+
         <div class="col-9">
-            <div id="table_allay">
+    <!-- Explanation Block -->
+    <div class="explanation-box mb-4 p-4 bg-light border rounded">
+        <!-- Title -->
+        <h3 class="mb-4 text-primary border-bottom pb-2">
+            <i class="fa fa-cogs mr-2"></i>FT Assessment Parameter Match Tool
+        </h3>
 
+        <!-- Core Functionality -->
+        <div class="function-section mb-4">
+            <h5 class="text-secondary mb-3">Introduction</h5>
+            <ul class="list-unstyled">
+                <li class="mb-3">
+                    FT Assessment Parameter Match tool standardized the included knowledge and constructed a knowledge - clinical assistance tool. Users only need to input parameter information，surgical information , and the tool can automatically match and output fluid therapy assessment parameter and studies containing that information. The output content involves patient information, surgical information, parameter information and other information for users reference.
+                </li>
 
-                <table
-                        id="table"
-                        data-toolbar="#toolbar"
-                >
-                </table>
+            </ul>
+        </div>
 
+ <!-- input output
+        <div class="row">
 
+            <div class="col-md-6 mb-4">
+                <div class="card h-100 border-primary">
+                    <div class="card-header bg-soft-primary text-primary">
+                        <i class="fa fa-edit mr-2"></i>Required Inputs
+                    </div>
+                    <div class="card-body">
+                        <ul class="pl-3 mb-0">
+                            <li>Parameter Information</li>
+                            <li>Surgical Context</li>
+                        </ul>
+                    </div>
+                </div>
             </div>
-            <div>
-    <div id="charts" class="mt-4" style="width: 100%" ></div>
+
+            <div class="col-md-6 mb-4">
+                <div class="card h-100 border-success">
+                    <div class="card-header bg-soft-success text-success">
+                        <i class="fa fa-info-circle mr-2"></i>Generated Outputs
+                    </div>
+                    <div class="card-body">
+                        <ul class="pl-3 mb-0">
+                            <li>Patient Information</li>
+                            <li>Surgical Details</li>
+                            <li>Assessment Parameters</li>
+                            <li>Relevant Clinical Studies</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+       -->
+
+        <!-- Disclaimer -->
+        <div class="alert alert-warning mt-3">
+            <i class="fa fa-exclamation-triangle mr-2"></i>
+            Outputs should be used as clinical reference only
+        </div>
+    </div>
+
+    <!-- Original Table/Charts -->
+    <div id="table_allay">
+        <table id="table" data-toolbar="#toolbar"></table>
+    </div>
+    <div id="charts" class="mt-4" style="width: 100%"></div>
 </div>
 
-{#            <div id="charts" class="mt-5" style=" width: 100%;"></div>#}
-
-
-        </div>
     </div>
     </div>
 
@@ -542,6 +645,7 @@ mychart.resize();
      {#       mychart.resize();#}
      {#   });#}
     </script>
+
 {#    <script>#}
 {#        var backendData = {{ test|safe }};#}
 {##}

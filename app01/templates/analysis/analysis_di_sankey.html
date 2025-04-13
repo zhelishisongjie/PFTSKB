@@ -80,9 +80,7 @@
 
 </div>
 
-
     {% endblock %}
-
 {% block special_js %}
     <script src="{% static 'js/echarts.min.js' %}"></script>
         <script src="{% static 'plugins/bootstrap-select/js/bootstrap-select.min.js' %}"></script>
@@ -93,7 +91,6 @@ var mychart = echarts.init(document.getElementById('charts'));
         $("#user2").val('').selectpicker('refresh');
     data1 = []
     links1 = []
-
 
     {% for item in data %}
         dic = {}
