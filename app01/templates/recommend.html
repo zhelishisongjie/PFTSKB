@@ -16,79 +16,77 @@
 
 
     <style type="text/css">
-        /* 模式选择按钮 */
+    /* 模式选择按钮 - 优化版 */
+    .mode-btn {
+        transition: all 0.3s ease;
+        min-width: 220px;
+        padding: 1rem 1.5rem;
+        font-weight: 500; /* 增加默认字体权重 */
+    }
+
+    .mode-btn:hover {
+        transform: translateY(-2px);
+        color: #fff !important;
+    }
+
+    /* 主按钮样式 */
+    .btn-outline-primary {
+        color: #4F81BD; /* 使用主色作为默认文字颜色 */
+        border-color: #4F81BD;
+    }
+    .btn-outline-success {
+        color: #28a745;
+        border-color: #28a745;
+    }
+    .btn-outline-warning {
+        color: #ffc107;
+        border-color: #ffc107;
+    }
+
+    /* 选中状态优化 */
+    .mode-btn.active {
+        background-color: rgba(79, 129, 189, 0.15) !important;
+        border-color: #4F81BD !important;
+        box-shadow: 0 2px 6px rgba(79, 129, 189, 0.2);
+        color: #4F81BD !important; /* 确保选中状态文字颜色 */
+        font-weight: 600; /* 选中状态加粗 */
+    }
+
+    /* 悬停状态优化 */
+    .mode-btn:hover:not(.active) {
+        background-color: rgba(79, 129, 189, 0.1);
+    }
+
+    /* 响应式调整 */
+    @media (max-width: 768px) {
+        .btn-group-toggle {
+            flex-direction: column;
+        }
         .mode-btn {
-            transition: all 0.3s ease;
-            min-width: 220px;
-            padding: 1rem 1.5rem;
+            width: 100%;
+            margin-bottom: 10px;
         }
+    }
 
-        .mode-btn:hover {
-            transform: translateY(-2px);
-        }
-
-        .mode-btn.active {
-            background-color: rgba(79, 129, 189, 0.15) !important;
-            border-color: #4F81BD !important;
-            box-shadow: 0 2px 6px rgba(79, 129, 189, 0.2);
-        }
-
-        /* 响应式调整 */
-        @media (max-width: 768px) {
-            .btn-group-toggle {
-                flex-direction: column;
-            }
-            .mode-btn {
-                width: 100%;
-                margin-bottom: 10px;
-            }
-        }
-
-
-        .step-key {
-        {#font-weight: bold;#} font-size: 1.2em;
-            width: 250px;
-            padding: 5px
-        }
-        #inputfont{
-            font-size: 16px;
-        }
-
-        #table {
-            font-size: 15px; /* 设置表格的字体大小 */
-
-        }
-
-        #table thead th {
-            font-size: 16px; /* 设置表头单元格的字体大小 */
-        }
-
-        #table_allay {
-            width: auto;
-            {#margin-left: 100px;#}
-            {#margin-right: 100px;#}
-        }
-
-        /* 覆盖边框和文本颜色 */
-        .btn-outline-primary {
-            color: #333; /* 更改文本颜色 */
-            border-color: #4F81BD; /* 更改边框颜色 */
-        }
-
-        /* 当鼠标悬停在按钮上时 */
-
-        /* 当按钮获得焦点或被激活时 */
-        .btn-outline-primary:focus,
-        .btn-outline-primary.focus,
-        .btn-outline-primary:active,
-        .btn-outline-primary.active {
-            color: #fff; /* 焦点或激活时文本颜色 */
-            background-color: #4F81BD; /* 焦点或激活时背景颜色 */
-            border-color: #4F81BD; /* 焦点或激活时边框颜色 */
-        }
-
-
-    </style>
+    /* 其他原有样式保持不变 */
+    .step-key {
+        font-size: 1.2em;
+        width: 250px;
+        padding: 5px
+    }
+    #inputfont {
+        font-size: 16px;
+    }
+    #table {
+        font-size: 15px;
+    }
+    #table thead th {
+        font-size: 16px;
+    }
+    #table_allay {
+        width: auto;
+    }
+</style>
 {% endblock %}
 
 
@@ -98,86 +96,14 @@
     {# 新增工具说明区块 #}
     <div class="container mb-4 p-4 bg-light rounded shadow-sm">
         <div class="d-flex align-items-center mb-3">
-            <i class="fa fa-info-circle fa-2x mr-3 text-primary"></i>
+            <i class="fa fa-stethoscope fa-2x mr-3 text-info"></i>
             <h4 class="mb-0">FT Clinical Assistance Tool</h4>
         </div>
         <p class="text-muted">
             <h5 class="text-secondary mb-3">Introduction</h5>
             Fluid therapy clinical assistance system standardized the included knowledge and constructed a knowledge - clinical assistance tool. Users (including the general public, medical student, researchers, professional surgeons and nurses ) only need to input patient information, and the tool can automatically match and output personalized fluid therapy regimens and studies containing that information. The output content involves patient information, surgical information, perioperative fluid therapy information, outcomes and prognosis, and other information for users reference.
         </p>
-
-<!-- input output
-
-        <div class="row">
-
-            <div class="col-md-6 mb-4">
-                <div class="card h-100 border-primary">
-                    <div class="card-header bg-soft-primary text-primary">
-                        <i class="fa fa-edit mr-2"></i>Required Inputs
-                    </div>
-                    <div class="card-body">
-                        <ul class="pl-3 mb-0">
-                            <li>Patient Information</li>
-                            <li>Surgery Information</li>
-                            <li>Parameter Information</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-
-            <div class="col-md-6 mb-4">
-                <div class="card h-100 border-success">
-                    <div class="card-header bg-soft-success text-success">
-                        <i class="fa fa-info-circle mr-2"></i>Generated Outputs
-                    </div>
-                    <div class="card-body">
-                        <ul class="pl-3 mb-0">
-                            <li>personalized fluid therapy regimens</li>
-                            <li>Surgical Details</li>
-                            <li>Assessment Parameters</li>
-                            <li>Relevant Clinical Studies</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
--->
-
-        <!-- Disclaimer -->
-        <div class="alert alert-warning mt-3">
-            <i class="fa fa-exclamation-triangle mr-2"></i>
-            Outputs should be used as clinical reference only
-        </div>
     </div>
-
-
-    <!--
-        <div class="row text-center">
-            <div class="col-md-4 mb-3">
-                <div class="border p-2 rounded">
-                    <i class="fa fa-layer-group fa-2x text-primary"></i>
-                    <h5 class="mt-2">Basic Matching</h5>
-                    <p class="small mb-0">Patient Information Only</p>
-                </div>
-            </div>
-            <div class="col-md-4 mb-3">
-                <div class="border p-2 rounded">
-                    <i class="fa fa-chart-line fa-2x text-success"></i>
-                    <h5 class="mt-2">Advance Matching</h5>
-                    <p class="small mb-0">Patient + Surgery Data</p>
-                </div>
-            </div>
-            <div class="col-md-4 mb-3">
-                <div class="border p-2 rounded">
-                    <i class="fa fa-flask fa-2x text-warning"></i>
-                    <h5 class="mt-2">Professional</h5>
-                    <p class="small mb-0">Full Parameters Analysis</p>
-                </div>
-            </div>
-        </div>
-    </div>
-    -->
 
 
 
@@ -195,16 +121,16 @@
             </label>
             <label class="btn btn-outline-warning mode-btn" data-mode="professional">
                 <input type="radio" name="mode" autocomplete="off">
-                <i class="fa fa-flask mr-2"></i>Professional
+                <i class="fa fa-flask mr-2"></i>Professional Matching
             </label>
         </div>
     </div>
 
 
-
     {# 表单容器 #}
     <form method="post" id="form1" novalidate>
         {% csrf_token %}
+        <input type="hidden" name="current_mode" id="currentModeInput" value="basic">
 
         <div class="container px-4 py-2" id="inputfont">
             {# Patients Information (始终显示) #}
@@ -230,7 +156,6 @@
                                         {% endfor %}
                                     </div>
                                     <span style="color: red">{{ form.gender.errors.0 }}</span>
-
                                 </div>
 
                                 <div class="col-9 mb-2">
@@ -247,20 +172,18 @@
 
                                 <div class="col-7 mb-2">
                                     <label class="form-label" style="font-size: 20px"><b>3.{{ form.bmi.label }}</b></label>
-
                                     {% for radio in form.bmi %}
                                         <div>
                                             {{ radio.tag }}
                                             <label class="form-check-label "style="font-size: 18px">{{ radio.choice_label }}</label>
                                         </div>
                                     {% endfor %}
-
                                     <span style="color: red">{{ form.bmi.errors.0 }}</span>
                                 </div>
 
                                 {# period_of_FT #}
                                 <div class="col-7 mb-2">
-                                    <div><label style="font-size: 20px"><b>5.{{ form.period_of_FT.label }}</b></label></div>
+                                    <div><label style="font-size: 20px"><b>4.{{ form.period_of_FT.label }}</b></label></div>
                                     <div>
                                         {% for radio in form.period_of_FT %}
                                             {{ radio.tag }}
@@ -272,37 +195,37 @@
 
                                 {# Are there any of the following comorbidities #}
                                 <div class="col-8">
-                                    <label class="form-label" style="font-size: 20px"><b>4.Are there any of the following
+                                    <label class="form-label" style="font-size: 20px"><b>5.Are there any of the following
                                         comorbidities</b></label>
                                     <div>
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="checkbox" id="AKI"
+                                            <input class="form-check-input" type="radio" id="AKI"
                                                    name="AKI" value="AKI" data-toggle="modal"
                                                    data-target="#exampleModal">
                                             <label class="form-check-label" for="AKI" style="font-size:18px">AKI</label>
                                         </div>
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="checkbox" id="heart failure"
+                                            <input class="form-check-input" type="radio" id="heart failure"
                                                    name="heart failure" value="heart failure" data-toggle="modal"
                                                    data-target="#exampleModal">
                                             <label class="form-check-label" for="heart failure" style="font-size: 18px">heart failure</label>
                                         </div>
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="checkbox" id="respiratory failure"
+                                            <input class="form-check-input" type="radio" id="respiratory failure"
                                                    name="respiratory failure" value="respiratory failure"
                                                    data-toggle="modal" data-target="#exampleModal">
                                             <label class="form-check-label" for="respiratory failure" style="font-size: 18px">respiratory
                                                 failure</label>
                                         </div>
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="checkbox" id="sepsis shock"
+                                            <input class="form-check-input" type="radio" id="sepsis shock"
                                                    name="sepsis shock"
                                                    value="sepsis shock" data-toggle="modal"
                                                    data-target="#exampleModal">
                                             <label class="form-check-label" for="sepsis shock" style="font-size: 18px">sepsis shock</label>
                                         </div>
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="checkbox" id="None"
+                                            <input class="form-check-input" type="radio" id="None"
                                                    name="None"
                                                    value="None" data-toggle="modal">
                                             <label class="form-check-label" for="sepsis shock" style="font-size: 18px">None of above</label>
@@ -392,7 +315,7 @@
 
                         {# ASA #}
                                 <div class="col-7 mb-2">
-                                    <div><label style="font-size: 20px"><b>4.{{ form.asa.label }}</b></label></div>
+                                    <div><label style="font-size: 20px"><b>3.{{ form.asa.label }}</b></label></div>
                                     <div>
                                         {% for radio in form.asa %}
                                             {{ radio.tag }}
@@ -458,19 +381,6 @@
     </div>
 
 
-    {#    <p>#}
-    {#  <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample1" role="button" aria-expanded="true" aria-controls="collapseExample1">#}
-    {#    Link with href#}
-    {#  </a>#}
-    {#  <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample1" aria-expanded="true" aria-controls="collapseExample1">#}
-    {#    Button with data-target#}
-    {#  </button>#}
-    {#</p>#}
-    {#<div class="collapse show" id="collapseExample1">#}
-    {#  <div class="card card-body">#}
-    {#    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.#}
-    {#  </div>#}
-    {#</div>#}
 
 
     <div id="toolbar" class="bar1">
@@ -484,7 +394,6 @@
                 {#                data-toggle="table"#}
         >
         </table>
-
     </div>
 
 
@@ -492,7 +401,6 @@
 
 
 {% endblock %}
-
 {% block special_js %}
     <script>
     // 修复1：确保文档加载完成
@@ -517,24 +425,54 @@
 
         // 初始化显示基本模式
         $('.mode-btn[data-mode="basic"]').trigger('click');
+
+
+        // 选中不同模式时传值回去
+        document.querySelectorAll('.mode-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.getElementById('currentModeInput').value = this.dataset.mode;
+        });
+
+        $('#form1').on('submit', function(e) {
+            const currentMode = $('#currentModeInput').val();
+            // 将当前模式存储到localStorage
+            localStorage.setItem('lastSelectedMode', currentMode);
+        });
+
+        const lastSelectedMode = localStorage.getItem('lastSelectedMode');
+        if (lastSelectedMode) {
+            $('.mode-btn[data-mode="${lastSelectedMode}"]').trigger('click');
+            $('#currentModeInput').val(lastSelectedMode);
+            // 恢复后清除存储的状态
+            localStorage.removeItem('lastSelectedMode');
+        }
+
+
+
+
+        $('#exampleModal').on('hide.bs.modal', function (event) {
+            document.querySelector('#form1').reset();})
+        });
+
     });
+
+
+
+
+
+
+
 </script>
-
-
 
     <script src="{% static 'plugins/bootstrap-select/js/bootstrap-select.min.js' %}"></script>
     <script src="https://unpkg.com/tableexport.jquery.plugin/tableExport.min.js"></script>
-    {#        <script src="https://cdn.jsdelivr.net/npm/tableexport.jquery.plugin@1.10.21/tableExport.min.js"></script>#}
+
     <script src="{% static 'plugins/bootstrap-table/js/bootstrap-table.min.js' %}"></script>
     <script src="https://unpkg.com/bootstrap-table@1.21.4/dist/extensions/filter-control/bootstrap-table-filter-control.min.js"></script>
     <script src="{% static 'plugins/bootstrap-table/js/bootstrap-table-export.min.js' %}"></script>
 
-
-
     <script>
-
     let clickCount = 0;
-
     // Function to add new parameter dropdowns
         function addParameterDropdowns() {
             clickCount++;
@@ -574,7 +512,6 @@
         `;
         parameterDiv.appendChild(dropdown1);
         container.appendChild(parameterDiv);
-
     }
     document.getElementById('add-parameters-btn').addEventListener('click', addParameterDropdowns);
 
@@ -894,11 +831,7 @@
 
 
 
-    <script>
-        $('#exampleModal').on('hide.bs.modal', function (event) {
-            document.querySelector('#form1').reset();
-        })
-    </script>
+
     <script>
 
         function operateFormatter(value, row, index) {
@@ -966,11 +899,12 @@
                     return temp;
                 },
                 columns: [
+                    {#{#}
+                    {#    field: 'id',#}
+                    {#    title: 'ID',#}
+                    {#    align: 'center',#}
+                    {#}, #}
                     {
-                        field: 'id',
-                        title: 'ID',
-                        align: 'center',
-                    }, {
                         field: 'IFTP',
                         title: 'IFTP',
                         aligh: 'center',

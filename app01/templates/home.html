@@ -46,129 +46,96 @@
     </style>
 {% endblock %}
 
+
 {% block content %}
-    {#    <div class="container px-4 py-5">#}
-    {#        <div class="text-center">#}
-    {#            <h3>Perioperative Fluid Therapy Decision Parameter information knowledge base</h3>#}
-    {#            <h3>（PFTDP-KB）</h3>#}
-    {#        </div>#}
-    {#    </div>#}
-    <div class="container px-4 py-5">
+{#    <div class="container  py-5">#}
+{#    </div>#}
+    <div class="container py-5">
         <div class="text-center mb-3">
             <h3>Welcome to</h3>
-            <h3>Perioperative Fluid Therapy Knowledge Base </h3>
-            <h5>(PFTKB)</h5>
+            <h3>Perioperative Fluid Therapy Knowledge Base (PFTKB)</h3>
         </div>
         <div class="mt-4">
-            <p style="text-indent:2em;line-height: 30px;font-size: 18px">
+            <p style="text-indent:2em;" class="text-justify">
                 Perioperative Fluid Therapy Knowledge Base (PFTKB) is a meticulously designed digital platform dedicated to advancing knowledge dissemination in perioperative intravenous fluid management. This comprehensive repository consolidates all peer-reviewed clinical studies related to perioperative fluid therapy indexed in PubMed through March 1, 2025.
             </p>
-            <p style="text-indent:2em;line-height: 30px;font-size: 18px">
+            <p style="text-indent:2em;" class="text-justify">
                 As a critical component of surgical care, fluid therapy presents complex challenges stemming from patient heterogeneity, multifaceted clinical scenarios, and limitations in practitioner experience. PFTKB addresses these complexities by providing an integrated knowledge ecosystem that synthesizes demographic data, surgical variables, and fluid management protocols. Our platform serves as both an evidence-based decision support system and a collaborative hub for clinical knowledge exchange.
             </p>
-            <p style="text-indent:2em;line-height: 30px;font-size: 18px">
+            <p style="text-indent:2em;" class="text-justify">
                 Guided by the principles of intelligent medicine，the PFTKB features a Intelligent  matching tool that enables users to input case-specific information and retrieve targeted research insights. This provision affords medical professionals a tailored reference resource. Additionally, PFTKB offers multidimensional data visualization tools for comparative outcome analysis. Users can procure information most pertinent to their needs. We steadfastly believe that it is through the active exchange and interaction of information that true progress in medicine is galvanized.
             </p>
-            <p style="text-indent:2em;line-height: 30px;font-size: 18px">
-                Furthermore, our platform harbors immense potential, with an aspiration to proffer formidable decision support tools in the future. We aim to offer customized research references to different user groups including medical staff, patients, and the public, predicated on various clinical parameters.
-                We extend a warm welcome to all visitors, hoping that you garner substantial insights from our website. For inquiries regarding data collaboration or feature requests, please contact our research coordination team. Your feedback and suggestions are highly prized. We anticipate offering more precise and personalized services in the future.
-            </p>
         </div>
-
-    </div>
-
-
-    <div class="container">
 
         <div class="image-container text-center">
             <img src="{% static 'img/process1.jpg' %}" style="max-width: 60%; height: auto;">
         </div>
 
-
-
-{#    <div class="container mt-2">#}
-{#        <div class="text-left">#}
-{#            <h5>Applications</h5>#}
-{#        </div>#}
-{#    </div>#}
-{##}
-{#    <div class="container mt-3">#}
-{#        <div class="tags-container text-center">#}
-{#            <!-- 标签链接 -->#}
-{#            <a href="/home/getselect/1" class="tag-link" target="_blank">#}
-{#                <img src="{% static 'img/tag1.png' %}" class="tag-image">#}
-{#                Fluid volume estimation#}
-{#            </a>#}
-{#            <a href="/home/getselect/2" class="tag-link" target="_blank">#}
-{#                <img src="{% static 'img/tag2.png' %}" class="tag-image">#}
-{#                Fluid type estimation#}
-{#            </a>#}
-{#            <a href="/home/getselect/3" class="tag-link" target="_blank">#}
-{#                <img src="{% static 'img/tag3.png' %}" class="tag-image">#}
-{#                Fluid therapy rate assessment#}
-{#            </a>#}
-{#            <a href="/home/getselect/4" class="tag-link" target="_blank">#}
-{#                <img src="{% static 'img/tag4.png' %}" class="tag-image">#}
-{#                Transfusion assessment#}
-{#            </a>#}
-{#            <!-- 其他标签链接类似，省略... -->#}
-{#            <a href="/home/getselect/5" class="tag-link" target="_blank">#}
-{#                <img src="{% static 'img/tag5.png' %}" class="tag-image">#}
-{#                Use of vasoactive agents assessment#}
-{#            </a>#}
-{#        </div>#}
-{#    </div>#}
-{##}
-{##}
-{#      <div class="image-container text-center">#}
-{#            <img src="{% static 'img/phase.jpg' %}" style="max-width: 100%; height: auto;">#}
-{#      </div>#}
-
-
-
-
-
-    <div class="row align-items-center mt-3">  <!-- 添加align-items-center垂直居中 -->
-        <!-- 左侧列：标签链接 -->
-    <div class="col-md-6">  <!-- 占6份宽度 -->
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <h5 class="mb-0">Application of PFT assessment parameters</h5>
-            <h5 class="mb-0 d-md-none">PFT regimens for surgeries</h5> <!-- 手机端显示 -->
+        <div class="mt-4">
+            <p style="text-indent:2em;" class="text-justify pl-0">
+                    Furthermore, our platform harbors immense potential, with an aspiration to proffer formidable decision support tools in the future. We aim to offer customized research references to different user groups including medical staff, patients, and the public, predicated on various clinical parameters.
+                    We extend a warm welcome to all visitors, hoping that you garner substantial insights from our website. For inquiries regarding data collaboration or feature requests, please contact our research coordination team. Your feedback and suggestions are highly prized. We anticipate offering more precise and personalized services in the future.
+            </p>
         </div>
-        <div class="tags-container text-center">
-            <a href="/home/getselect/1" class="tag-link" target="_blank">
-                <img src="{% static 'img/tag1.png' %}" class="tag-image">
-                Fluid volume estimation
-            </a>
-            <a href="/home/getselect/2" class="tag-link" target="_blank">
-                <img src="{% static 'img/tag2.png' %}" class="tag-image">
-                Fluid type estimation
-            </a>
-            <a href="/home/getselect/3" class="tag-link" target="_blank">
-                <img src="{% static 'img/tag3.png' %}" class="tag-image">
-                Fluid therapy rate assessment
-            </a>
-            <a href="/home/getselect/4" class="tag-link" target="_blank">
-                <img src="{% static 'img/tag4.png' %}" class="tag-image">
-                Transfusion assessment
-            </a>
-            <a href="/home/getselect/5" class="tag-link" target="_blank">
-                <img src="{% static 'img/tag5.png' %}" class="tag-image">
-                Use of vasoactive agents assessment
-            </a>
+
+
+
+
+        <!-- Applications -->
+        <div class="row mt-3">  <!-- 添加底部间距 -->
+            <div class="col-12 text-left pl-0">
+                <h5 class="m-0">Applications</h5>
+            </div>
         </div>
+        <div class="mt-3">
+            <div style="text-indent:2em;" class="text-justify">
+                <p>The PFTKB serves as a specialized knowledge database designed for knowledge-guided fluid therapy (FT) decision support. It facilitates the exchange of decision-making parameters for PFT and offers personalized recommendations for perioperative fluid management based on individual patient information. Within this platform, assessment parameters are systematically categorized into five groups according to their application in FT, and 839 personalized PFT regimens across 14 surgical categories are organized based on individualized characteristics, as illustrated in the accompanying graph.  </p>
+            </div>
+        </div>
+
+        <!-- 双列内容 -->
+        <div class="row">
+            <!-- 左侧列：标签链接 -->
+            <div class="col-md-6 mb-4 mb-md-0">
+                <div class="d-flex justify-content-center align-items-center mb-3">
+                    <h5 class="mb-0 text-center">Application of PFT assessment parameters</h5>
+                </div>
+
+                <div class="tags-container text-center">
+                    <a href="/home/getselect/1" class="tag-link" target="_blank">
+                        <img src="{% static 'img/tag1.png' %}" class="tag-image">
+                        Fluid volume estimation
+                    </a>
+                    <a href="/home/getselect/2" class="tag-link" target="_blank">
+                        <img src="{% static 'img/tag2.png' %}" class="tag-image">
+                        Fluid type estimation
+                    </a>
+                    <a href="/home/getselect/3" class="tag-link" target="_blank">
+                        <img src="{% static 'img/tag3.png' %}" class="tag-image">
+                        Fluid therapy rate assessment
+                    </a>
+                    <a href="/home/getselect/4" class="tag-link" target="_blank">
+                        <img src="{% static 'img/tag4.png' %}" class="tag-image">
+                        Transfusion assessment
+                    </a>
+                    <a href="/home/getselect/5" class="tag-link" target="_blank">
+                        <img src="{% static 'img/tag5.png' %}" class="tag-image">
+                        Use of vasoactive agents assessment
+                    </a>
+                </div>
+            </div>
+
+            <!-- 右侧列：图片 -->
+            <div class="col-md-6">
+                <div class="d-flex justify-content-center align-items-center mb-3">
+                    <h5 class="mb-0 text-center">Application of PFT regimens</h5>
+                </div>
+
+                <div class="image-container text-center">
+                    <img src="{% static 'img/phase.jpg' %}" class="img-fluid" style="max-width: 70%; height: auto;">
+                </div>
+            </div>
     </div>
-
-    <!-- 右侧列：图片 -->
-    <div class="col-md-6">  <!-- 占6份宽度 -->
-        <div class="d-none d-md-block"> <!-- 只在中等屏幕以上显示 -->
-            <h5 class="text-center mb-3">PFT regimens for surgeries</h5>
-        </div>
-        <div class="image-container text-center">
-            <img src="{% static 'img/phase.jpg' %}" style="max-width: 70%; height: auto;">
-        </div>
-    </div>
-
 </div>
 </div>
 
@@ -186,24 +153,24 @@
     </div>
 
     <div class="container mt-3">
-        <div class="text-center">
-            <p> As of March 1, 2025, the PFTKB platform hosts knowledge data from 402 original clinical studies sourced from PubMed, encompassing a total sample size of 11,158. It has identified and categorized 145 perioperative fluid therapy parameters into eleven distinct types, as illustrated in the diagram below. Furthermore, the platform provides detailed information on PFT plans for 839 cohorts across 14 surgical categories, accumulating a total of 2,738 PFT subgroup regimens.  </p>
+        <div style="text-indent:2em;" class="text-justify">
+            <p> As of March 1, 2025, the PFTKB platform features knowledge data from 402 original clinical studies sourced from PubMed, with a total sample size of 87,176 participants. The platform has identified and categorized 145 PFT parameters into eleven distinct types, as depicted in the diagram below.  Additionally, the PFTKB data platform provides 2,738 personalized FT regimens tailored to 14 different types of surgical patients, utilizing specific patient information, as depicted in the Sankey diagram.  </p>
         </div>
+        <div class="row mt-4">
+             <!-- 柱状图（右侧，宽度 50%） -->
+            <div class="col-md-6">
+                <div id="charts_bar" style="height: 600px; width: 100%;"></div>
+            </div>
 
-          <div class="row mt-4">
-
-         <!-- 柱状图（右侧，宽度 50%） -->
-        <div class="col-md-6">
-            <div id="charts_bar" style="height: 600px; width: 100%;"></div>
+            <!-- 桑基图（左侧，宽度 50%） -->
+            <div class="col-md-6">
+                <div id="charts_sankey" style="height: 600px; width: 100%;"></div>
+            </div>
         </div>
-
-        <!-- 桑基图（左侧，宽度 50%） -->
-        <div class="col-md-6">
-            <div id="charts_sankey" style="height: 600px; width: 100%;"></div>
-        </div>
-
     </div>
-    </div>
+
+
+
 
 
     {#learn more#}
@@ -335,86 +302,71 @@ var sankeyOption = {
             focus: 'adjacency'
         },
         nodeAlign: 'left',
-        data: [{'name': 'Abdominal Surgery'},
- {'name': 'Thoracic surgery'},
+        layoutIterations: 0,
+        data: [
+ {'name': 'Abdominal Surgery'},
  {'name': 'Cardiac surgery'},
- {'name': 'Neurosurgery'},
- {'name': 'Urological surgery'},
  {'name': 'Orthopedic surgery'},
- {'name': 'Vascular Surgery'},
- {'name': 'critically ill surgery'},
-
- {'name': 'Obstetric surgery'},
- {'name': 'pediatric surgery'},
- {'name': 'colonoscopy'},
+ {'name': 'Urological surgery'},
  {'name': 'Gynecological surgery'},
+ {'name': 'Thoracic surgery'},
+ {'name': 'Neurosurgery'},
+ {'name': 'Vascular Surgery'},
+ {'name': 'Obstetric surgery'},
+ {'name': 'Critically ill surgery'},
  {'name': 'Head and neck surgery'},
- {'name': 'Non-Cardiac Surgery'},
+ {'name': 'Other surgery'},
+ {'name': 'Pediatric surgery'},
  {'name': 'Bariatric surgery'},
- {'name': 'kidney transplant'},
- {'name': 'other surgery'},
- {'name': 'urgent PCI'},
+ {'name': 'preoperative'},
  {'name': 'intraoperative'},
  {'name': 'postoperative'},
- {'name': 'preoperative'}],
-links: [{'source': 'Abdominal Surgery',
-  'target': 'intraoperative',
-  'value': 853},
- {'source': 'Abdominal Surgery', 'target': 'postoperative', 'value': 213},
- {'source': 'Abdominal Surgery', 'target': 'preoperative', 'value': 89},
+],
+
+links: [
+ {'source': 'Abdominal Surgery', 'target': 'preoperative', 'value': 91},
+ {'source': 'Abdominal Surgery', 'target': 'intraoperative', 'value': 854},
+ {'source': 'Abdominal Surgery', 'target': 'postoperative', 'value': 214},
+ {'source': 'Thoracic surgery', 'target': 'preoperative', 'value': 10},
  {'source': 'Thoracic surgery', 'target': 'intraoperative', 'value': 105},
  {'source': 'Thoracic surgery', 'target': 'postoperative', 'value': 46},
- {'source': 'Thoracic surgery', 'target': 'preoperative', 'value': 10},
+ {'source': 'Cardiac surgery', 'target': 'preoperative', 'value': 23},
  {'source': 'Cardiac surgery', 'target': 'intraoperative', 'value': 259},
  {'source': 'Cardiac surgery', 'target': 'postoperative', 'value': 192},
- {'source': 'Cardiac surgery', 'target': 'preoperative', 'value': 23},
+ {'source': 'Neurosurgery', 'target': 'preoperative', 'value': 11},
  {'source': 'Neurosurgery', 'target': 'intraoperative', 'value': 97},
  {'source': 'Neurosurgery', 'target': 'postoperative', 'value': 33},
- {'source': 'Neurosurgery', 'target': 'preoperative', 'value': 11},
+ {'source': 'Urological surgery', 'target': 'preoperative', 'value': 19},
  {'source': 'Urological surgery', 'target': 'intraoperative', 'value': 147},
  {'source': 'Urological surgery', 'target': 'postoperative', 'value': 33},
- {'source': 'Urological surgery', 'target': 'preoperative', 'value': 19},
+ {'source': 'Orthopedic surgery', 'target': 'preoperative', 'value': 54},
  {'source': 'Orthopedic surgery', 'target': 'intraoperative', 'value': 195},
  {'source': 'Orthopedic surgery', 'target': 'postoperative', 'value': 16},
- {'source': 'Orthopedic surgery', 'target': 'preoperative', 'value': 54},
+ {'source': 'Vascular Surgery', 'target': 'preoperative', 'value': 4},
  {'source': 'Vascular Surgery', 'target': 'intraoperative', 'value': 45},
  {'source': 'Vascular Surgery', 'target': 'postoperative', 'value': 15},
- {'source': 'Vascular Surgery', 'target': 'preoperative', 'value': 4},
- {'source': 'critically ill surgery',
-  'target': 'intraoperative',
-  'value': 16},
- {'source': 'critically ill surgery', 'target': 'postoperative', 'value': 16},
- {'source': 'critically ill surgery', 'target': 'preoperative', 'value': 16},
+ {'source': 'Critically ill surgery', 'target': 'preoperative', 'value': 16},
+ {'source': 'Critically ill surgery', 'target': 'intraoperative', 'value': 16},
+ {'source': 'Critically ill surgery', 'target': 'postoperative', 'value': 16},
+ {'source': 'Obstetric surgery', 'target': 'preoperative', 'value': 18},
  {'source': 'Obstetric surgery', 'target': 'intraoperative', 'value': 42},
  {'source': 'Obstetric surgery', 'target': 'postoperative', 'value': 0},
- {'source': 'Obstetric surgery', 'target': 'preoperative', 'value': 18},
- {'source': 'pediatric surgery', 'target': 'intraoperative', 'value': 13},
- {'source': 'pediatric surgery', 'target': 'postoperative', 'value': 0},
- {'source': 'pediatric surgery', 'target': 'preoperative', 'value': 0},
- {'source': 'colonoscopy', 'target': 'intraoperative', 'value': 1},
- {'source': 'colonoscopy', 'target': 'postoperative', 'value': 1},
- {'source': 'colonoscopy', 'target': 'preoperative', 'value': 2},
+ {'source': 'Pediatric surgery', 'target': 'preoperative', 'value': 0},
+ {'source': 'Pediatric surgery', 'target': 'intraoperative', 'value': 13},
+ {'source': 'Pediatric surgery', 'target': 'postoperative', 'value': 0},
+ {'source': 'Gynecological surgery', 'target': 'preoperative', 'value': 43},
  {'source': 'Gynecological surgery', 'target': 'intraoperative', 'value': 110},
  {'source': 'Gynecological surgery', 'target': 'postoperative', 'value': 9},
- {'source': 'Gynecological surgery', 'target': 'preoperative', 'value': 43},
+ {'source': 'Head and neck surgery', 'target': 'preoperative', 'value': 0},
  {'source': 'Head and neck surgery', 'target': 'intraoperative', 'value': 37},
  {'source': 'Head and neck surgery', 'target': 'postoperative', 'value': 10},
- {'source': 'Head and neck surgery', 'target': 'preoperative', 'value': 0},
- {'source': 'Non-Cardiac Surgery', 'target': 'intraoperative', 'value': 2},
- {'source': 'Non-Cardiac Surgery', 'target': 'postoperative', 'value': 0},
- {'source': 'Non-Cardiac Surgery', 'target': 'preoperative', 'value': 0},
+ {'source': 'Bariatric surgery', 'target': 'preoperative', 'value': 0},
  {'source': 'Bariatric surgery', 'target': 'intraoperative', 'value': 7},
  {'source': 'Bariatric surgery', 'target': 'postoperative', 'value': 0},
- {'source': 'Bariatric surgery', 'target': 'preoperative', 'value': 0},
- {'source': 'kidney transplant', 'target': 'intraoperative', 'value': 0},
- {'source': 'kidney transplant', 'target': 'postoperative', 'value': 0},
- {'source': 'kidney transplant', 'target': 'preoperative', 'value': 0},
- {'source': 'other surgery', 'target': 'intraoperative', 'value': 6},
- {'source': 'other surgery', 'target': 'postoperative', 'value': 12},
- {'source': 'other surgery', 'target': 'preoperative', 'value': 2},
- {'source': 'urgent PCI', 'target': 'intraoperative', 'value': 2},
- {'source': 'urgent PCI', 'target': 'postoperative', 'value': 5},
- {'source': 'urgent PCI', 'target': 'preoperative', 'value': 0}],
+ {'source': 'Other surgery', 'target': 'preoperative', 'value': 2},
+ {'source': 'Other surgery', 'target': 'intraoperative', 'value': 10},
+ {'source': 'Other surgery', 'target': 'postoperative', 'value': 17},
+],
         lineStyle: {
             color: 'source',
             curveness: 0.5

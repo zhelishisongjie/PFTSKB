@@ -193,8 +193,8 @@
                 // 过滤空行逻辑
                 return data.filter(function(row) {
                     return !(
-                        (row.Outcome_name3 === null || row.Outcome_name3 === "") &&
-                        (row.Result4 === null || row.Result4 === "") &&
+                        (row.Outcome_name3 === null || row.Outcome_name3 === "") ||
+                        (row.Result4 === null || row.Result4 === "") ||
                         (row.Statictics4 === null || row.Statictics4 === "")
                     );
                 });
@@ -216,11 +216,11 @@
                 {#    formatter:operateFormatter,#}
                 {#    events: window.operateEvents,#}
                 {##}
-                {
-                    field: 'id',
-                    title: 'ID',
-                    align: 'center',
-                },
+                {#{#}
+                {#    field: 'id',#}
+                {#    title: 'ID',#}
+                {#    align: 'center',#}
+                {#},#}
                 {
                     field: 'Outcome_name3',
                     title: 'Outcome Name',

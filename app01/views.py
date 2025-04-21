@@ -226,6 +226,7 @@ def outcome_details(request,id):
     queryset = Pftd.objects.get(id=id)
     return render(request, "details_outcomes.html", {'queryset': queryset})
 
+import pandas as pd
 def get_pftd_data(request,num):
     if request.method == 'GET':
         #preview information
@@ -240,10 +241,16 @@ def get_pftd_data(request,num):
                              'Key_points': obj.Key_points,
                              'Grades_of_Evidence': obj.Grades_of_Evidence,
                              'Levels_of_Recommendation': obj.Levels_of_Recommendation})
+            # 去重
+            df = pd.DataFrame(rows)
+            df = df.drop_duplicates(subset=['pmid'])  # 可指定多个列
+            rows = df.to_dict('records')
 
             data = {'total': len(queryset), 'totalNotFiltered': len(queryset), 'rows': rows}
 
             return HttpResponse(json.dumps(data, separators=(',', ':')), content_type='application/json')
+
+
         if num == 2:
             queryset = Pftd.objects.raw(
                 "SELECT id,pmid,`Year`,Title,Journal,Reference FROM `pftd` GROUP BY pmid")
@@ -273,8 +280,9 @@ def get_pftd_data(request,num):
 
             return HttpResponse(json.dumps(data, separators=(',', ':')), content_type='application/json')
         if num == 4:
+            # baseline patient
             queryset = Pftd.objects.raw(
-                "SELECT id,pmid,Gender,Age,ASA_physical_status,BMI,Race,group_name FROM `pftd` GROUP BY pmid,ASA_physical_status")
+                "SELECT id,pmid,Gender,Age,ASA_physical_status,BMI,Race,group_name FROM `pftd` GROUP BY pmid,ASA_physical_status,group_name")
             # total = PftdDecisionIndicator.objects.count()
             # queryset = PftdDecisionIndicator.objects.all()
             rows = []
@@ -314,6 +322,7 @@ def get_pftd_data(request,num):
 
             return HttpResponse(json.dumps(data, separators=(',', ':')), content_type='application/json')
         if num == 7:
+            # outcome complications
             queryset = Pftd.objects.raw(
                 "SELECT id,pmid,group_name,Effect_comparison,Complications_name,Result1,Statictics1 FROM `pftd` GROUP BY pmid,group_name,Effect_comparison,Complications_name,Result1,Statictics1")
             # total = PftdDecisionIndicator.objects.count()
@@ -327,6 +336,7 @@ def get_pftd_data(request,num):
 
             return HttpResponse(json.dumps(data, separators=(',', ':')), content_type='application/json')
         if num == 8:
+            # outcome len hos
             queryset = Pftd.objects.raw(
                 "SELECT id,pmid,group_name,Effect_comparison,Outcome_name1,Result2,Statictics2 FROM `pftd` GROUP BY pmid,group_name,Effect_comparison,Outcome_name1,Result2,Statictics2")
             # total = PftdDecisionIndicator.objects.count()
@@ -341,6 +351,7 @@ def get_pftd_data(request,num):
 
             return HttpResponse(json.dumps(data, separators=(',', ':')), content_type='application/json')
         if num == 9:
+            # outcom ICU
             queryset = Pftd.objects.raw(
                 "SELECT id,pmid,group_name,Effect_comparison,Outcome_name2,Result3,Statictics3 FROM `pftd` GROUP BY pmid,group_name,Effect_comparison,Outcome_name2,Result3,Statictics3")
             # total = PftdDecisionIndicator.objects.count()
@@ -355,6 +366,7 @@ def get_pftd_data(request,num):
 
             return HttpResponse(json.dumps(data, separators=(',', ':')), content_type='application/json')
         if num == 10:
+            # outcome mortality
             queryset = Pftd.objects.raw(
                 "SELECT id,pmid,group_name,Effect_comparison,Outcome_name3,Result4,Statictics4 FROM `pftd` GROUP BY pmid,group_name,Effect_comparison,Outcome_name3,Result4,Statictics4")
             # total = PftdDecisionIndicator.objects.count()
@@ -1817,11 +1829,11 @@ class Recom_Form(forms.Form):
         ("Adults", "Adults（18-65）"),
         ("Elderly", "Elderly（≥65）"),
     )
-    age = forms.MultipleChoiceField(label="Age", widget=forms.CheckboxSelectMultiple, choices=age_choices,
+    age = forms.ChoiceField(label="Age", widget=forms.RadioSelect, choices=age_choices,
                                     required=True)
     # age = forms.DecimalField(label="Age", widget=forms.TextInput(attrs={"class": "form-control"}), min_value=0,
     #                          decimal_places=2, required=True)
-    gender = forms.MultipleChoiceField(label="Gender", widget=forms.CheckboxSelectMultiple,
+    gender = forms.ChoiceField(label="Gender", widget=forms.RadioSelect,
                                        choices=(('Male', 'Male'), ('Female', 'Female')),
                                        # choices=(('Male', 'Male'), ('Female', 'Female'),('Male, Female','Male & Female')),
                                        required=True)
@@ -1833,12 +1845,12 @@ class Recom_Form(forms.Form):
         ("obesity", "Obesity（BMI≥28）"),
     )
 
-    bmi = forms.MultipleChoiceField(label="BMI", widget=forms.CheckboxSelectMultiple, choices=bmi_choices,
+    bmi = forms.ChoiceField(label="BMI", widget=forms.RadioSelect, choices=bmi_choices,
                                     required=True)
 
     # bmi = forms.DecimalField(label="BMI", widget=forms.TextInput(attrs={"class": "form-control"}), min_value=0,
     #                          decimal_places=2, required=True)
-    surgery_app = forms.MultipleChoiceField(label="Surgery approach", widget=forms.CheckboxSelectMultiple, choices=(
+    surgery_app = forms.ChoiceField(label="Surgery approach", widget=forms.RadioSelect, choices=(
         ('Endoscopic surgery', 'Endoscopic surgery'),
         ('Open surgery', 'Open surgery'), ('Laparoscopic surgery', 'Laparoscopic surgery')), required=False)
 
@@ -1851,7 +1863,7 @@ class Recom_Form(forms.Form):
         ("III", "Ⅲ"),
         ("IV", "Ⅳ"),
     )
-    asa = forms.MultipleChoiceField(label="ASA physical status", widget=forms.CheckboxSelectMultiple,
+    asa = forms.ChoiceField(label="ASA physical status", widget=forms.RadioSelect,
                                     choices=asa_choices, required=False)
 
     period_of_FT_chioces = (
@@ -1859,7 +1871,7 @@ class Recom_Form(forms.Form):
         ("intraoperative", "intraoperative"),
         ("postoperative", "postoperative"),
     )
-    period_of_FT = forms.MultipleChoiceField(label="Period of FT", widget=forms.CheckboxSelectMultiple,
+    period_of_FT = forms.ChoiceField(label="Period of FT", widget=forms.RadioSelect,
                                              choices=period_of_FT_chioces, required=False)
 
     surgery_type_choices = (
@@ -2148,282 +2160,443 @@ def generate_map(str, list):
     map_temp["list"] = list
     return map_temp
 
-
+from itertools import combinations
 def recommend(request):
+    print("1. View function entered")  # 调试点1
     if request.method == "GET":
-        # query1 = Pftd.objects.values("surgical_site").filter(surgery_type='Abdominal Surgery')[:5]
+        print("2. Handling GET request")  # 调试点2
         form = Recom_Form()
         return render(request, "recommend.html", {"form": form})
+
     if request.method == "POST":
+        print("3. Handling POST request")
         form = Recom_Form(data=request.POST)
-        #print(form.is_valid())
+        print(f"4. Form is bound: {form.is_bound}")  # 调试点4
+        current_mode = request.POST.get("current_mode", "basic")  # 获取当前模式
+
+        print("Mode: ", current_mode)
+
         if form.is_valid():
-            # 从表单中获取清洗后的数据
+            print(f"5. Form is valid")  # 调试点4
+            conditions = []
+
+            # basic matching
             age = form.cleaned_data.get("age")
             gender = form.cleaned_data.get("gender")
             bmi = form.cleaned_data.get("bmi")
-            surgery_app = form.cleaned_data.get("surgery_app")
             period_of_FT = form.cleaned_data.get("period_of_FT")
-            surgery_type = form.cleaned_data.get("surgery_type")
-            surgery_site = request.POST.get("surgery_site")
-            asa = form.cleaned_data.get("asa")
+            base_conditions = [
+                f"age LIKE '%%{age}%%'",
+                f"gender LIKE '%%{gender}%%'",
+                f"bmi LIKE '%%{bmi}%%'",
+                f"Period_of_fluid_therapy LIKE '%%{period_of_FT}%%'"
+            ]
+            # conditions.append(f"age LIKE '%%{age}%%'")
+            # conditions.append(f"gender LIKE '%%{gender}%%'")
+            # conditions.append(f"bmi LIKE '%%{bmi}%%'")
+            # conditions.append(f"Period_of_fluid_therapy LIKE '%%{period_of_FT}%%'")
 
-            classification_1 = form.cleaned_data.get("classification_1")
-            classification_2 = form.cleaned_data.get("classification_2")
-            classification_3 = form.cleaned_data.get("classification_3")
-            classification_1_dropdown = form.cleaned_data.get("classification_1_dropdown")
-            classification_2_dropdown = form.cleaned_data.get("classification_2_dropdown")
-            classification_3_dropdown = form.cleaned_data.get("classification_3_dropdown")
+            # professional matching
+            professional_conditions = []
+            if current_mode == "professional":
+                classification_1 = form.cleaned_data.get("classification_1")
+                classification_2 = form.cleaned_data.get("classification_2")
+                classification_3 = form.cleaned_data.get("classification_3")
+                classification_1_dropdown = form.cleaned_data.get("classification_1_dropdown")
+                classification_2_dropdown = form.cleaned_data.get("classification_2_dropdown")
+                classification_3_dropdown = form.cleaned_data.get("classification_3_dropdown")
 
+                if classification_1:
+                    classification_1_temp = "( Classification_FT_assessment_factors1" + " LIKE '%%" + classification_1 + "%%' )"
+                    classification_2_temp = "( Classification_FT_assessment_factors2" + " LIKE '%%" + classification_1 + "%%' )"
+                    classification_3_temp = "( Classification_FT_assessment_factors3" + " LIKE '%%" + classification_1 + "%%' )"
+                    classification_4_temp = "( Classification_FT_assessment_factors4" + " LIKE '%%" + classification_1 + "%%' )"
+                    classification_5_temp = "( Classification_FT_assessment_factors5" + " LIKE '%%" + classification_1 + "%%' )"
+                    temp1 = "(" + classification_1_temp + " OR " + classification_2_temp + " OR " + classification_3_temp + " OR " + classification_4_temp + " OR " + classification_5_temp + ")"
 
-            # 生成搜索条件的映射和临时查询条件
-            gender_map = generate_map("gender", gender)
-            gender_temp = generate_temp(gender_map)
-            age_map = generate_map("age", age)
-            age_temp = generate_temp(age_map)
-            bmi_map = generate_map("bmi", bmi)
-            bmi_temp = generate_temp(bmi_map)
+                    classification_1_dropdown_temp = "( Parameter1" + " LIKE '%%" + classification_1_dropdown + "%%' )"
+                    classification_2_dropdown_temp = "( Parameter2" + " LIKE '%%" + classification_1_dropdown + "%%' )"
+                    classification_3_dropdown_temp = "( Parameter3" + " LIKE '%%" + classification_1_dropdown + "%%' )"
+                    classification_4_dropdown_temp = "( Parameter4" + " LIKE '%%" + classification_1_dropdown + "%%' )"
+                    classification_5_dropdown_temp = "( Parameter5" + " LIKE '%%" + classification_1_dropdown + "%%' )"
+                    temp2 = "(" + classification_1_dropdown_temp + " OR " + classification_2_dropdown_temp + " OR " + classification_3_dropdown_temp + " OR " + classification_4_dropdown_temp + " OR " + classification_5_dropdown_temp + ")"
 
-            step2_arr = []
-            if surgery_app:
-                surgery_app_map = generate_map("Surgical_approach", surgery_app)
-                surgery_app_temp = generate_temp(surgery_app_map)
+                    temp = temp1 + " and " + temp2
+                    professional_conditions.append(temp)
 
-                step2_arr.append(surgery_app_temp)
+                if classification_2:
+                    classification_1_temp = "( Classification_FT_assessment_factors1" + " LIKE '%%" + classification_2 + "%%' )"
+                    classification_2_temp = "( Classification_FT_assessment_factors2" + " LIKE '%%" + classification_2 + "%%' )"
+                    classification_3_temp = "( Classification_FT_assessment_factors3" + " LIKE '%%" + classification_2 + "%%' )"
+                    classification_4_temp = "( Classification_FT_assessment_factors4" + " LIKE '%%" + classification_2 + "%%' )"
+                    classification_5_temp = "( Classification_FT_assessment_factors5" + " LIKE '%%" + classification_2 + "%%' )"
+                    temp1 = "(" + classification_1_temp + " OR " + classification_2_temp + " OR " + classification_3_temp + " OR " + classification_4_temp + " OR " + classification_5_temp + ")"
 
-            if surgery_type:
-                surgery_type_temp = "( surgery_type = '" + surgery_type + "' )"
-                step2_arr.append(surgery_type_temp)
+                    classification_1_dropdown_temp = "( Parameter1" + " LIKE '%%" + classification_2_dropdown + "%%' )"
+                    classification_2_dropdown_temp = "( Parameter2" + " LIKE '%%" + classification_2_dropdown + "%%' )"
+                    classification_3_dropdown_temp = "( Parameter3" + " LIKE '%%" + classification_2_dropdown + "%%' )"
+                    classification_4_dropdown_temp = "( Parameter4" + " LIKE '%%" + classification_2_dropdown + "%%' )"
+                    classification_5_dropdown_temp = "( Parameter5" + " LIKE '%%" + classification_2_dropdown + "%%' )"
+                    temp2 = "(" + classification_1_dropdown_temp + " OR " + classification_2_dropdown_temp + " OR " + classification_3_dropdown_temp + " OR " + classification_4_dropdown_temp + " OR " + classification_5_dropdown_temp + ")"
 
-            if surgery_site:
-                surgery_site_temp = "( surgical_site" + " LIKE '%%" + surgery_site + "%%' )"
-                step2_arr.append(surgery_site_temp)
+                    temp = temp1 + " and " + temp2
+                    professional_conditions.append(temp)
 
-            if asa:
-                asa_map = generate_map("ASA_physical_status", asa)
-                asa_temp = generate_temp(asa_map)
-                step2_arr.append(asa_temp)
+                if classification_3:
+                    classification_1_temp = "( Classification_FT_assessment_factors1" + " LIKE '%%" + classification_3 + "%%' )"
+                    classification_2_temp = "( Classification_FT_assessment_factors2" + " LIKE '%%" + classification_3 + "%%' )"
+                    classification_3_temp = "( Classification_FT_assessment_factors3" + " LIKE '%%" + classification_3 + "%%' )"
+                    classification_4_temp = "( Classification_FT_assessment_factors4" + " LIKE '%%" + classification_3 + "%%' )"
+                    classification_5_temp = "( Classification_FT_assessment_factors5" + " LIKE '%%" + classification_3 + "%%' )"
+                    temp1 = "(" + classification_1_temp + " OR " + classification_2_temp + " OR " + classification_3_temp + " OR " + classification_4_temp + " OR " + classification_5_temp + ")"
 
-            if period_of_FT:
-                period_of_FT_map = generate_map("Period_of_fluid_therapy", period_of_FT)
-                period_of_FT_temp = generate_temp(period_of_FT_map)
-                step2_arr.append(period_of_FT_temp)
+                    classification_1_dropdown_temp = "( Parameter1" + " LIKE '%%" + classification_3_dropdown + "%%' )"
+                    classification_2_dropdown_temp = "( Parameter2" + " LIKE '%%" + classification_3_dropdown + "%%' )"
+                    classification_3_dropdown_temp = "( Parameter3" + " LIKE '%%" + classification_3_dropdown + "%%' )"
+                    classification_4_dropdown_temp = "( Parameter4" + " LIKE '%%" + classification_3_dropdown + "%%' )"
+                    classification_5_dropdown_temp = "( Parameter5" + " LIKE '%%" + classification_3_dropdown + "%%' )"
+                    temp2 = "(" + classification_1_dropdown_temp + " OR " + classification_2_dropdown_temp + " OR " + classification_3_dropdown_temp + " OR " + classification_4_dropdown_temp + " OR " + classification_5_dropdown_temp + ")"
 
-            step3_arr = []
-
-
-            if classification_1:
-                classification_1_temp = "( Classification_FT_assessment_factors1" + " LIKE '%%" + classification_1 + "%%' )"
-                classification_2_temp = "( Classification_FT_assessment_factors2" + " LIKE '%%" + classification_1 + "%%' )"
-                classification_3_temp = "( Classification_FT_assessment_factors3" + " LIKE '%%" + classification_1 + "%%' )"
-                classification_4_temp = "( Classification_FT_assessment_factors4" + " LIKE '%%" + classification_1 + "%%' )"
-                classification_5_temp = "( Classification_FT_assessment_factors5" + " LIKE '%%" + classification_1 + "%%' )"
-                temp1 = "(" + classification_1_temp + " OR " + classification_2_temp + " OR " + classification_3_temp + " OR " + classification_4_temp + " OR "+ classification_5_temp + ")"
-
-                classification_1_dropdown_temp = "( Parameter1" + " LIKE '%%" + classification_1_dropdown + "%%' )"
-                classification_2_dropdown_temp = "( Parameter2" + " LIKE '%%" + classification_1_dropdown + "%%' )"
-                classification_3_dropdown_temp = "( Parameter3" + " LIKE '%%" + classification_1_dropdown + "%%' )"
-                classification_4_dropdown_temp = "( Parameter4" + " LIKE '%%" + classification_1_dropdown + "%%' )"
-                classification_5_dropdown_temp = "( Parameter5" + " LIKE '%%" + classification_1_dropdown + "%%' )"
-                temp2 = "(" + classification_1_dropdown_temp + " OR " + classification_2_dropdown_temp + " OR " + classification_3_dropdown_temp + " OR " + classification_4_dropdown_temp + " OR " + classification_5_dropdown_temp + ")"
-
-                temp = temp1 + "and" + temp2
-                step3_arr.append(temp)
-
-
-            if classification_2:
-                classification_1_temp = "( Classification_FT_assessment_factors1" + " LIKE '%%" + classification_2 + "%%' )"
-                classification_2_temp = "( Classification_FT_assessment_factors2" + " LIKE '%%" + classification_2 + "%%' )"
-                classification_3_temp = "( Classification_FT_assessment_factors3" + " LIKE '%%" + classification_2 + "%%' )"
-                classification_4_temp = "( Classification_FT_assessment_factors4" + " LIKE '%%" + classification_2 + "%%' )"
-                classification_5_temp = "( Classification_FT_assessment_factors5" + " LIKE '%%" + classification_2 + "%%' )"
-                temp1 = "(" + classification_1_temp + " OR " + classification_2_temp + " OR " + classification_3_temp + " OR " + classification_4_temp + " OR " + classification_5_temp + ")"
-
-                classification_1_dropdown_temp = "( Parameter1" + " LIKE '%%" + classification_2_dropdown + "%%' )"
-                classification_2_dropdown_temp = "( Parameter2" + " LIKE '%%" + classification_2_dropdown + "%%' )"
-                classification_3_dropdown_temp = "( Parameter3" + " LIKE '%%" + classification_2_dropdown + "%%' )"
-                classification_4_dropdown_temp = "( Parameter4" + " LIKE '%%" + classification_2_dropdown + "%%' )"
-                classification_5_dropdown_temp = "( Parameter5" + " LIKE '%%" + classification_2_dropdown + "%%' )"
-                temp2 = "(" + classification_1_dropdown_temp + " OR " + classification_2_dropdown_temp + " OR " + classification_3_dropdown_temp + " OR " + classification_4_dropdown_temp + " OR " + classification_5_dropdown_temp + ")"
-
-                temp = temp1 + "and" + temp2
-                step3_arr.append(temp)
+                    temp = temp1 + " and " + temp2
+                    # conditions.append(temp)
+                    professional_conditions.append(temp)
 
 
+            # advance matching
+            advance_conditions = []
+            if current_mode in ("advance", "professional"):
+                surgery_app = form.cleaned_data.get("surgery_app")
+                surgery_type = form.cleaned_data.get("surgery_type")
+                asa = form.cleaned_data.get("asa")
 
-            if classification_2:
-                classification_1_temp = "( Classification_FT_assessment_factors1" + " LIKE '%%" + classification_3 + "%%' )"
-                classification_2_temp = "( Classification_FT_assessment_factors2" + " LIKE '%%" + classification_3 + "%%' )"
-                classification_3_temp = "( Classification_FT_assessment_factors3" + " LIKE '%%" + classification_3 + "%%' )"
-                classification_4_temp = "( Classification_FT_assessment_factors4" + " LIKE '%%" + classification_3 + "%%' )"
-                classification_5_temp = "( Classification_FT_assessment_factors5" + " LIKE '%%" + classification_3 + "%%' )"
-                temp1 = "(" + classification_1_temp + " OR " + classification_2_temp + " OR " + classification_3_temp + " OR " + classification_4_temp + " OR " + classification_5_temp + ")"
-
-                classification_1_dropdown_temp = "( Parameter1" + " LIKE '%%" + classification_3_dropdown + "%%' )"
-                classification_2_dropdown_temp = "( Parameter2" + " LIKE '%%" + classification_3_dropdown + "%%' )"
-                classification_3_dropdown_temp = "( Parameter3" + " LIKE '%%" + classification_3_dropdown + "%%' )"
-                classification_4_dropdown_temp = "( Parameter4" + " LIKE '%%" + classification_3_dropdown + "%%' )"
-                classification_5_dropdown_temp = "( Parameter5" + " LIKE '%%" + classification_3_dropdown + "%%' )"
-                temp2 = "(" + classification_1_dropdown_temp + " OR " + classification_2_dropdown_temp + " OR " + classification_3_dropdown_temp + " OR " + classification_4_dropdown_temp + " OR " + classification_5_dropdown_temp + ")"
-
-                temp = temp1 + "and" + temp2
-                step3_arr.append(temp)
-
-            #(Classification_FT_assessment_factors1 LIKE '%%Clinical signs%%') OR (Classification_FT_assessment_factors2 LIKE '%%Clinical signs%%') OR (Classification_FT_assessment_factors3 LIKE '%%Clinical signs%%')
+                if surgery_app:
+                    advance_conditions.append(f"Surgical_approach LIKE '%%{surgery_app}%%'")
+                if surgery_type:
+                    advance_conditions.append(f"surgery_type = '{surgery_type}'")
+                if asa:
+                    advance_conditions.append(f"ASA_physical_status LIKE '%%{asa}%%'")
 
 
 
+            # 自由组合搜索条件
+            condition_sets_to_try = []
+            all_optional = advance_conditions + professional_conditions
+            for r in range(len(all_optional), 0, -1):
+                for subset in combinations(all_optional, r):
+                    condition_sets_to_try.append(base_conditions + list(subset))
+            condition_sets_to_try.append(base_conditions)
+
+            # 查看组合条件
+            print("len(condition_sets_to_try)", len(condition_sets_to_try))
+            # for condition in condition_sets_to_try:
+            #     print("Condition lenth: ", len(condition))
+            #     print("Condition: ", condition)
 
 
-            # 生成最终的搜索查询条件
-            search_temp_arr = []
-
-            step1 = age_temp + " and " + bmi_temp + " and " + gender_temp
-
-            # search_temp = " and ".join(arr)
-            # search_temp_arr.append(search_base_temp+" and "+search_temp)
-
-            '''
-            # step1 和 step2 排列组合
-            for j in range(len(step2_arr), 0, -1):              # 递减步长为1,     4,3,2,1
-                #print(j)
-                for e in it.combinations(step2_arr, j):
-                    #print(e)
-                    search_temp_demo = " and ".join(e)
-                    search_temp = step1 + " and " + search_temp_demo
-                    search_temp_arr.append(search_temp)
-            search_temp_arr.append(step1)  # 0
-            '''
-
-            search_arr1 = []
-            search_arr2 = []
-
-            step2_arr = step2_arr + step3_arr
-            # Step 1: 排列组合 step2_arr
-            for j in range(len(step2_arr), 0, -1):  # 递减步长为1, 4,3,2,1
-                for e in it.combinations(step2_arr, j):
-                    search_temp_demo = " and ".join(e)
-                    search_temp = step1 + " and " + search_temp_demo
-                    search_temp_arr.append(search_temp)
-                    search_arr1.append((search_temp))
-
-            '''
-            # Step 2: 对 step3_arr 进行排列组合，并将其加到 step2_arr 的组合中
-            for j in range(len(step2_arr), 0, -1):  # 递减步长为1, 4,3,2,1
-                for e in it.combinations(step2_arr, j):
-                    search_temp_demo = " and ".join(e)
-                    for k in range(len(step3_arr), 0, -1):  # Step 3: 递减步长为1, 3,2,1
-                        for e3 in it.combinations(step3_arr, k):
-                            search_temp_demo3 = " and ".join(e3)
-                            search_temp = step1 + " and " + search_temp_demo + " and " + search_temp_demo3
-                            search_temp_arr.append(search_temp)
-                            search_arr2.append(search_temp)  # final search
-            '''
-
-            # 添加只包含 step1 的查询
-            search_temp_arr.append(step1)
-
-            search_arr = search_arr2 + search_arr1
-            search_arr.append(step1)
-
-            # 输出结果
-            #for search in search_temp_arr:
-            #    print(search)
-
-            #print(len(step2_arr))
-            #print(len(step3_arr))
-
-
-            for search in search_arr:
-                print(search)
-            #print(step2_arr)
-            #print(search)
-            #search_temp_arr = search_temp_arr[0:1]
-            #for k in search_temp_arr:
-            #    print(1, k)
-
-            # application1 = form.cleaned_data.get("application_1")
-            # application2 = form.cleaned_data.get("application_2")
-            # application3 = form.cleaned_data.get("application_3")
-            # application4 = form.cleaned_data.get("application_4")
-            # application5 = form.cleaned_data.get("application_5")
-            # print(application1)
-            # print(application2)
-            # print(application3)
-            # print(application4)
-            # print(application5)
-
-
-
-
-
-
-            # 查询数据库并获取结果
+            # 查询数据库
             rows = []
-            queryset = []
-            for search_temp in search_temp_arr:
-                #print(search_temp)
-                queryset = Pftd.objects.raw("select * from pftd where " + search_temp)
+            def execute_queries(condition_sets_to_try):
+                for conditions in condition_sets_to_try:
+                    try:
+                        query = "SELECT * FROM pftd WHERE " + " AND ".join(conditions)
+                        print(f"尝试查询: {query}")
+                        queryset = list(Pftd.objects.raw(query))
+                        if queryset:
+                            for obj in queryset:
+                                rows.append( {
+                                    "id": obj.id,
+                                    "IFTP": obj.IFTP,
+                                    "IFTP_subgroup": obj.IFTP_subgroup,
+                                    "Period_of_fluid": obj.Period_of_fluid_therapy,
+                                    "Liquid_treatment": obj.liquid_treatment,
+                                    "Fluid_name": obj.Fluid_name,
+                                    "Fluid_type": obj.Fluid_type,
+                                    "dose": obj.Dose,
+                                    "rate": obj.Rate,
+                                    "duration": obj.Duration,
+                                    "monitoring": obj.Monitoring,
+                                    "monitoring_parameters": obj.Monitoring_Parameters,
+                                    "monitoring_frequency": obj.Monitoring_frequency,
+                                    "use_of_vasopressors": obj.Use_of_vasopressors,
+                                    "blood_transfusion": obj.Blood_transfusion,
+                                    "additional_information": obj.Additional_information,
+                                    "parameter1": obj.Parameter1,
+                                    "classification1": obj.Classification_FT_assessment_factors1,
+                                    "parameter2": obj.Parameter2,
+                                    "classification2": obj.Classification_FT_assessment_factors2,
+                                    "parameter3": obj.Parameter3,
+                                    "classification3": obj.Classification_FT_assessment_factors3,
+                                    "parameter4": obj.Parameter4,
+                                    "classification4": obj.Classification_FT_assessment_factors4,
+                                    "parameter5": obj.Parameter5,
+                                    "classification5": obj.Classification_FT_assessment_factors5, })
+                            print(f"成功匹配 {len(rows)} 条记录，条件: {' AND '.join(conditions)}")
+                            return rows, conditions
 
-            # queryset1 = Pftd.objects.all().filter(age__icontains=age, gender__contains=gender,
-            #                                       bmi__contains=bmi, surgical_approach=surgery_app,
-            #                                       period_of_fluid_therapy2=period_of_FT,
-            #                                       surgery_type=surgery_type, surgical_site=surgery_site,
-            #                                       asa_physical_status__contains=asa)
-            # queryset2 = Pftd.objects.all().filter(age__icontains=age,
-            #                                       gender__contains=gender, bmi__contains=bmi,
-            #                                       surgical_approach=surgery_app,
-            #                                       period_of_fluid_therapy2=period_of_FT,
-            #                                       surgery_type=surgery_type, surgical_site=surgery_site)
-            # queryset3 = Pftd.objects.all().filter(age__icontains=age, gender__contains=gender,
-            #                                       bmi__contains=bmi,
-            #                                       surgical_approach=surgery_app, surgery_type=surgery_type,
-            #                                       surgical_site=surgery_site)
-            # queryset4 = Pftd.objects.all().filter(age__icontains=age, gender__contains=gender,
-            #                                       bmi__contains=bmi,
-            #                                       surgery_type=surgery_type,
-            #                                       surgical_site=surgery_site)
-                if queryset:
-                    # for item in queryset:
-                    #     i =1
+                    except Exception as e:
+                        print(f"查询失败: {str(e)}")
+                        continue
 
-                    for obj in queryset:
-                        # print(obj.id,  obj.Classification_FT_assessment_factors1)
-                        rows.append({
-                            "id": obj.id,
-                            "IFTP": obj.IFTP,
-                            "IFTP_subgroup": obj.IFTP_subgroup,
-                            "Period_of_fluid": obj.Period_of_fluid_therapy,
-                            "Liquid_treatment": obj.liquid_treatment,
-                            "Fluid_name": obj.Fluid_name,
-                            "Fluid_type": obj.Fluid_type,
-                            "dose": obj.Dose,
-                            "rate": obj.Rate,
-                            "duration": obj.Duration,
-                            "monitoring": obj.Monitoring,
-                            "monitoring_parameters": obj.Monitoring_Parameters,
-                            "monitoring_frequency": obj.Monitoring_frequency,
-                            "use_of_vasopressors": obj.Use_of_vasopressors,
-                            "blood_transfusion": obj.Blood_transfusion,
-                            "additional_information": obj.Additional_information,
-                            "parameter1": obj.Parameter1,
-                            "classification1": obj.Classification_FT_assessment_factors1,
-                            "parameter2": obj.Parameter2,
-                            "classification2": obj.Classification_FT_assessment_factors2,
-                            "parameter3": obj.Parameter3,
-                            "classification3": obj.Classification_FT_assessment_factors3,
-                            "parameter4": obj.Parameter4,
-                            "classification4": obj.Classification_FT_assessment_factors4,
-                            "parameter5": obj.Parameter5,
-                            "classification5": obj.Classification_FT_assessment_factors5,
-                        })
+                # 所有条件都尝试过但无结果
+                print(f"所有条件都尝试过但无结果")
+                return [], []
 
-            data = {'total': len(queryset), 'rows': rows}
-            # print(data)
-            # return HttpResponse(json.dumps(data, separators=(',', ':')), content_type='application/json')
-            return render(request, "recommend.html", {"form": form, "data": json.dumps(data)})
-        else:
-            return render(request, "recommend.html", {"form": form})
+
+            rows, matched_conditions = execute_queries(condition_sets_to_try)
+            data = {'total': len(rows), 'rows': rows}
+            return render(request, "recommend.html", {"form": form,"data": json.dumps(data)})
+
+
+
+
+
+
+
+
+            # search database
+        #     query = "SELECT * FROM pftd WHERE " + " AND ".join(conditions)
+        #     queryset = Pftd.objects.raw(query)
+        #     if queryset:
+        #         rows = []
+        #         for obj in queryset:
+        #             rows.append({
+        #                 "id": obj.id,
+        #                 "IFTP": obj.IFTP,
+        #                 "IFTP_subgroup": obj.IFTP_subgroup,
+        #                 "Period_of_fluid": obj.Period_of_fluid_therapy,
+        #                 "Liquid_treatment": obj.liquid_treatment,
+        #                 "Fluid_name": obj.Fluid_name,
+        #                 "Fluid_type": obj.Fluid_type,
+        #                 "dose": obj.Dose,
+        #                 "rate": obj.Rate,
+        #                 "duration": obj.Duration,
+        #                 "monitoring": obj.Monitoring,
+        #                 "monitoring_parameters": obj.Monitoring_Parameters,
+        #                 "monitoring_frequency": obj.Monitoring_frequency,
+        #                 "use_of_vasopressors": obj.Use_of_vasopressors,
+        #                 "blood_transfusion": obj.Blood_transfusion,
+        #                 "additional_information": obj.Additional_information,
+        #                 "parameter1": obj.Parameter1,
+        #                 "classification1": obj.Classification_FT_assessment_factors1,
+        #                 "parameter2": obj.Parameter2,
+        #                 "classification2": obj.Classification_FT_assessment_factors2,
+        #                 "parameter3": obj.Parameter3,
+        #                 "classification3": obj.Classification_FT_assessment_factors3,
+        #                 "parameter4": obj.Parameter4,
+        #                 "classification4": obj.Classification_FT_assessment_factors4,
+        #                 "parameter5": obj.Parameter5,
+        #                 "classification5": obj.Classification_FT_assessment_factors5,
+        #             })
+        #
+        #         data = {'total': len(queryset), 'rows': rows}
+        #         print("6. Data prepared")  # 调试点6
+        #         return render(request, "recommend.html", {"form": form, "data": json.dumps(data)})
+        #     else:
+        #         print("7. Queryset is empty")
+        #         data = {'total': 0, 'rows': []}
+        #         return render(request, "recommend.html", {"form": form, "data": json.dumps(data)})
+        # else:
+        #     print("8. Form is invalid")
+        #     return render(request, "recommend.html", {"form": form})
+
+
+            # surgery_site = request.POST.get("surgery_site")
+
+
+
+
+
+            # # 生成搜索条件的映射和临时查询条件
+            # gender_map = generate_map("gender", gender)
+            # gender_temp = generate_temp(gender_map)
+            # age_map = generate_map("age", age)
+            # age_temp = generate_temp(age_map)
+            # bmi_map = generate_map("bmi", bmi)
+            # bmi_temp = generate_temp(bmi_map)
+            #
+            # step2_arr = []
+            # if surgery_app:
+            #     surgery_app_map = generate_map("Surgical_approach", surgery_app)
+            #     surgery_app_temp = generate_temp(surgery_app_map)
+            #     step2_arr.append(surgery_app_temp)
+            #
+            # if surgery_type:
+            #     surgery_type_temp = "( surgery_type = '" + surgery_type + "' )"
+            #     step2_arr.append(surgery_type_temp)
+            #
+            # #if surgery_site:
+            # #    surgery_site_temp = "( surgical_site" + " LIKE '%%" + surgery_site + "%%' )"
+            # #    step2_arr.append(surgery_site_temp)
+            #
+            # if asa:
+            #     asa_map = generate_map("ASA_physical_status", asa)
+            #     asa_temp = generate_temp(asa_map)
+            #     step2_arr.append(asa_temp)
+            #
+            # if period_of_FT:
+            #     period_of_FT_map = generate_map("Period_of_fluid_therapy", period_of_FT)
+            #     period_of_FT_temp = generate_temp(period_of_FT_map)
+            #     step2_arr.append(period_of_FT_temp)
+            #
+            #
+            # step3_arr = []
+            # if classification_1:
+            #     classification_1_temp = "( Classification_FT_assessment_factors1" + " LIKE '%%" + classification_1 + "%%' )"
+            #     classification_2_temp = "( Classification_FT_assessment_factors2" + " LIKE '%%" + classification_1 + "%%' )"
+            #     classification_3_temp = "( Classification_FT_assessment_factors3" + " LIKE '%%" + classification_1 + "%%' )"
+            #     classification_4_temp = "( Classification_FT_assessment_factors4" + " LIKE '%%" + classification_1 + "%%' )"
+            #     classification_5_temp = "( Classification_FT_assessment_factors5" + " LIKE '%%" + classification_1 + "%%' )"
+            #     temp1 = "(" + classification_1_temp + " OR " + classification_2_temp + " OR " + classification_3_temp + " OR " + classification_4_temp + " OR "+ classification_5_temp + ")"
+            #
+            #     classification_1_dropdown_temp = "( Parameter1" + " LIKE '%%" + classification_1_dropdown + "%%' )"
+            #     classification_2_dropdown_temp = "( Parameter2" + " LIKE '%%" + classification_1_dropdown + "%%' )"
+            #     classification_3_dropdown_temp = "( Parameter3" + " LIKE '%%" + classification_1_dropdown + "%%' )"
+            #     classification_4_dropdown_temp = "( Parameter4" + " LIKE '%%" + classification_1_dropdown + "%%' )"
+            #     classification_5_dropdown_temp = "( Parameter5" + " LIKE '%%" + classification_1_dropdown + "%%' )"
+            #     temp2 = "(" + classification_1_dropdown_temp + " OR " + classification_2_dropdown_temp + " OR " + classification_3_dropdown_temp + " OR " + classification_4_dropdown_temp + " OR " + classification_5_dropdown_temp + ")"
+            #
+            #     temp = temp1 + "and" + temp2
+            #     step3_arr.append(temp)
+            #
+            #
+            # if classification_2:
+            #     classification_1_temp = "( Classification_FT_assessment_factors1" + " LIKE '%%" + classification_2 + "%%' )"
+            #     classification_2_temp = "( Classification_FT_assessment_factors2" + " LIKE '%%" + classification_2 + "%%' )"
+            #     classification_3_temp = "( Classification_FT_assessment_factors3" + " LIKE '%%" + classification_2 + "%%' )"
+            #     classification_4_temp = "( Classification_FT_assessment_factors4" + " LIKE '%%" + classification_2 + "%%' )"
+            #     classification_5_temp = "( Classification_FT_assessment_factors5" + " LIKE '%%" + classification_2 + "%%' )"
+            #     temp1 = "(" + classification_1_temp + " OR " + classification_2_temp + " OR " + classification_3_temp + " OR " + classification_4_temp + " OR " + classification_5_temp + ")"
+            #
+            #     classification_1_dropdown_temp = "( Parameter1" + " LIKE '%%" + classification_2_dropdown + "%%' )"
+            #     classification_2_dropdown_temp = "( Parameter2" + " LIKE '%%" + classification_2_dropdown + "%%' )"
+            #     classification_3_dropdown_temp = "( Parameter3" + " LIKE '%%" + classification_2_dropdown + "%%' )"
+            #     classification_4_dropdown_temp = "( Parameter4" + " LIKE '%%" + classification_2_dropdown + "%%' )"
+            #     classification_5_dropdown_temp = "( Parameter5" + " LIKE '%%" + classification_2_dropdown + "%%' )"
+            #     temp2 = "(" + classification_1_dropdown_temp + " OR " + classification_2_dropdown_temp + " OR " + classification_3_dropdown_temp + " OR " + classification_4_dropdown_temp + " OR " + classification_5_dropdown_temp + ")"
+            #
+            #     temp = temp1 + "and" + temp2
+            #     step3_arr.append(temp)
+            #
+            #
+            #
+            # if classification_3:
+            #     classification_1_temp = "( Classification_FT_assessment_factors1" + " LIKE '%%" + classification_3 + "%%' )"
+            #     classification_2_temp = "( Classification_FT_assessment_factors2" + " LIKE '%%" + classification_3 + "%%' )"
+            #     classification_3_temp = "( Classification_FT_assessment_factors3" + " LIKE '%%" + classification_3 + "%%' )"
+            #     classification_4_temp = "( Classification_FT_assessment_factors4" + " LIKE '%%" + classification_3 + "%%' )"
+            #     classification_5_temp = "( Classification_FT_assessment_factors5" + " LIKE '%%" + classification_3 + "%%' )"
+            #     temp1 = "(" + classification_1_temp + " OR " + classification_2_temp + " OR " + classification_3_temp + " OR " + classification_4_temp + " OR " + classification_5_temp + ")"
+            #
+            #     classification_1_dropdown_temp = "( Parameter1" + " LIKE '%%" + classification_3_dropdown + "%%' )"
+            #     classification_2_dropdown_temp = "( Parameter2" + " LIKE '%%" + classification_3_dropdown + "%%' )"
+            #     classification_3_dropdown_temp = "( Parameter3" + " LIKE '%%" + classification_3_dropdown + "%%' )"
+            #     classification_4_dropdown_temp = "( Parameter4" + " LIKE '%%" + classification_3_dropdown + "%%' )"
+            #     classification_5_dropdown_temp = "( Parameter5" + " LIKE '%%" + classification_3_dropdown + "%%' )"
+            #     temp2 = "(" + classification_1_dropdown_temp + " OR " + classification_2_dropdown_temp + " OR " + classification_3_dropdown_temp + " OR " + classification_4_dropdown_temp + " OR " + classification_5_dropdown_temp + ")"
+            #
+            #     temp = temp1 + "and" + temp2
+            #     step3_arr.append(temp)
+            #
+            #
+            #
+            #
+            #
+            #
+            # # 生成最终的搜索查询条件
+            # search_temp_arr = []
+            # step1 = age_temp + " and " + bmi_temp + " and " + gender_temp
+            # # search_temp = " and ".join(arr)
+            # # search_temp_arr.append(search_base_temp+" and "+search_temp)
+            # '''
+            # # step1 和 step2 排列组合
+            # for j in range(len(step2_arr), 0, -1):              # 递减步长为1,     4,3,2,1
+            #     #print(j)
+            #     for e in it.combinations(step2_arr, j):
+            #         #print(e)
+            #         search_temp_demo = " and ".join(e)
+            #         search_temp = step1 + " and " + search_temp_demo
+            #         search_temp_arr.append(search_temp)
+            # search_temp_arr.append(step1)  # 0
+            # '''
+            #
+            # search_arr1 = []
+            # search_arr2 = []
+            # step2_arr = step2_arr + step3_arr
+            #
+            # # Step 1: 排列组合 step2_arr
+            # for j in range(len(step2_arr), 0, -1):  # 递减步长为5,4,3,2,1
+            #     for e in it.combinations(step2_arr, j):
+            #         search_temp_demo = " and ".join(e)
+            #         search_temp = step1 + " and " + search_temp_demo
+            #         search_temp_arr.append(search_temp)
+            #         search_arr1.append((search_temp))
+            #
+            # '''
+            # # Step 2: 对 step3_arr 进行排列组合，并将其加到 step2_arr 的组合中
+            # for j in range(len(step2_arr), 0, -1):  # 递减步长为1, 4,3,2,1
+            #     for e in it.combinations(step2_arr, j):
+            #         search_temp_demo = " and ".join(e)
+            #         for k in range(len(step3_arr), 0, -1):  # Step 3: 递减步长为1, 3,2,1
+            #             for e3 in it.combinations(step3_arr, k):
+            #                 search_temp_demo3 = " and ".join(e3)
+            #                 search_temp = step1 + " and " + search_temp_demo + " and " + search_temp_demo3
+            #                 search_temp_arr.append(search_temp)
+            #                 search_arr2.append(search_temp)  # final search
+            # '''
+            #
+            # # 添加只包含 step1 的查询
+            # search_temp_arr.append(step1)
+            # search_arr = search_arr2 + search_arr1
+            # search_arr.append(step1)
+            #
+            #
+            #
+            # #for search in search_arr:
+            # #    print(search)
+
+
+        #     # 查询数据库并获取结果
+        #     rows = []
+        #     for search_temp in search_temp_arr:
+        #         queryset = Pftd.objects.raw("select * from pftd where " + search_temp)
+        #         if queryset:
+        #             for obj in queryset:
+        #                 rows.append({
+        #                     "id": obj.id,
+        #                     "IFTP": obj.IFTP,
+        #                     "IFTP_subgroup": obj.IFTP_subgroup,
+        #                     "Period_of_fluid": obj.Period_of_fluid_therapy,
+        #                     "Liquid_treatment": obj.liquid_treatment,
+        #                     "Fluid_name": obj.Fluid_name,
+        #                     "Fluid_type": obj.Fluid_type,
+        #                     "dose": obj.Dose,
+        #                     "rate": obj.Rate,
+        #                     "duration": obj.Duration,
+        #                     "monitoring": obj.Monitoring,
+        #                     "monitoring_parameters": obj.Monitoring_Parameters,
+        #                     "monitoring_frequency": obj.Monitoring_frequency,
+        #                     "use_of_vasopressors": obj.Use_of_vasopressors,
+        #                     "blood_transfusion": obj.Blood_transfusion,
+        #                     "additional_information": obj.Additional_information,
+        #                     "parameter1": obj.Parameter1,
+        #                     "classification1": obj.Classification_FT_assessment_factors1,
+        #                     "parameter2": obj.Parameter2,
+        #                     "classification2": obj.Classification_FT_assessment_factors2,
+        #                     "parameter3": obj.Parameter3,
+        #                     "classification3": obj.Classification_FT_assessment_factors3,
+        #                     "parameter4": obj.Parameter4,
+        #                     "classification4": obj.Classification_FT_assessment_factors4,
+        #                     "parameter5": obj.Parameter5,
+        #                     "classification5": obj.Classification_FT_assessment_factors5,
+        #                 })
+        #                 #print(len(rows))
+        #                 if rows:
+        #                     data = {'total': len(queryset), 'rows': rows}
+        #                     return render(request, "recommend.html", {"form": form, "data": json.dumps(data)})
+        #     #print(len(data))
+        #     #return render(request, "recommend.html", {"form": form, "data": json.dumps(data)})
+        # else:
+        #     return render(request, "recommend.html", {"form": form})
 
 
 
@@ -2449,7 +2622,7 @@ class ana_type_form(forms.Form):
     type_choices = (
         ('region', 'Region'),
         # ("race", "Race"),
-        ("age", "Population"),
+        ("age", "Age"),
         # ("gender", "Gender"),
         ("asa_physical_status", "ASA physical status"),
         # ("bmi", "BMI"),
@@ -2583,15 +2756,8 @@ def publication_years(request):
         form = ana_type_form()
         tests = PftdDecisionIndicator.objects.raw(
             "select id, Year as year,count(*)as count from (SELECT id, Year,pmid FROM pftd_decision_indicator GROUP BY pmid)as temp GROUP BY Year ORDER BY Year")
-        # year = []
-        # count = []
-        # for i in tests:
-        #     year.append(i.year)
-        #     count.append(i.count)
-        # data = {'xdata':year,'ydata':count}
-        # print(data)
-        # print(tests.db)
         return render(request, "analysis/analysis_py.html", {'data': tests, "form": form})
+
     if request.method == 'POST':
         form = ana_type_form(data=request.POST)
         if form.is_valid():
@@ -2599,13 +2765,6 @@ def publication_years(request):
             options = request.POST.getlist("name")
             name = ",".join(options)
             res = "——【" + name + "】"
-            # if options == 'M&F':
-            #     temp = 'M and F'
-            #     res = "——【" + temp + "】"
-            # else:
-            #     res = "——【" + options + "】"
-
-            # 根据options生成特定的检索式
             search_temp = ""
             if len(options) == 1:
                 if options[-1] == 'Other surgeries':
@@ -2637,13 +2796,8 @@ def publication_years(request):
                         temp = category + " LIKE '%%" + options[i] + "%%' OR "
                         search_temp += temp
                 search_temp += category + " LIKE '%%" + options[-1] + "%%'"
-                # print(search_temp)
-            # test = "select id, Year as year,count(*)as count from (SELECT id, Year,pmid FROM pftd where " + search_temp+ " GROUP BY pmid)as temp GROUP BY Year"
-            # print(test)
 
-            # tests = Pftd.objects.raw("select id, Year as year,count(*)as count from (SELECT id, Year,pmid FROM pftd where region LIKE '%America%' GROUP BY pmid)as temp GROUP BY Year")
-            # for i in tests:
-            #     print(i.year)
+
             tests = PftdDecisionIndicator.objects.raw(
                 "select id, Year as year,count(*)as count from (SELECT id, Year,pmid FROM pftd_decision_indicator where " + search_temp + " GROUP BY pmid)as temp GROUP BY Year ORDER BY Year")
 
@@ -2653,11 +2807,11 @@ def publication_years(request):
             return render(request, "analysis/analysis_py.html", {"form": form})
 
 
+
+
 '''
  Analysis for Country distribution (PMID)
 '''
-
-
 class ana_cd_form(forms.Form):
     type_choices2 = (
         ('region', 'Region'),
@@ -3155,8 +3309,6 @@ def ana_sankey(request):
 '''
  Analysis for Pie
 '''
-
-
 def create_node(name, value=None, children=None):
     node = {'name': name}
     if value is not None:
@@ -3274,8 +3426,6 @@ def ana_pie(request):
 '''
  Analysis for Graph
 '''
-
-
 def change_size(value):
     if 1 <= value <= 10:
         return 10
@@ -3532,46 +3682,6 @@ def ana_graph(request):
             link_dic4["target"] = i.p5 + "-p"
             links.append(link_dic4)
 
-    # 'IFTP - parameter'
-    # link_info4 = Pftd.objects.raw(
-    #     "SELECT id, IFTP as sp,Parameter1 as p1,Parameter2 as p2,Parameter3 as p3,Parameter4 as p4,Parameter5 as p5 from pftd GROUP BY sp,p1,p2,p3,p4,p5"
-    # )
-    # for i in link_info4:
-    #     if i.p1 == "NA":
-    #         continue
-    #     else:
-    #         link_dic = {}
-    #         link_dic["source"] = i.sp+"-iftp"
-    #         link_dic["target"] = i.p1+"-p1"
-    #         links.append(link_dic)
-    #     if i.p2 == "NA":
-    #         continue
-    #     else:
-    #         link_dic1 = {}
-    #         link_dic1["source"] = i.sp+"-iftp"
-    #         link_dic1["target"] = i.p2+"-p2"
-    #         links.append(link_dic1)
-    #     if i.p3 == "NA":
-    #         continue
-    #     else:
-    #         link_dic2 = {}
-    #         link_dic2["source"] = i.sp+"-iftp"
-    #         link_dic2["target"] = i.p3+"-p3"
-    #         links.append(link_dic2)
-    #     if i.p4 == "NA":
-    #         continue
-    #     else:
-    #         link_dic3 = {}
-    #         link_dic3["source"] = i.sp+"-iftp"
-    #         link_dic3["target"] = i.p4+"-p4"
-    #         links.append(link_dic3)
-    #     if i.p5 == "NA":
-    #         continue
-    #     else:
-    #         link_dic4 = {}
-    #         link_dic4["source"] = i.sp+"-iftp"
-    #         link_dic4["target"] = i.p5+"-p5"
-    #         links.append(link_dic4)
 
     # 去重操作
     link_pairs = set()
@@ -3589,29 +3699,12 @@ def ana_graph(request):
 '''
  Analysis for Sample Size and Year Line
 '''
-
-
 class ana_sy_form(forms.Form):
     type_choices2 = (
-        # ('surgery_type', 'Surgical Type'),
-        # ('region', 'Region'),
-        # # ("race", "Race"),
-        # ("gender", "Gender"),
-        # ("age", "Age"),
-        # ("bmi", "BMI"),
-        # ("surgical_approach", "Surgery Approach"),
-        # # ("surgical_site", "Surgical Site"),
-        # ("period_of_fluid_therapy", "Period of Fluid Therapy"),
-        # # ("disease", "Disease"),
-        # # ("comorbidity", "Comorbidity"),
-        # # ("fluid_therapy_concept", "Fluid Therapy Concept"),
         ("surgery_type", "Surgical Type"),
         ("age", "Population"),
-        # ("gender", "Gender"),
         ("asa_physical_status", "ASA physical status"),
-        # ("bmi", "BMI"),
         ("surgical_approach", "Surgery Approach"),
-
         ("period_of_fluid_therapy", "Period of Fluid Therapy"),
         ("classification_of_fluid_therapy_parameters", "Classification of PFTD parameters"),
         ("application", "Parameter Application"),
@@ -3621,7 +3714,6 @@ class ana_sy_form(forms.Form):
                                     widget=forms.Select(
                                         attrs={"class": "form-control"}),
                                     choices=type_choices2)
-
 
 def ana_sy_line(request):
     if request.method == 'GET':
@@ -3820,8 +3912,6 @@ def ana_sy_line(request):
 '''
  Analysis for Decision Indicator for Surgery Type
 '''
-
-
 def update_data(res, para, loci, value, surgery_type):
     # if len(res) == 0:
     #     dic_temp = {"type": 'bar', "coordinateSystem": 'polar', "name": para, "stack": 'a', "emphasis": {

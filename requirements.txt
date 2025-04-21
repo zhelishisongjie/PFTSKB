@@ -1,6 +1,6 @@
-asgiref @ file:///home/conda/feedstock_root/build_artifacts/asgiref_1671589829431/work
+asgiref==3.7.2
 beautifulsoup4==4.12.2
-Django @ file:///home/conda/feedstock_root/build_artifacts/django_1680693679482/work
+Django==4.2.4
 django-cors-headers==3.14.0
 django-filter==23.1
 django-livereload==1.7
@@ -12,6 +12,6 @@ pymemcache==4.0.0
 PyMySQL==1.0.3
 pytz==2023.3
 soupsieve==2.4
-sqlparse @ file:///home/conda/feedstock_root/build_artifacts/sqlparse_1663990453245/work
-typing_extensions @ file:///home/conda/feedstock_root/build_artifacts/typing_extensions_1678559861143/work
+sqlparse==0.4.4
+typing_extensions
 zipp==3.15.0

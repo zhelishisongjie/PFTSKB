@@ -134,7 +134,7 @@
         {% if sign == 1 %}
 <div id="toolbar" class="bar1">
     <div class="alert alert-primary alert-dismissible fade show text-center" style="font-size: 12px" role="alert">
-        <strong>There is currently no completely matching information, the following information can provide you with reference.</strong>
+        <strong>The following records are those that best match your input.</strong>
 
 </div>
 </div>
@@ -353,10 +353,10 @@
        -->
 
         <!-- Disclaimer -->
-        <div class="alert alert-warning mt-3">
-            <i class="fa fa-exclamation-triangle mr-2"></i>
-            Outputs should be used as clinical reference only
-        </div>
+{#        <div class="alert alert-warning mt-3">#}
+{#            <i class="fa fa-exclamation-triangle mr-2"></i>#}
+{#            Outputs should be used as clinical reference only#}
+{#        </div>#}
     </div>
 
     <!-- Original Table/Charts -->
@@ -484,11 +484,11 @@
                     {#    formatter:operateFormatter,#}
                     {#    events: window.operateEvents,#}
                     {##}
-                    {
-                        field: 'id',
-                        title: 'ID',
-                        align: 'center',
-                    },
+                    {#{#}
+                    {#    field: 'id',#}
+                    {#    title: 'ID',#}
+                    {#    align: 'center',#}
+                    {#},#}
                     {
                         field: 'Pid',
                         title: 'PID',

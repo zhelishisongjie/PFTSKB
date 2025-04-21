@@ -163,6 +163,17 @@
                 type: 'category',
                 boundaryGap: false,
                 data: {{ x|safe }},
+                axisTick: {
+                    alignWithLabel: true
+                },
+                axisLabel: {
+                    interval: 0,  // 强制显示所有标签
+                    rotate: 30,   // 如果标签过多可以旋转一定角度
+                    formatter: function(value) {
+                        // 确保年份显示完整
+                        return value;
+                    }
+                }
             },
             yAxis: {
                 type: 'value'
